@@ -28,4 +28,5 @@ Route::resource('contact', 'ContactController')->middleware(['auth']);
 Route::resource('category', 'CategoryController')->middleware(['auth']);
 Route::resource('subCategory', 'SubCategoryController')->middleware(['auth']);
 Route::resource('manufacturer', 'ManufacturerController')->middleware(['auth']);
+Route::resource('item', 'ItemController')->middleware(['auth']);
 require __DIR__.'/auth.php';
