@@ -20,6 +20,7 @@ class CreateAccountDetailsTable extends Migration
             $table->string('account_detail_name');
             $table->string('account_nature');
             $table->string('account_code');
+            $table->string('serial_number');
             $table->timestamps();
         });
     }

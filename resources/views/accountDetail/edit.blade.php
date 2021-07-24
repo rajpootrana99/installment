@@ -95,7 +95,7 @@
                                     <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('account_detail_name') }}</div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="hidden" name="account_code" class="form-control" value="{{ $accountDetail->account_code }}" readonly>
+                                    <input type="hidden" name="serial_number" class="form-control" value="{{ $accountDetail->serial_number }}" readonly>
                                 </div>
                             </div>
                         </div>

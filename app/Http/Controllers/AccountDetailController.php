@@ -32,17 +32,17 @@ class AccountDetailController extends Controller
     {
         $accountDetail = AccountDetail::latest()->first();
         if($accountDetail){
-            $accountCode = $accountDetail->account_code;
+            $serial_number = $accountDetail->serial_number;
         }
         else{
-            $accountCode = 0;
+            $serial_number = 0;
         }
         $heads = Head::all();
         $subHeads = SubHead::all();
         return view('accountDetail.create', [
             'heads' => $heads,
             'subHeads' => $subHeads,
-            'accountCode' => $accountCode+1,
+            'serial_number' => $serial_number+1,
             'accountDetail' => new AccountDetail(),
         ]);
     }
@@ -57,14 +57,18 @@ class AccountDetailController extends Controller
     {
         $head_serial_code = Head::where('id', $request->head_id)->first();
         $sub_head_serial_code = SubHead::where('id', $request->sub_head_id)->first();
-        $account_code = $head_serial_code->serial_code.$sub_head_serial_code->serial_code.$request->account_code;
+        $account_code = $head_serial_code->serial_code.$sub_head_serial_code->serial_code.$request->serial_number;
         AccountDetail::create([
             'head_id' => $request->head_id,
             'sub_head_id' => $request->sub_head_id,
             'account_detail_name' => $request->account_detail_name,
             'account_nature' => $request->account_nature,
             'account_code' => $account_code,
+            'serial_number' => $request->serial_number,
         ]);
+        if($request->account_nature == 4){
+            return redirect(route('contact.create'));
+        }
         return redirect(route('accountDetail.index'));
     }
 
@@ -117,6 +121,7 @@ class AccountDetailController extends Controller
      */
     public function destroy(AccountDetail $accountDetail)
     {
-        //
+        $accountDetail->delete();
+        return redirect(route('accountDetail.index'));
     }
 }

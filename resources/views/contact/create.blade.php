@@ -71,7 +71,7 @@
                                 <div class="row">
                                     <div class="form-group col-6">
                                         <label for="account_number">Account No:</label>
-                                        <input type="text" name="account_number" class="form-control" value="{{ old('account_number') }}">
+                                        <input type="text" name="account_number" class="form-control" value="{{ $account_code }}">
                                         <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('account_number') }}</div>
                                     </div>
                                     <div class="form-group col-6">
@@ -143,6 +143,34 @@
                                         <label for="recovery_day">Recover Day:</label>
                                         <input type="text" name="recovery_day" class="form-control" placeholder="Enter Recover Day" value="{{ old('recovery_day') }}">
                                         <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('recovery_day') }}</div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="document">Upload Document:</label>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="document" name="document">
+                                            <label class="custom-file-label" for="document">Upload Document</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="cnic_front">CNIC Front:</label>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="cnic_front" name="cnic_front">
+                                            <label class="custom-file-label" for="cnic_front">CNIC Front</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="cnic_back">CNIC Back:</label>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="cnic_back" name="cnic_back">
+                                            <label class="custom-file-label" for="cnic_back">CNIC Back</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="image">Upload Image:</label>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="image" name="image">
+                                            <label class="custom-file-label" for="image">Upload Image</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="text-right">

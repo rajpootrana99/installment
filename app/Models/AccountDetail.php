@@ -15,6 +15,7 @@ class AccountDetail extends Model
         'account_detail_name',
         'account_nature',
         'account_code',
+        'serial_number',
     ];
 
     public function getAccountNatureAttribute($attribute){

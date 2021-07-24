@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use function Symfony\Component\Translation\t;
 
-class AccountDetailRequest extends FormRequest
+class ManufacturerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +25,7 @@ class AccountDetailRequest extends FormRequest
     public function rules()
     {
         return [
-            'head_id' => 'required',
-            'sub_head_id' => 'required',
-            'account_detail_name' => 'required',
-            'account_nature' => 'required',
-            'serial_number' => 'required',
+            'name' => 'required',
         ];
     }
 }

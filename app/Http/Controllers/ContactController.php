@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactRequest;
+use App\Http\Traits\GeneralTrait;
+use App\Models\AccountDetail;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
+    use GeneralTrait;
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +28,10 @@ class ContactController extends Controller
      */
     public function create()
     {
-        return view('contact.create');
+        $accountDetail = AccountDetail::latest()->first();
+        return view('contact.create', [
+            'account_code' => $accountDetail->account_code,
+        ]);
     }
 
     /**
@@ -33,9 +40,11 @@ class ContactController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ContactRequest $request)
     {
-        //
+        $contact = Contact::create($request->all());
+        $this->storeImage($contact);
+        return redirect(route('accountDetail.index'));
     }
 
     /**
@@ -81,5 +90,15 @@ class ContactController extends Controller
     public function destroy(Contact $contact)
     {
         //
+    }
+
+    public function storeImage($contact)
+    {
+        $contact->update([
+            'image' => $this->imagePath('image', 'contact', $contact),
+            'cnic_front' => $this->imagePath('cnic_front', 'contact', $contact),
+            'cnic_back' => $this->imagePath('cnic_back', 'contact', $contact),
+            'document' => $this->imagePath('document', 'contact', $contact),
+        ]);
     }
 }

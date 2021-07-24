@@ -27,6 +27,14 @@
                         <li class="{{ (request()->is('accountDetail')) ? 'active' : '' }}"><a href="{{ route('accountDetail.index') }}">Account Detail</a></li>
                     </ul>
                 </li>
+                <li>
+                    <a href="#inventory" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-boxes"></i><span>Inventory</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                    <ul id="inventory" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li class="{{ (request()->is('head')) ? 'active' : '' }}"><a href="{{ route('category.index') }}">Category</a></li>
+                        <li class="{{ (request()->is('subHead')) ? 'active' : '' }}"><a href="{{ route('subCategory.index') }}">Sub Category</a></li>
+                        <li class="{{ (request()->is('accountDetail')) ? 'active' : '' }}"><a href="{{ route('manufacturer.index') }}">Manufacturer</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
         <div class="p-3"></div>
