@@ -34,4 +34,5 @@ Route::resource('barcode', 'BarcodeController')->middleware(['auth']);
 
 // Application Setting
 Route::resource('financialYear', 'FinancialYearController')->middleware(['auth']);
+Route::resource('company', 'CompanyController')->middleware(['auth']);
 require __DIR__.'/auth.php';
