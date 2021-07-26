@@ -20,6 +20,9 @@ class CreateItemsTable extends Migration
             $table->unsignedBigInteger('manufacturer_id');
             $table->string('item_code');
             $table->string('name');
+            $table->string('image');
+            $table->string('description');
+            $table->string('remarks');
             $table->string('cost_price');
             $table->string('sale_price_1');
             $table->string('sale_price_2');

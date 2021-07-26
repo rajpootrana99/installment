@@ -63,7 +63,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12">
-                    <form method="post" action="{{route('item.store')}}" >
+                    <form method="post" action="{{route('item.store')}}" enctype="multipart/form-data">
                         @csrf
                         <div class="iq-card">
                             <div class="iq-card-header d-flex justify-content-between">
@@ -84,6 +84,11 @@
                                         <label for="name">Name:</label>
                                         <input type="text" name="name" class="form-control" placeholder="Enter Item Name" value="{{ old('name') }}">
                                         <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('name') }}</div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="description">Description</label>
+                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="description">{{ old('description') }}</textarea>
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('description') }}</div>
                                     </div>
                                     <div class="form-group col-6">
                                         <label for="category_id">Category:</label>
@@ -141,6 +146,18 @@
                                         <label for="sale_price_5">Sale Price 5:</label>
                                         <input type="text" name="sale_price_5" class="form-control" placeholder="Enter Sale Price 5" value="{{ old('sale_price_5') }}">
                                         <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('sale_price_5') }}</div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="image">Upload Product Image:</label>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="image" name="image">
+                                            <label class="custom-file-label" for="image">Upload Product Image</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="remarks">Remarks:</label>
+                                        <input type="text" name="remarks" class="form-control" placeholder="Enter Remarks" value="{{ old('remarks') }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('remarks') }}</div>
                                     </div>
                                 </div>
                                 <div class="text-right">

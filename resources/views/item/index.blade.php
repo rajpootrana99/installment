@@ -79,12 +79,15 @@
                                     <tr class="text-center">
                                         <th scope="col">#</th>
                                         <th scope="col">Item Code</th>
+                                        <th scope="col">Image</th>
                                         <th scope="col">Item Name</th>
+                                        <th scope="col">Description</th>
                                         <th scope="col">Category</th>
                                         <th scope="col">Sub Category</th>
                                         <th scope="col">Manufacturer</th>
                                         <th scope="col">Cost Price</th>
                                         <th scope="col">Sale Price 1</th>
+                                        <th scope="col">Remarks</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                     </thead>
@@ -93,12 +96,19 @@
                                         <tr class="text-center">
                                             <td>{{ $item->id }}</td>
                                             <td>{{ $item->item_code }}</td>
+                                            @if(isset($item->image))
+                                                <td><img src="{{ asset('storage/'.$item->image) }}" height="50px"></td>
+                                            @else
+                                                <td></td>
+                                            @endif
                                             <td>{{ $item->name }}</td>
+                                            <td>{{ $item->description }}</td>
                                             <td>{{ $item->category->name }}</td>
                                             <td>{{ $item->subCategory->name }}</td>
                                             <td>{{ $item->manufacturer->name }}</td>
                                             <td>{{ $item->cost_price }}</td>
                                             <td>{{ $item->sale_price_1 }}</td>
+                                            <td>{{ $item->remarks }}</td>
                                             <td>
                                                 <div class="row justify-content-center">
                                                     <a href="{{ route('item.edit', ['item' => $item]) }}" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="View">

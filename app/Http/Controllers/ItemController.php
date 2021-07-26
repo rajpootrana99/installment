@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ItemRequest;
+use App\Http\Traits\GeneralTrait;
 use App\Models\Category;
 use App\Models\Item;
 use App\Models\Manufacturer;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
+    use GeneralTrait;
     /**
      * Display a listing of the resource.
      *
@@ -49,7 +51,8 @@ class ItemController extends Controller
      */
     public function store(ItemRequest $request)
     {
-        Item::create($request->all());
+        $item = Item::create($request->all());
+        $this->storeImage($item);
         return redirect(route('item.index'));
     }
 
@@ -93,6 +96,7 @@ class ItemController extends Controller
     public function update(Request $request, Item $item)
     {
         $item->update($request->all());
+        $this->storeImage($item);
         return redirect(route('item.index'));
     }
 
@@ -106,5 +110,12 @@ class ItemController extends Controller
     {
         $item->delete();
         return redirect(route('item.index'));
+    }
+
+    public function storeImage($item)
+    {
+        $item->update([
+            'image' => $this->imagePath('image', 'contact', $item),
+        ]);
     }
 }

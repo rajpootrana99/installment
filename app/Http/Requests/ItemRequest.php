@@ -23,7 +23,7 @@ class ItemRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        return tap([
             'category_id' => 'required',
             'sub_category_id' => 'required',
             'manufacturer_id' => 'required',
@@ -35,6 +35,14 @@ class ItemRequest extends FormRequest
             'sale_price_3' => 'required',
             'sale_price_4' => 'required',
             'sale_price_5' => 'required',
-        ];
+            'remarks' => 'required',
+            'description' => 'required',
+        ], function (){
+            if (request()->hasFile(request()->image)) {
+                request()->validate([
+                    'image' => 'required|file|image',
+                ]);
+            }
+        });
     }
 }
