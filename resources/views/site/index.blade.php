@@ -13,10 +13,10 @@
                 </div>
             </div>
             <div class="navbar-breadcrumb">
-                <h5 class="mb-0">Company</h5>
+                <h5 class="mb-0">Site</h5>
                 <nav aria-label="breadcrumb">
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('company.index') }}">Company</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('site.index') }}">Site</a></li>
                         <li class="breadcrumb-item active" aria-current="page">List</li>
                     </ul>
                 </nav>
@@ -67,39 +67,37 @@
                         <div class="iq-card-header d-flex justify-content-between">
                             <div class="iq-header-title">
                                 <div class="row card-title">
-                                    <h4>Company</h4>
+                                    <h4>Site</h4>
                                 </div>
                             </div>
                         </div>
                         <div class="iq-card-body">
-                            <a href="{{ route('company.create') }}" class="btn btn-primary float-right mb-4"><i class="fa fa-plus"></i> New Company </a>
+                            <a href="{{ route('site.create') }}" class="btn btn-primary float-right mb-4"><i class="fa fa-plus"></i> New Site </a>
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
                                     <tr class="text-center">
                                         <th scope="col">#</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Address</th>
-                                        <th scope="col">Contact</th>
+                                        <th scope="col">Company Name</th>
+                                        <th scope="col">Site Name</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($companies as $company)
+                                    @foreach($sites as $site)
                                         <tr class="text-center">
-                                            <td >{{ $company->id }}</td>
-                                            <td>{{ $company->name }}</td>
-                                            <td>{{ $company->address }}</td>
-                                            <td>{{ $company->contact }}</td>
+                                            <td >{{ $site->id }}</td>
+                                            <td>{{ $site->company->name }}</td>
+                                            <td>{{ $site->name }}</td>
                                             <td>
                                                 <div class="row justify-content-center">
-                                                    <a href="{{ route('company.edit', ['company' => $company]) }}" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="View">
+                                                    <a href="{{ route('site.edit', ['site' => $site]) }}" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="View">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
-                                                    <form id="{{ 'delete_'.$company->id }}" method="post" action="{{ route('company.destroy', ['company' => $company]) }}">
+                                                    <form id="{{ 'delete_'.$site->id }}" method="post" action="{{ route('site.destroy', ['site' => $site]) }}">
                                                         @method('DELETE')
                                                         @csrf
-                                                        <a onclick="document.getElementById('{{ 'delete_'.$company->id }}').submit()" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="View">
+                                                        <a onclick="document.getElementById('{{ 'delete_'.$site->id }}').submit()" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="View">
                                                             <i class="fa fa-trash"></i>
                                                         </a>
                                                     </form>

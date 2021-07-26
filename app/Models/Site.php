@@ -5,15 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Company extends Model
+class Site extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name', 'address', 'contact',
+        'company_id',
+        'name',
     ];
 
-    public function sites(){
-        return $this->hasMany(Site::class);
+    public function company(){
+        return $this->belongsTo(Company::class);
     }
 }
