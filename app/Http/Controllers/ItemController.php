@@ -20,7 +20,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::all();
+        $items = Item::with('category', 'subCategory', 'manufacturer')->get();
         return view('item.index', [
             'items' => $items,
         ]);
@@ -51,7 +51,38 @@ class ItemController extends Controller
      */
     public function store(ItemRequest $request)
     {
-        $item = Item::create($request->all());
+        if($request->is_sale_price_defined == 0){
+            $sale_price_1 = $request->purchase_price + ($request->sale_price_1/100)*$request->purchase_price;
+            $sale_price_2 = $request->purchase_price + ($request->sale_price_2/100)*$request->purchase_price;
+            $sale_price_3 = $request->purchase_price + ($request->sale_price_3/100)*$request->purchase_price;
+            $sale_price_4 = $request->purchase_price + ($request->sale_price_4/100)*$request->purchase_price;
+            $sale_price_5 = $request->purchase_price + ($request->sale_price_5/100)*$request->purchase_price;
+        }
+        else{
+            $sale_price_1 = $request->company_price + ($request->sale_price_1/100)*$request->company_price;
+            $sale_price_2 = $request->company_price + ($request->sale_price_2/100)*$request->company_price;
+            $sale_price_3 = $request->company_price + ($request->sale_price_3/100)*$request->company_price;
+            $sale_price_4 = $request->company_price + ($request->sale_price_4/100)*$request->company_price;
+            $sale_price_5 = $request->company_price + ($request->sale_price_5/100)*$request->company_price;
+        }
+        $item = Item::create([
+            'item_code' => $request->item_code,
+            'name' => $request->name,
+            'category_id' => $request->category_id,
+            'sub_category_id' => $request->sub_category_id,
+            'manufacturer_id' => $request->manufacturer_id,
+            'cost_price' => $request->cost_price,
+            'purchase_price' => $request->purchase_price,
+            'company_price' => $request->company_price,
+            'is_sale_price_defined' => $request->is_sale_price_defined,
+            'remarks' => $request->remarks,
+            'description' => $request->description,
+            'sale_price_1' => $sale_price_1,
+            'sale_price_2' => $sale_price_2,
+            'sale_price_3' => $sale_price_3,
+            'sale_price_4' => $sale_price_4,
+            'sale_price_5' => $sale_price_5,
+        ]);
         $this->storeImage($item);
         return redirect(route('item.index'));
     }
@@ -115,7 +146,7 @@ class ItemController extends Controller
     public function storeImage($item)
     {
         $item->update([
-            'image' => $this->imagePath('image', 'contact', $item),
+            'image' => $this->imagePath('image', 'item', $item),
         ]);
     }
 }
