@@ -27,6 +27,7 @@ class ItemRequest extends FormRequest
             'category_id' => 'required',
             'sub_category_id' => 'required',
             'manufacturer_id' => 'required',
+            'warehouse_id' => 'required',
             'item_code' => 'required',
             'name' => 'required',
             'cost_price' => 'required',

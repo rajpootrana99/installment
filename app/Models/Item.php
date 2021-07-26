@@ -13,6 +13,7 @@ class Item extends Model
         'category_id',
         'sub_category_id',
         'manufacturer_id',
+        'warehouse_id',
         'item_code',
         'name',
         'image',

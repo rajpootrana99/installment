@@ -82,7 +82,7 @@
                                         <input type="text" name="name" class="form-control" placeholder="Enter Item Name" value="{{ $item->name }}">
                                         <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('name') }}</div>
                                     </div>
-                                    <div class="form-group col-6">
+                                    <div class="form-group col-12">
                                         <label for="description">Description</label>
                                         <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="description">{{ $item->description }}</textarea>
                                         <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('description') }}</div>
@@ -115,9 +115,39 @@
                                         <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('manufacturer_id') }}</div>
                                     </div>
                                     <div class="form-group col-6">
+                                        <label for="warehouse_id">Warehouse:</label>
+                                        <select name="warehouse_id" class="form-control">
+                                            @foreach($warehouses as $warehouse)
+                                                <option value="{{ $warehouse->id }}"{{ $item->warehouse_id == $warehouse->id ? 'selected' : ''}}>{{ $warehouse->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('warehouse_id') }}</div>
+                                    </div>
+                                    <div class="form-group col-6">
                                         <label for="cost_price">Cost Price:</label>
                                         <input type="text" name="cost_price" class="form-control" placeholder="Enter Cost Price" value="{{ $item->cost_price }}">
                                         <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('cost_price') }}</div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="purchase_price">Purchase Price:</label>
+                                        <input type="text" name="purchase_price" class="form-control" placeholder="Enter Purchase Price" value="{{ $item->purchase_price }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('purchase_price') }}</div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="company_price">Company Price:</label>
+                                        <input type="text" name="company_price" class="form-control" placeholder="Enter Company Price" value="{{ $item->company_price }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('company_price') }}</div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="">Sale Price defined on which price:</label>
+                                        <div class="form-check">
+                                            @foreach($item->isSalePriceDefinedOptions() as $isSalePriceDefinedOptionKey => $isSalePriceDefinedOptionsValue)
+                                                <div class="custom-control custom-radio">
+                                                    <input type="radio" id="customRadio1" name="is_sale_price_defined" class="custom-control-input" value="{{ $isSalePriceDefinedOptionKey }}"{{ $item->is_sale_price_defined == $isSalePriceDefinedOptionsValue ? 'checked' : '' }}>
+                                                    <label class="custom-control-label" for="customRadio1"> {{ $isSalePriceDefinedOptionsValue }}</label>
+                                                </div>
+                                            @endforeach
+                                        </div>
                                     </div>
                                     <div class="form-group col-6">
                                         <label for="sale_price_1">Sale Price 1:</label>

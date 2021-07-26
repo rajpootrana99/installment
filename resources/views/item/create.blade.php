@@ -118,6 +118,15 @@
                                         <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('manufacturer_id') }}</div>
                                     </div>
                                     <div class="form-group col-6">
+                                        <label for="warehouse_id">Warehouse:</label>
+                                        <select name="warehouse_id" class="form-control">
+                                            @foreach($warehouses as $warehouse)
+                                                <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('warehouse_id') }}</div>
+                                    </div>
+                                    <div class="form-group col-6">
                                         <label for="cost_price">Cost Price:</label>
                                         <input type="text" name="cost_price" class="form-control" placeholder="Enter Cost Price" value="{{ old('cost_price') }}">
                                         <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('cost_price') }}</div>
@@ -135,14 +144,12 @@
                                     <div class="form-group col-6">
                                         <label for="">Sale Price defined on which price:</label>
                                         <div class="form-check">
-                                            <div class="custom-control custom-radio">
-                                                <input type="radio" id="customRadio1" name="is_sale_price_defined" class="custom-control-input" value="0" checked>
-                                                <label class="custom-control-label" for="customRadio1"> Purchase Price</label>
-                                            </div>
-                                            <div class="custom-control custom-radio">
-                                                <input type="radio" id="customRadio2" name="is_sale_price_defined" value="1" class="custom-control-input">
-                                                <label class="custom-control-label" for="customRadio2"> Comapnay Price</label>
-                                            </div>
+                                            @foreach($item->isSalePriceDefinedOptions() as $isSalePriceDefinedOptionKey => $isSalePriceDefinedOptionsValue)
+                                                <div class="custom-control custom-radio">
+                                                    <input type="radio" id="customRadio1" name="is_sale_price_defined" class="custom-control-input" value="{{ $isSalePriceDefinedOptionKey }}" checked>
+                                                    <label class="custom-control-label" for="customRadio1"> {{ $isSalePriceDefinedOptionsValue }}</label>
+                                                </div>
+                                            @endforeach
                                         </div>
                                     </div>
                                     <div class="form-group col-6">

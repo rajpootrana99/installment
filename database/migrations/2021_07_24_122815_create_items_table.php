@@ -18,6 +18,7 @@ class CreateItemsTable extends Migration
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('sub_category_id');
             $table->unsignedBigInteger('manufacturer_id');
+            $table->unsignedBigInteger('warehouse_id');
             $table->string('item_code');
             $table->string('name');
             $table->string('image')->nullable();

@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Item;
 use App\Models\Manufacturer;
 use App\Models\SubCategory;
+use App\Models\Warehouse;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
@@ -36,10 +37,13 @@ class ItemController extends Controller
         $categories = Category::all();
         $subCategories = SubCategory::all();
         $manufacturers = Manufacturer::all();
+        $warehouses = Warehouse::all();
         return view('item.create', [
             'categories' => $categories,
             'subCategories' => $subCategories,
             'manufacturers' => $manufacturers,
+            'warehouses' => $warehouses,
+            'item' => new Item(),
         ]);
     }
 
@@ -71,6 +75,7 @@ class ItemController extends Controller
             'category_id' => $request->category_id,
             'sub_category_id' => $request->sub_category_id,
             'manufacturer_id' => $request->manufacturer_id,
+            'warehouse_id' => $request->warehouse_id,
             'cost_price' => $request->cost_price,
             'purchase_price' => $request->purchase_price,
             'company_price' => $request->company_price,
@@ -109,10 +114,12 @@ class ItemController extends Controller
         $categories = Category::all();
         $subCategories = SubCategory::all();
         $manufacturers = Manufacturer::all();
+        $warehouses = Warehouse::all();
         return view('item.edit', [
             'categories' => $categories,
             'subCategories' => $subCategories,
             'manufacturers' => $manufacturers,
+            'warehouses' => $warehouses,
             'item' => $item,
         ]);
     }
@@ -126,7 +133,39 @@ class ItemController extends Controller
      */
     public function update(Request $request, Item $item)
     {
-        $item->update($request->all());
+        if($request->is_sale_price_defined == 0){
+            $sale_price_1 = $request->purchase_price + ($request->sale_price_1/100)*$request->purchase_price;
+            $sale_price_2 = $request->purchase_price + ($request->sale_price_2/100)*$request->purchase_price;
+            $sale_price_3 = $request->purchase_price + ($request->sale_price_3/100)*$request->purchase_price;
+            $sale_price_4 = $request->purchase_price + ($request->sale_price_4/100)*$request->purchase_price;
+            $sale_price_5 = $request->purchase_price + ($request->sale_price_5/100)*$request->purchase_price;
+        }
+        else{
+            $sale_price_1 = $request->company_price + ($request->sale_price_1/100)*$request->company_price;
+            $sale_price_2 = $request->company_price + ($request->sale_price_2/100)*$request->company_price;
+            $sale_price_3 = $request->company_price + ($request->sale_price_3/100)*$request->company_price;
+            $sale_price_4 = $request->company_price + ($request->sale_price_4/100)*$request->company_price;
+            $sale_price_5 = $request->company_price + ($request->sale_price_5/100)*$request->company_price;
+        }
+        $item->update([
+            'item_code' => $request->item_code,
+            'name' => $request->name,
+            'category_id' => $request->category_id,
+            'sub_category_id' => $request->sub_category_id,
+            'manufacturer_id' => $request->manufacturer_id,
+            'warehouse_id' => $request->warehouse_id,
+            'cost_price' => $request->cost_price,
+            'purchase_price' => $request->purchase_price,
+            'company_price' => $request->company_price,
+            'is_sale_price_defined' => $request->is_sale_price_defined,
+            'remarks' => $request->remarks,
+            'description' => $request->description,
+            'sale_price_1' => $sale_price_1,
+            'sale_price_2' => $sale_price_2,
+            'sale_price_3' => $sale_price_3,
+            'sale_price_4' => $sale_price_4,
+            'sale_price_5' => $sale_price_5,
+        ]);
         $this->storeImage($item);
         return redirect(route('item.index'));
     }
