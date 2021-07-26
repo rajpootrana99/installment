@@ -33,6 +33,7 @@
                         <li class="{{ (request()->is('head')) ? 'active' : '' }}"><a href="{{ route('category.index') }}">Category</a></li>
                         <li class="{{ (request()->is('subHead')) ? 'active' : '' }}"><a href="{{ route('subCategory.index') }}">Sub Category</a></li>
                         <li class="{{ (request()->is('manufacturer')) ? 'active' : '' }}"><a href="{{ route('manufacturer.index') }}">Manufacturer</a></li>
+                        <li class="{{ (request()->is('warehouse')) ? 'active' : '' }}"><a href="{{ route('warehouse.index') }}">Warehouse</a></li>
                         <li class="{{ (request()->is('item')) ? 'active' : '' }}"><a href="{{ route('item.index') }}">Item</a></li>
                         <li class="{{ (request()->is('barcode')) ? 'active' : '' }}"><a href="{{ route('barcode.index') }}">Barcode</a></li>
                     </ul>

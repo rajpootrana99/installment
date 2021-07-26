@@ -52,6 +52,10 @@ class Item extends Model
         return $this->belongsTo(Manufacturer::class);
     }
 
+    public function warehouse(){
+        return $this->belongsTo(Warehouse::class);
+    }
+
     public function barcodes(){
         return $this->hasMany(Barcode::class);
     }
