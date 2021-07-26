@@ -41,7 +41,7 @@
                 <li>
                     <a href="#application-setting" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-cog"></i><span>Application Setting</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                     <ul id="application-setting" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li class="{{ (request()->is('head')) ? 'active' : '' }}"><a href="{{ route('head.index') }}">Financial Year</a></li>
+                        <li class="{{ (request()->is('financialYear')) ? 'active' : '' }}"><a href="{{ route('financialYear.index') }}">Financial Year</a></li>
                     </ul>
                 </li>
             </ul>

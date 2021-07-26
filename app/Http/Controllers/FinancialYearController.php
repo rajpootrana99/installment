@@ -28,7 +28,9 @@ class FinancialYearController extends Controller
      */
     public function create()
     {
-        return view('financialYears.create');
+        return view('financialYear.create', [
+            'financialYear' => new FinancialYear(),
+        ]);
     }
 
     /**
@@ -40,7 +42,7 @@ class FinancialYearController extends Controller
     public function store(FinancialYearRequest $request)
     {
         FinancialYear::create($request->all());
-        return redirect(route('financialYears.index'));
+        return redirect(route('financialYear.index'));
     }
 
     /**
@@ -62,8 +64,8 @@ class FinancialYearController extends Controller
      */
     public function edit(FinancialYear $financialYear)
     {
-        return view('financialYears.edit', [
-            'financialYears' => $financialYear,
+        return view('financialYear.edit', [
+            'financialYear' => $financialYear,
         ]);
     }
 
@@ -77,7 +79,7 @@ class FinancialYearController extends Controller
     public function update(FinancialYearRequest $request, FinancialYear $financialYear)
     {
         $financialYear->update($request->all());
-        return redirect(route('financialYears.index'));
+        return redirect(route('financialYear.index'));
     }
 
     /**
@@ -89,6 +91,6 @@ class FinancialYearController extends Controller
     public function destroy(FinancialYear $financialYear)
     {
         $financialYear->delete();
-        return redirect(route('financialYears.index'));
+        return redirect(route('financialYear.index'));
     }
 }

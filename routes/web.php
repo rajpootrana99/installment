@@ -31,4 +31,7 @@ Route::resource('manufacturer', 'ManufacturerController')->middleware(['auth']);
 Route::resource('warehouse', 'WarehouseController')->middleware(['auth']);
 Route::resource('item', 'ItemController')->middleware(['auth']);
 Route::resource('barcode', 'BarcodeController')->middleware(['auth']);
+
+// Application Setting
+Route::resource('financialYear', 'FinancialYearController')->middleware(['auth']);
 require __DIR__.'/auth.php';
