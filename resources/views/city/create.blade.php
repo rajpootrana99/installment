@@ -13,11 +13,11 @@
                 </div>
             </div>
             <div class="navbar-breadcrumb">
-                <h5 class="mb-0">Financial Year</h5>
+                <h5 class="mb-0">City</h5>
                 <nav aria-label="breadcrumb">
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('financialYear.index') }}">Financial Year</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Edit</li>
+                        <li class="breadcrumb-item"><a href="{{ route('city.index') }}">City</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Create</li>
                     </ul>
                 </nav>
             </div>
@@ -42,7 +42,7 @@
                                         <h5 class="mb-0 text-white line-height">Hello Nik jone</h5>
                                         <span class="text-white font-size-12">Available</span>
                                     </div>
-                                    <div class="d-inline-block w-100 text-center p-3">
+                                   <div class="d-inline-block w-100 text-center p-3">
                                         <form action="{{ route('logout') }}"  style="display: none;" method="post" id="lgut">
                                             @csrf
                                             <input type="submit" id="logoutbtn">
@@ -67,42 +67,20 @@
                         <div class="iq-card-header d-flex justify-content-between">
                             <div class="iq-header-title">
                                 <div class="row card-title">
-                                    <h4>Financial Year</h4>
+                                    <h4>City</h4>
                                 </div>
                             </div>
                         </div>
                         <div class="iq-card-body">
-                            <form method="post" action="{{route('financialYear.update', ['financialYear' => $financialYear])}}" enctype="multipart/form-data">
-                                @method('PATCH')
+                            <form method="post" action="{{route('city.store')}}">
                                 @csrf
-                                <div class="row">
-                                    <div class="form-group col-6">
-                                        <label for="start_date">Start Date</label>
-                                        <input type="date" class="form-control" id="exampleInputdate" name="start_date" value="{{ $financialYear->start_date }}">
-                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('start_date') }}</div>
-                                    </div>
-                                    <div class="form-group col-6">
-                                        <label for="end_date">End Date</label>
-                                        <input type="date" class="form-control" id="exampleInputdate" name="end_date" value="{{ $financialYear->end_date }}">
-                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('end_date') }}</div>
-                                    </div>
-                                    <div class="form-group col-6">
-                                        <label for="year_string">Year String:</label>
-                                        <input type="text" name="year_string" class="form-control" placeholder="Enter Year String" value="{{ $financialYear->year_string }}">
-                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('year_string') }}</div>
-                                    </div>
-                                    <div class="form-group col-6">
-                                        <label for="status">Status:</label>
-                                        <select name="status" class="form-control">
-                                            @foreach($financialYear->statusOptions() as $statusOptionKey => $statusOptionValue)
-                                                <option value="{{ $statusOptionKey }}"{{ $financialYear->status == $statusOptionValue ? 'selected' : '' }}>{{ $statusOptionValue }}</option>
-                                            @endforeach
-                                        </select>
-                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('status') }}</div>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="name">Name:</label>
+                                    <input type="text" name="name" class="form-control" placeholder="Enter Name" value="{{ old('name') }}">
+                                    <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('name') }}</div>
                                 </div>
                                 <div class="text-right">
-                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
                             </form>
                         </div>

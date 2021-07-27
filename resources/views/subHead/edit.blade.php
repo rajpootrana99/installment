@@ -13,11 +13,11 @@
                 </div>
             </div>
             <div class="navbar-breadcrumb">
-                <h5 class="mb-0">Head</h5>
+                <h5 class="mb-0">Sub Head</h5>
                 <nav aria-label="breadcrumb">
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('head.index') }}">Head</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Create</li>
+                        <li class="breadcrumb-item"><a href="{{ route('subHead.index') }}">Sub Head</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit</li>
                     </ul>
                 </nav>
             </div>
@@ -63,7 +63,7 @@
                         <div class="iq-card-header d-flex justify-content-between">
                             <div class="iq-header-title">
                                 <div class="row card-title">
-                                    <h4>Head</h4>
+                                    <h4>Sub Head</h4>
                                 </div>
                             </div>
                         </div>

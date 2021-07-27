@@ -36,4 +36,6 @@ Route::resource('barcode', 'BarcodeController')->middleware(['auth']);
 Route::resource('financialYear', 'FinancialYearController')->middleware(['auth']);
 Route::resource('company', 'CompanyController')->middleware(['auth']);
 Route::resource('site', 'SiteController')->middleware(['auth']);
+Route::resource('city', 'CityController')->middleware(['auth']);
+Route::resource('area', 'AreaController')->middleware(['auth']);
 require __DIR__.'/auth.php';

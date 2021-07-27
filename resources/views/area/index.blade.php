@@ -13,11 +13,11 @@
                 </div>
             </div>
             <div class="navbar-breadcrumb">
-                <h5 class="mb-0">Site</h5>
+                <h5 class="mb-0">Area</h5>
                 <nav aria-label="breadcrumb">
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('site.index') }}">Site</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Edit</li>
+                        <li class="breadcrumb-item"><a href="{{ route('area.index') }}">Area</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">List</li>
                     </ul>
                 </nav>
             </div>
@@ -26,11 +26,15 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto navbar-list">
+
+
+
+
                     </ul>
                 </div>
                 <ul class="navbar-list">
                     <li>
-                        <a href="#" class="search-toggle iq-waves-effect bg-primary text-white"><img src="{{ asset('images/user/1.jpg') }}" class="img-fluid rounded" alt="user"></a>
+                        <a href="#" class="search-toggle iq-waves-effect bg-primary text-white"><img src="images/user/1.jpg" class="img-fluid rounded" alt="user"></a>
                         <div class="iq-sub-dropdown iq-user-dropdown">
                             <div class="iq-card shadow-none m-0">
                                 <div class="iq-card-body p-0 ">
@@ -63,34 +67,47 @@
                         <div class="iq-card-header d-flex justify-content-between">
                             <div class="iq-header-title">
                                 <div class="row card-title">
-                                    <h4>Site</h4>
+                                    <h4>Area</h4>
                                 </div>
                             </div>
                         </div>
                         <div class="iq-card-body">
-                            <form method="post" action="{{route('site.update', ['site' => $site])}}">
-                                @method('PATCH')
-                                @csrf
-                                <div class="row">
-                                    <div class="form-group col-6">
-                                        <label for="company_id">Company:</label>
-                                        <select name="company_id" class="form-control">
-                                            @foreach($companies as $company)
-                                                <option value="{{ $company->id }}"{{ $site->company_id == $company->id ? 'selected' : '' }}>{{ $company->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('company_id') }}</div>
-                                    </div>
-                                    <div class="form-group col-6">
-                                        <label for="name">Site Name:</label>
-                                        <input type="text" name="name" class="form-control" value="{{ $site->name }}">
-                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('name') }}</div>
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
+                            <a href="{{ route('area.create') }}" class="btn btn-primary float-right mb-4"><i class="fa fa-plus"></i> New Area </a>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr class="text-center">
+                                        <th scope="col">#</th>
+                                        <th scope="col">Area Name</th>
+                                        <th scope="col">City Name</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($areas as $area)
+                                        <tr class="text-center">
+                                            <td >{{ $area->id }}</td>
+                                            <td>{{ $area->name }}</td>
+                                            <td>{{ $area->city->name }}</td>
+                                            <td>
+                                                <div class="row justify-content-center">
+                                                    <a href="{{ route('area.edit', ['area' => $area]) }}" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="View">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <form id="{{ 'delete_'.$area->id }}" method="post" action="{{ route('area.destroy', ['area' => $area]) }}">
+                                                        @method('DELETE')
+                                                        @csrf
+                                                        <a onclick="document.getElementById('{{ 'delete_'.$area->id }}').submit()" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="View">
+                                                            <i class="fa fa-trash"></i>
+                                                        </a>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
