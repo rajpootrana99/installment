@@ -17,4 +17,8 @@ class Area extends Model
     public function city(){
         return $this->belongsTo(City::class);
     }
+
+    public function routes(){
+        return $this->belongsToMany(Route::class);
+    }
 }
