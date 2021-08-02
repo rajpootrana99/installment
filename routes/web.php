@@ -39,4 +39,5 @@ Route::resource('site', 'SiteController')->middleware(['auth']);
 Route::resource('city', 'CityController')->middleware(['auth']);
 Route::resource('area', 'AreaController')->middleware(['auth']);
 Route::resource('route', 'RouteController')->middleware(['auth']);
+Route::resource('guaranter', 'GuaranterController')->middleware(['auth']);
 require __DIR__.'/auth.php';
