@@ -89,7 +89,7 @@
                                     @foreach($guaranters as $guaranter)
                                         <tr class="">
                                             <td >{{ $guaranter->id }}</td>
-                                            <td><h5 class="row"><img class="profile-pic img-fluid mr-2" src="{{ asset('storage/'.$guaranter->image) }}" width="50px" alt="profile-pic"> {{ $guaranter->name }}</h5></td>
+                                            <td><h6 class="row"><img class="profile-pic img-fluid mr-2" src="{{ asset('storage/'.$guaranter->image) }}" width="50px" alt="profile-pic"> {{ $guaranter->name }}</h6></td>
                                             <td>{{ $guaranter->father_name }}</td>
                                             <td>{{ $guaranter->cnic }}</td>
                                             <td>{{ $guaranter->phone }}</td>

@@ -44,6 +44,11 @@
                         <li class="{{ (request()->is('financialYear')) ? 'active' : '' }}"><a href="{{ route('financialYear.index') }}">Financial Year</a></li>
                         <li class="{{ (request()->is('company')) ? 'active' : '' }}"><a href="{{ route('company.index') }}">Company</a></li>
                         <li class="{{ (request()->is('site')) ? 'active' : '' }}"><a href="{{ route('site.index') }}">Site</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#installment-section" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-users-cog"></i><span>Installment</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                    <ul id="installment-section" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li class="{{ (request()->is('city')) ? 'active' : '' }}"><a href="{{ route('city.index') }}">City</a></li>
                         <li class="{{ (request()->is('area')) ? 'active' : '' }}"><a href="{{ route('area.index') }}">Area</a></li>
                         <li class="{{ (request()->is('route')) ? 'active' : '' }}"><a href="{{ route('route.index') }}">Route</a></li>
