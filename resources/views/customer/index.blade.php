@@ -13,10 +13,10 @@
                 </div>
             </div>
             <div class="navbar-breadcrumb">
-                <h5 class="mb-0">Customer</h5>
+                <h5 class="mb-0">Customers</h5>
                 <nav aria-label="breadcrumb">
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('customer.index') }}">Customer</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('customer.index') }}">Customers</a></li>
                         <li class="breadcrumb-item active" aria-current="page">List</li>
                     </ul>
                 </nav>
@@ -67,7 +67,7 @@
                         <div class="iq-card-header d-flex justify-content-between">
                             <div class="iq-header-title">
                                 <div class="row card-title">
-                                    <h4>Customer</h4>
+                                    <h4>Customers</h4>
                                 </div>
                             </div>
                         </div>

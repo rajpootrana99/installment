@@ -39,7 +39,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="#application-setting" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-cog"></i><span>Application Setting</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                    <a href="#application-setting" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-cog"></i><span>Application Settings</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                     <ul id="application-setting" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li class="{{ (request()->is('financialYear')) ? 'active' : '' }}"><a href="{{ route('financialYear.index') }}">Financial Year</a></li>
                         <li class="{{ (request()->is('company')) ? 'active' : '' }}"><a href="{{ route('company.index') }}">Company</a></li>
@@ -47,13 +47,20 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="#installment-section" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-users-cog"></i><span>Installment</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
-                    <ul id="installment-section" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li class="{{ (request()->is('city')) ? 'active' : '' }}"><a href="{{ route('city.index') }}">City</a></li>
-                        <li class="{{ (request()->is('area')) ? 'active' : '' }}"><a href="{{ route('area.index') }}">Area</a></li>
-                        <li class="{{ (request()->is('route')) ? 'active' : '' }}"><a href="{{ route('route.index') }}">Route</a></li>
-                        <li class="{{ (request()->is('customer')) ? 'active' : '' }}"><a href="{{ route('customer.index') }}">Customer</a></li>
-                        <li class="{{ (request()->is('guaranter')) ? 'active' : '' }}"><a href="{{ route('guaranter.index') }}">Guaranter</a></li>
+                    <a href="#general-setting-section" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-users-cog"></i><span>General Settings</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                    <ul id="general-setting-section" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li class="{{ (request()->is('city')) ? 'active' : '' }}"><a href="{{ route('city.index') }}">Cities</a></li>
+                        <li class="{{ (request()->is('area')) ? 'active' : '' }}"><a href="{{ route('area.index') }}">Areas</a></li>
+                        <li class="{{ (request()->is('route')) ? 'active' : '' }}"><a href="{{ route('route.index') }}">Routes</a></li>
+                        <li class="{{ (request()->is('employee')) ? 'active' : '' }}"><a href="{{ route('employee.index') }}">Employees</a></li>
+                        <li class="{{ (request()->is('customer')) ? 'active' : '' }}"><a href="{{ route('customer.index') }}">Customers</a></li>
+                        <li class="{{ (request()->is('guaranter')) ? 'active' : '' }}"><a href="{{ route('guaranter.index') }}">Guaranters</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#sales-section" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-wallet"></i><span>Sales</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                    <ul id="sales-section" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li class="{{ (request()->is('city')) ? 'active' : '' }}"><a href="{{ route('city.index') }}">Sales</a></li>
                     </ul>
                 </li>
             </ul>

@@ -13,10 +13,10 @@
                 </div>
             </div>
             <div class="navbar-breadcrumb">
-                <h5 class="mb-0">Cities</h5>
+                <h5 class="mb-0">Employees</h5>
                 <nav aria-label="breadcrumb">
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('city.index') }}">Cities</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('employee.index') }}">Employees</a></li>
                         <li class="breadcrumb-item active" aria-current="page">List</li>
                     </ul>
                 </nav>
@@ -67,35 +67,43 @@
                         <div class="iq-card-header d-flex justify-content-between">
                             <div class="iq-header-title">
                                 <div class="row card-title">
-                                    <h4>Cities</h4>
+                                    <h4>Employees</h4>
                                 </div>
                             </div>
                         </div>
                         <div class="iq-card-body">
-                            <a href="{{ route('city.create') }}" class="btn btn-primary float-right mb-4"><i class="fa fa-plus"></i> New City </a>
+                            <a href="{{ route('employee.create') }}" class="btn btn-primary float-right mb-4"><i class="fa fa-plus"></i> New Employee </a>
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
-                                    <tr class="text-center">
+                                    <tr class="">
                                         <th scope="col">#</th>
                                         <th scope="col">Name</th>
+                                        <th scope="col">Father Name</th>
+                                        <th scope="col">Employement Type</th>
+                                        <th scope="col">CNIC</th>
+                                        <th scope="col">Phone</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($cities as $city)
-                                        <tr class="text-center">
-                                            <td >{{ $city->id }}</td>
-                                            <td>{{ $city->name }}</td>
+                                    @foreach($employees as $employee)
+                                        <tr class="">
+                                            <td >{{ $employee->id }}</td>
+                                            <td><h6 class="row"><img class="profile-pic mr-2" src="{{ asset('storage/'.$employee->image) }}" width="50px" height="50px" alt="profile-pic"> {{ $employee->name }}</h6></td>
+                                            <td>{{ $employee->father_name }}</td>
+                                            <td>{{ $employee->type }}</td>
+                                            <td>{{ $employee->cnic }}</td>
+                                            <td>{{ $employee->cell }}</td>
                                             <td>
-                                                <div class="row justify-content-center">
-                                                    <a href="{{ route('city.edit', ['city' => $city]) }}" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="View">
+                                                <div class="row">
+                                                    <a href="{{ route('employee.edit', ['employee' => $employee]) }}" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="View">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
-                                                    <form id="{{ 'delete_'.$city->id }}" method="post" action="{{ route('city.destroy', ['city' => $city]) }}">
+                                                    <form id="{{ 'delete_'.$employee->id }}" method="post" action="{{ route('employee.destroy', ['employee' => $employee]) }}">
                                                         @method('DELETE')
                                                         @csrf
-                                                        <a onclick="document.getElementById('{{ 'delete_'.$city->id }}').submit()" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="View">
+                                                        <a onclick="document.getElementById('{{ 'delete_'.$employee->id }}').submit()" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="View">
                                                             <i class="fa fa-trash"></i>
                                                         </a>
                                                     </form>

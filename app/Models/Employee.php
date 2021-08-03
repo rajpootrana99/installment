@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Customer extends Model
+class Employee extends Model
 {
     use HasFactory;
 
@@ -18,19 +18,16 @@ class Customer extends Model
         'cnic',
         'monthly_income',
         'residential_address',
-        'office_address',
         'caste',
         'cnic_expiry',
         'dob',
-        'occupation',
-        'designation',
         'work_since',
         'residential_phone',
         'residential_since',
-        'office_phone',
         'image',
         'cnic_front',
         'cnic_back',
+        'document',
     ];
 
     public function getMaterialStatusAttribute($attribute){
@@ -50,9 +47,10 @@ class Customer extends Model
 
     public function typeOptions(){
         return [
-            0 => 'Cash',
-            1 => 'Credit',
-            2 => 'Installment'
+            0 => 'Sales Officer',
+            1 => 'Marketing Officer',
+            2 => 'Inquiry Officer',
+            3 => 'Recovery Officer',
         ];
     }
 }
