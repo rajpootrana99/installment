@@ -74,7 +74,7 @@
                                 <div class="row">
                                     <div class="form-group col-6 text-center">
                                         <div class="add-img-user profile-img-edit">
-                                            <img id="output_image" class="profile-pic img-fluid" src="{{ asset('storage/'.$guaranter->image) }}" alt="profile-pic">
+                                            <img id="output_image" class="profile-pic" width="150px" height="150px" src="{{ asset('storage/'.$guaranter->image) }}" alt="profile-pic">
                                             <div class="p-image">
                                                 <!-- <h5 class="upload-button">file upload</h5> -->
                                                 <input  type="file" onchange="loadFile(event)" id="image" name="image" style="display: none">

@@ -13,10 +13,10 @@
                 </div>
             </div>
             <div class="navbar-breadcrumb">
-                <h5 class="mb-0">Guaranter</h5>
+                <h5 class="mb-0">Customer</h5>
                 <nav aria-label="breadcrumb">
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('guaranter.index') }}">Guaranter</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('customer.index') }}">Customer</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Contact</li>
                     </ul>
                 </nav>
@@ -61,12 +61,12 @@
                         <div class="iq-card-header d-flex justify-content-between">
                             <div class="iq-header-title">
                                 <div class="row card-title">
-                                    <h4>Guaranter</h4>
+                                    <h4>Customer</h4>
                                 </div>
                             </div>
                         </div>
                         <div class="iq-card-body">
-                            <form method="post" action="{{route('guaranter.store')}}" enctype="multipart/form-data">
+                            <form method="post" action="{{route('customer.store')}}" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
                                     <div class="form-group col-6 text-center">
@@ -92,9 +92,18 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-6">
-                                        <label for="phone">Phone:</label>
-                                        <input type="text" name="phone" class="form-control" placeholder="Enter Phone Number" value="{{ old('phone') }}">
-                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('phone') }}</div>
+                                        <label for="type">Customer Type:</label>
+                                        <select class="form-control" name="type">
+                                            @foreach($customer->typeOptions() as $typeOptionsKey => $typeOptionssValue)
+                                                <option value="{{ $typeOptionsKey }}">{{ $typeOptionssValue }}</option>
+                                            @endforeach
+                                        </select>
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('type') }}</div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="cell">Cell:</label>
+                                        <input type="text" name="cell" class="form-control" placeholder="Enter Cell Number" value="{{ old('cell') }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('cell') }}</div>
                                     </div>
                                     <div class="form-group col-6">
                                         <label for="cnic">CNIC:</label>
@@ -104,11 +113,11 @@
                                     <div class="form-group col-6">
                                         <label for="material_status">Material Status:</label>
                                         <select class="form-control" name="material_status">
-                                            @foreach($guaranter->materialStatusOptions() as $materialStatusOptionsKey => $materialStatusOptionssValue)
+                                            @foreach($customer->materialStatusOptions() as $materialStatusOptionsKey => $materialStatusOptionssValue)
                                                 <option value="{{ $materialStatusOptionsKey }}">{{ $materialStatusOptionssValue }}</option>
                                             @endforeach
                                         </select>
-                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('cnic') }}</div>
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('material_status') }}</div>
                                     </div>
                                     <div class="form-group col-6">
                                         <label for="monthly_income">Monthly Income:</label>
@@ -121,9 +130,39 @@
                                         <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('residential_address') }}</div>
                                     </div>
                                     <div class="form-group col-6">
+                                        <label for="residential_phone">Residential Phone:</label>
+                                        <input type="text" name="residential_phone" class="form-control" placeholder="Enter Residential Phone" value="{{ old('residential_phone') }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('residential_phone') }}</div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="residential_since">Residential Since:</label>
+                                        <input type="date" name="residential_since" class="form-control" placeholder="Enter Residential Since" value="{{ old('residential_since') }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('residential_since') }}</div>
+                                    </div>
+                                    <div class="form-group col-6">
                                         <label for="office_address">Office Address:</label>
                                         <input type="text" name="office_address" class="form-control" placeholder="Enter Office Address" value="{{ old('office_address') }}">
                                         <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('office_address') }}</div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="office_phone">Office Phone:</label>
+                                        <input type="text" name="office_phone" class="form-control" placeholder="Enter Office Phone" value="{{ old('office_phone') }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('office_phone') }}</div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="caste">Caste:</label>
+                                        <input type="text" name="caste" class="form-control" placeholder="Enter Caste" value="{{ old('caste') }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('caste') }}</div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="cnic_expiry">CNIC Expiry:</label>
+                                        <input type="date" name="cnic_expiry" class="form-control" placeholder="Enter Office Address" value="{{ old('cnic_expiry') }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('cnic_expiry') }}</div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="dob">Date of Birth:</label>
+                                        <input type="date" name="dob" class="form-control" placeholder="Enter Date of Birth" value="{{ old('dob') }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('dob') }}</div>
                                     </div>
                                     <div class="form-group col-6">
                                         <label for="occupation">Occupation:</label>
@@ -137,7 +176,7 @@
                                     </div>
                                     <div class="form-group col-6">
                                         <label for="work_since">Work Since:</label>
-                                        <input type="text" name="work_since" class="form-control" placeholder="Enter Work Since" value="{{ old('work_since') }}">
+                                        <input type="date" name="work_since" class="form-control" placeholder="Enter Work Since" value="{{ old('work_since') }}">
                                         <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('work_since') }}</div>
                                     </div>
                                     <div class="form-group col-6">

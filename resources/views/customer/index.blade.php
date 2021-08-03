@@ -13,10 +13,10 @@
                 </div>
             </div>
             <div class="navbar-breadcrumb">
-                <h5 class="mb-0">Guaranter</h5>
+                <h5 class="mb-0">Customer</h5>
                 <nav aria-label="breadcrumb">
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('guaranter.index') }}">Guaranter</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('customer.index') }}">Customer</a></li>
                         <li class="breadcrumb-item active" aria-current="page">List</li>
                     </ul>
                 </nav>
@@ -67,12 +67,12 @@
                         <div class="iq-card-header d-flex justify-content-between">
                             <div class="iq-header-title">
                                 <div class="row card-title">
-                                    <h4>Guaranter</h4>
+                                    <h4>Customer</h4>
                                 </div>
                             </div>
                         </div>
                         <div class="iq-card-body">
-                            <a href="{{ route('guaranter.create') }}" class="btn btn-primary float-right mb-4"><i class="fa fa-plus"></i> New Guaranter </a>
+                            <a href="{{ route('customer.create') }}" class="btn btn-primary float-right mb-4"><i class="fa fa-plus"></i> New Customer </a>
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
@@ -80,28 +80,30 @@
                                         <th scope="col">#</th>
                                         <th scope="col">Name</th>
                                         <th scope="col">Father Name</th>
+                                        <th scope="col">Customer Type</th>
                                         <th scope="col">CNIC</th>
                                         <th scope="col">Phone</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($guaranters as $guaranter)
+                                    @foreach($customers as $customer)
                                         <tr class="">
-                                            <td >{{ $guaranter->id }}</td>
-                                            <td><h6 class="row"><img class="profile-pic mr-2" width="50px" height="50px" src="{{ asset('storage/'.$guaranter->image) }}" width="50px" alt="profile-pic"> {{ $guaranter->name }}</h6></td>
-                                            <td>{{ $guaranter->father_name }}</td>
-                                            <td>{{ $guaranter->cnic }}</td>
-                                            <td>{{ $guaranter->phone }}</td>
+                                            <td >{{ $customer->id }}</td>
+                                            <td><h6 class="row"><img class="profile-pic mr-2" src="{{ asset('storage/'.$customer->image) }}" width="50px" height="50px" alt="profile-pic"> {{ $customer->name }}</h6></td>
+                                            <td>{{ $customer->father_name }}</td>
+                                            <td>{{ $customer->type }}</td>
+                                            <td>{{ $customer->cnic }}</td>
+                                            <td>{{ $customer->cell }}</td>
                                             <td>
                                                 <div class="row">
-                                                    <a href="{{ route('guaranter.edit', ['guaranter' => $guaranter]) }}" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="View">
+                                                    <a href="{{ route('customer.edit', ['customer' => $customer]) }}" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="View">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
-                                                    <form id="{{ 'delete_'.$guaranter->id }}" method="post" action="{{ route('guaranter.destroy', ['guaranter' => $guaranter]) }}">
+                                                    <form id="{{ 'delete_'.$customer->id }}" method="post" action="{{ route('customer.destroy', ['customer' => $customer]) }}">
                                                         @method('DELETE')
                                                         @csrf
-                                                        <a onclick="document.getElementById('{{ 'delete_'.$guaranter->id }}').submit()" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="View">
+                                                        <a onclick="document.getElementById('{{ 'delete_'.$customer->id }}').submit()" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="View">
                                                             <i class="fa fa-trash"></i>
                                                         </a>
                                                     </form>

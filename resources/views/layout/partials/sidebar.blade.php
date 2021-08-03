@@ -52,6 +52,7 @@
                         <li class="{{ (request()->is('city')) ? 'active' : '' }}"><a href="{{ route('city.index') }}">City</a></li>
                         <li class="{{ (request()->is('area')) ? 'active' : '' }}"><a href="{{ route('area.index') }}">Area</a></li>
                         <li class="{{ (request()->is('route')) ? 'active' : '' }}"><a href="{{ route('route.index') }}">Route</a></li>
+                        <li class="{{ (request()->is('customer')) ? 'active' : '' }}"><a href="{{ route('customer.index') }}">Customer</a></li>
                         <li class="{{ (request()->is('guaranter')) ? 'active' : '' }}"><a href="{{ route('guaranter.index') }}">Guaranter</a></li>
                     </ul>
                 </li>

@@ -13,15 +13,17 @@
                 </div>
             </div>
             <div class="navbar-breadcrumb">
-                <h5 class="mb-0">Guaranter</h5>
+                <h5 class="mb-0">Customer</h5>
                 <nav aria-label="breadcrumb">
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('guaranter.index') }}">Guaranter</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Contact</li>
+                        <li class="breadcrumb-item"><a href="{{ route('customer.index') }}">Customer</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit</li>
                     </ul>
                 </nav>
             </div>
             <nav class="navbar navbar-expand-lg navbar-light p-0">
+
+
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto navbar-list">
                     </ul>
@@ -61,17 +63,18 @@
                         <div class="iq-card-header d-flex justify-content-between">
                             <div class="iq-header-title">
                                 <div class="row card-title">
-                                    <h4>Guaranter</h4>
+                                    <h4>Customer</h4>
                                 </div>
                             </div>
                         </div>
                         <div class="iq-card-body">
-                            <form method="post" action="{{route('guaranter.store')}}" enctype="multipart/form-data">
+                            <form method="post" action="{{route('customer.update', ['customer' => $customer])}}" enctype="multipart/form-data">
+                                @method('PATCH')
                                 @csrf
                                 <div class="row">
                                     <div class="form-group col-6 text-center">
                                         <div class="add-img-user profile-img-edit">
-                                            <img id="output_image" class="profile-pic" width="150px" height="150px" src="{{ asset('images/user/11.png') }}" alt="profile-pic">
+                                            <img id="output_image" class="profile-pic" width="150px" height="150px" src="{{ asset('storage/'.$customer->image) }}" alt="profile-pic">
                                             <div class="p-image">
                                                 <!-- <h5 class="upload-button">file upload</h5> -->
                                                 <input  type="file" onchange="loadFile(event)" id="image" name="image" style="display: none">
@@ -82,62 +85,101 @@
                                     <div class="form-group col-6">
                                         <div>
                                             <label for="name">Name:</label>
-                                            <input type="text" name="name" class="form-control" placeholder="Enter Name" value="{{ old('name') }}">
+                                            <input type="text" name="name" class="form-control" placeholder="Enter Name" value="{{ $customer->name }}">
                                             <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('name') }}</div>
                                         </div>
                                         <div class="mt-4">
                                             <label for="father_name">Father Name:</label>
-                                            <input type="text" name="father_name" class="form-control" placeholder="Enter Father Name" value="{{ old('father_name') }}">
+                                            <input type="text" name="father_name" class="form-control" placeholder="Enter Father Name" value="{{ $customer->father_name }}">
                                             <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('father_name') }}</div>
                                         </div>
                                     </div>
                                     <div class="form-group col-6">
-                                        <label for="phone">Phone:</label>
-                                        <input type="text" name="phone" class="form-control" placeholder="Enter Phone Number" value="{{ old('phone') }}">
-                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('phone') }}</div>
+                                        <label for="type">Customer Type:</label>
+                                        <select class="form-control" name="type">
+                                            @foreach($customer->typeOptions() as $typeOptionsKey => $typeOptionssValue)
+                                                <option value="{{ $typeOptionsKey }}" {{ $customer->type == $typeOptionsKey ? 'selected' : '' }}>{{ $typeOptionssValue }}</option>
+                                            @endforeach
+                                        </select>
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('type') }}</div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="cell">Cell:</label>
+                                        <input type="text" name="cell" class="form-control" placeholder="Enter Cell Number" value="{{ $customer->cell }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('cell') }}</div>
                                     </div>
                                     <div class="form-group col-6">
                                         <label for="cnic">CNIC:</label>
-                                        <input type="text" name="cnic" class="form-control" placeholder="Enter CNIC" value="{{ old('cnic') }}">
+                                        <input type="text" name="cnic" class="form-control" placeholder="Enter CNIC" value="{{ $customer->cnic }}">
                                         <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('cnic') }}</div>
                                     </div>
                                     <div class="form-group col-6">
                                         <label for="material_status">Material Status:</label>
                                         <select class="form-control" name="material_status">
-                                            @foreach($guaranter->materialStatusOptions() as $materialStatusOptionsKey => $materialStatusOptionssValue)
-                                                <option value="{{ $materialStatusOptionsKey }}">{{ $materialStatusOptionssValue }}</option>
+                                            @foreach($customer->materialStatusOptions() as $materialStatusOptionsKey => $materialStatusOptionssValue)
+                                                <option value="{{ $materialStatusOptionsKey }}"{{ $customer->material_status = $materialStatusOptionsKey ? 'selected' : '' }}>{{ $materialStatusOptionssValue }}</option>
                                             @endforeach
                                         </select>
-                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('cnic') }}</div>
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('material_status') }}</div>
                                     </div>
                                     <div class="form-group col-6">
                                         <label for="monthly_income">Monthly Income:</label>
-                                        <input type="text" name="monthly_income" class="form-control" placeholder="Enter Monthly Income" value="{{ old('monthly_income') }}">
+                                        <input type="text" name="monthly_income" class="form-control" placeholder="Enter Monthly Income" value="{{ $customer->monthly_income }}">
                                         <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('monthly_income') }}</div>
                                     </div>
                                     <div class="form-group col-6">
                                         <label for="residential_address">Residential Address:</label>
-                                        <input type="text" name="residential_address" class="form-control" placeholder="Enter Residential Address" value="{{ old('residential_address') }}">
+                                        <input type="text" name="residential_address" class="form-control" placeholder="Enter Residential Address" value="{{ $customer->residential_address }}">
                                         <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('residential_address') }}</div>
                                     </div>
                                     <div class="form-group col-6">
+                                        <label for="residential_phone">Residential Phone:</label>
+                                        <input type="text" name="residential_phone" class="form-control" placeholder="Enter Residential Phone" value="{{ $customer->residential_phone }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('residential_phone') }}</div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="residential_since">Residential Since:</label>
+                                        <input type="date" name="residential_since" class="form-control" placeholder="Enter Residential Since" value="{{ $customer->residential_since }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('residential_since') }}</div>
+                                    </div>
+                                    <div class="form-group col-6">
                                         <label for="office_address">Office Address:</label>
-                                        <input type="text" name="office_address" class="form-control" placeholder="Enter Office Address" value="{{ old('office_address') }}">
+                                        <input type="text" name="office_address" class="form-control" placeholder="Enter Office Address" value="{{ $customer->office_address }}">
                                         <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('office_address') }}</div>
                                     </div>
                                     <div class="form-group col-6">
+                                        <label for="office_phone">Office Phone:</label>
+                                        <input type="text" name="office_phone" class="form-control" placeholder="Enter Office Phone" value="{{ $customer->office_phone }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('office_phone') }}</div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="caste">Caste:</label>
+                                        <input type="text" name="caste" class="form-control" placeholder="Enter Caste" value="{{ $customer->caste }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('caste') }}</div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="cnic_expiry">CNIC Expiry:</label>
+                                        <input type="date" name="cnic_expiry" class="form-control" placeholder="Enter Office Address" value="{{ $customer->cnic_expiry }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('cnic_expiry') }}</div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="dob">Date of Birth:</label>
+                                        <input type="date" name="dob" class="form-control" placeholder="Enter Date of Birth" value="{{ $customer->dob }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('dob') }}</div>
+                                    </div>
+                                    <div class="form-group col-6">
                                         <label for="occupation">Occupation:</label>
-                                        <input type="text" name="occupation" class="form-control" placeholder="Enter Occupation" value="{{ old('occupation') }}">
+                                        <input type="text" name="occupation" class="form-control" placeholder="Enter Occupation" value="{{ $customer->occupation }}">
                                         <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('occupation') }}</div>
                                     </div>
                                     <div class="form-group col-6">
                                         <label for="designation">Designation:</label>
-                                        <input type="text" name="designation" class="form-control" placeholder="Enter Designation" value="{{ old('designation') }}">
+                                        <input type="text" name="designation" class="form-control" placeholder="Enter Designation" value="{{ $customer->designation }}">
                                         <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('designation') }}</div>
                                     </div>
                                     <div class="form-group col-6">
                                         <label for="work_since">Work Since:</label>
-                                        <input type="text" name="work_since" class="form-control" placeholder="Enter Work Since" value="{{ old('work_since') }}">
+                                        <input type="date" name="work_since" class="form-control" placeholder="Enter Work Since" value="{{ $customer->work_since }}">
                                         <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('work_since') }}</div>
                                     </div>
                                     <div class="form-group col-6">
@@ -156,7 +198,7 @@
                                     </div>
                                 </div>
                                 <div class="text-right">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" class="btn btn-primary">Save</button>
                                 </div>
                             </form>
                         </div>
@@ -165,10 +207,4 @@
             </div>
         </div>
     </div>
-    <script>
-        var loadFile = function(event) {
-            var output_image = document.getElementById('output_image');
-            output_image.src = URL.createObjectURL(event.target.files[0]);
-        };
-    </script>
 @endsection
