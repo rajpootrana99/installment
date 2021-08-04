@@ -251,6 +251,41 @@
                                         <input type="text" name="cost_price" id="cost_price" readonly class="form-control" placeholder="Enter Cost Price" value="{{ old('cost_price') }}">
                                         <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('cost_price') }}</div>
                                     </div>
+                                    <div class="form-group col-3">
+                                        <label for="registration_remarks">Reg. Remarks:</label>
+                                        <input type="text" name="registration_remarks" id="registration_remarks" class="form-control" placeholder="Enter Registration Remarks" value="{{ old('registration_remarks') }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('registration_remarks') }}</div>
+                                    </div>
+                                    <div class="form-group col-2">
+                                        <label for="sale_price">Sale Price:</label>
+                                        <input type="text" name="sale_price" id="sale_price" class="form-control" placeholder="Enter Sale Price" value="{{ old('sale_price') }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('sale_price') }}</div>
+                                    </div>
+                                    <div class="form-group col-2">
+                                        <label for="plan">Plan:</label>
+                                        <input type="text" name="plan" id="plan" class="form-control" placeholder="Enter Plan" value="{{ old('plan') }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('plan') }}</div>
+                                    </div>
+                                    <div class="form-group col-2">
+                                        <label for="percent">Percent:</label>
+                                        <input type="text" name="percent" id="percent" class="form-control" placeholder="Enter Percent" value="{{ old('percent') }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('percent') }}</div>
+                                    </div>
+                                    <div class="form-group col-2">
+                                        <label for="sale_value">Sale Value:</label>
+                                        <input type="text" name="sale_value" id="sale_value" class="form-control" placeholder="Enter Sale Value" value="{{ old('sale_value') }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('sale_value') }}</div>
+                                    </div>
+                                    <div class="form-group col-3">
+                                        <label for="down_payment">Down Payment:</label>
+                                        <input type="text" name="down_payment" id="down_payment" class="form-control" placeholder="Enter Down Payment" value="{{ old('down_payment') }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('down_payment') }}</div>
+                                    </div>
+                                    <div class="form-group col-2">
+                                        <label for="installment">Installment:</label>
+                                        <input type="text" name="installment" id="installment" readonly class="form-control" placeholder="Enter Installment" value="{{ old('installment') }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('installment') }}</div>
+                                    </div>
                                 </div>
                                 <div class="text-right">
                                     <button type="submit" class="btn btn-primary">Submit</button>
