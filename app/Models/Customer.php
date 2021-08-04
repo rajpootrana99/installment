@@ -55,4 +55,8 @@ class Customer extends Model
             2 => 'Installment'
         ];
     }
+
+    public function sales(){
+        return $this->belongsToMany(Sale::class);
+    }
 }

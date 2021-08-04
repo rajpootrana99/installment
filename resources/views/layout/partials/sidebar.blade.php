@@ -60,7 +60,7 @@
                 <li>
                     <a href="#sales-section" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-wallet"></i><span>Sales</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                     <ul id="sales-section" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li class="{{ (request()->is('city')) ? 'active' : '' }}"><a href="{{ route('city.index') }}">Sales</a></li>
+                        <li class="{{ (request()->is('sale')) ? 'active' : '' }}"><a href="{{ route('sale.index') }}">Sales</a></li>
                     </ul>
                 </li>
             </ul>

@@ -36,10 +36,17 @@ Route::resource('barcode', 'BarcodeController')->middleware(['auth']);
 Route::resource('financialYear', 'FinancialYearController')->middleware(['auth']);
 Route::resource('company', 'CompanyController')->middleware(['auth']);
 Route::resource('site', 'SiteController')->middleware(['auth']);
+
+// General Setting
 Route::resource('city', 'CityController')->middleware(['auth']);
 Route::resource('area', 'AreaController')->middleware(['auth']);
 Route::resource('route', 'RouteController')->middleware(['auth']);
 Route::resource('employee', 'EmployeeController')->middleware(['auth']);
 Route::resource('customer', 'CustomerController')->middleware(['auth']);
 Route::resource('guaranter', 'GuaranterController')->middleware(['auth']);
+
+// Sales
+Route::resource('sale', 'SaleController')->middleware(['auth']);
+Route::get('sale/create/fetchItem/{id}', 'SaleController@fetchItem')->middleware(['auth']);
+
 require __DIR__.'/auth.php';
