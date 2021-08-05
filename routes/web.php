@@ -42,6 +42,7 @@ Route::resource('city', 'CityController')->middleware(['auth']);
 Route::resource('area', 'AreaController')->middleware(['auth']);
 Route::resource('route', 'RouteController')->middleware(['auth']);
 Route::resource('employee', 'EmployeeController')->middleware(['auth']);
+Route::resource('vendor', 'VendorController')->middleware(['auth']);
 Route::resource('customer', 'CustomerController')->middleware(['auth']);
 Route::resource('guaranter', 'GuaranterController')->middleware(['auth']);
 
