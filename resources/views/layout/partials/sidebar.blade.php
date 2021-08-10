@@ -56,12 +56,19 @@
                         <li class="{{ (request()->is('vendor')) ? 'active' : '' }}"><a href="{{ route('vendor.index') }}">Vendors</a></li>
                         <li class="{{ (request()->is('customer')) ? 'active' : '' }}"><a href="{{ route('customer.index') }}">Customers</a></li>
                         <li class="{{ (request()->is('guaranter')) ? 'active' : '' }}"><a href="{{ route('guaranter.index') }}">Guaranters</a></li>
+                        <li class="{{ (request()->is('tax')) ? 'active' : '' }}"><a href="{{ route('tax.index') }}">Taxes</a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="#sales-section" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-wallet"></i><span>Sales</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                     <ul id="sales-section" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li class="{{ (request()->is('sale')) ? 'active' : '' }}"><a href="{{ route('sale.index') }}">Sales</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#purchase-section" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-shopping-bag"></i><span>Purchase</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                    <ul id="purchase-section" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li class="{{ (request()->is('purchase')) ? 'active' : '' }}"><a href="{{ route('purchase.index') }}">Invoice</a></li>
                     </ul>
                 </li>
             </ul>

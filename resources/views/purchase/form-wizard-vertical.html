@@ -1,0 +1,431 @@
+<div class="iq-card-body">
+    <div class="row">
+        <div class="col-md-3">
+            <ul id="top-tabbar-vertical" class="p-0">
+                <li class="active" id="purchase_master">
+                    <a href="javascript:void();">
+                        <span>Purchase Master</span>
+                    </a>
+                </li>
+                <li id="goods_master">
+                    <a href="javascript:void();">
+                        <span>Goods Master</span>
+                    </a>
+                </li>
+                <li id="goods_detail">
+                    <a href="javascript:void();">
+                        <span>Goods Detail</span>
+                    </a>
+                </li>
+                <li id="purchase_detail">
+                    <a href="javascript:void();">
+                        <span>Purchase Detail</span>
+                    </a>
+                </li>
+                <li id="purchase_footer">
+                    <a href="javascript:void();">
+                        <span>Purchase Footer</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <form id="form-wizard3" class="text-center">
+                <!-- fieldsets -->
+                <fieldset>
+                    <div class="form-card text-left">
+                        <div class="row">
+                            <div class="col-12">
+                                <h3 class="mb-4">Purchase Master:</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="invoice_no">Invoice No: *</label>
+                                    <input type="text" class="form-control" id="invoice_no" readonly name="invoice_no" placeholder="Invoice No">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="vendor_id">Select Vendor: *</label>
+                                    <select name="vendor_id" id="vendor_id" class="form-control">
+                                        <option value="">Select Vendor</option>
+                                        <option value="">Vendor1</option>
+                                        <option value="">Vendor2</option>
+                                        <option value="">Vendor3</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="date">Date: *</label>
+                                    <input type="date" class="form-control" id="date" name="date" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="vendor_invoice_no">Vendor Invoice No.: *</label>
+                                    <input type="text" class="form-control" id="vendor_invoice_no" name="vendor_invoice_no" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="vendor_name">Vendor Name: *</label>
+                                    <input type="text" class="form-control" readonly id="vendor_name" name="vendor_name" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="submit" type="button" name="next" class="btn btn-primary next action-button float-right" value="Next" >Next</button>
+                </fieldset>
+                <fieldset>
+                    <div class="form-card text-left">
+                        <div class="row">
+                            <div class="col-12">
+                                <h3 class="mb-4">Goods Master:</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="bilty_no">Bilty No.: *</label>
+                                    <input type="email" class="form-control" id="bilty_no" name="bilty_no" placeholder="Bilty No">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="goods_name">Goods Name: *</label>
+                                    <input type="text" class="form-control" id="goods_name" name="goods_name" placeholder="Goods Name">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="shipment_date">Shipment Date: *</label>
+                                    <input type="date" class="form-control" id="shipment_date" name="shipment_date">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="delivery_date">Delivery Date: *</label>
+                                    <input type="date" class="form-control" id="delivery_date" name="delivery_date">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="broker_id">Select Broker: *</label>
+                                    <select name="broker_id" id="broker_id" class="form-control">
+                                        <option value="">Select Broker</option>
+                                        <option value="">Broker1</option>
+                                        <option value="">Broker2</option>
+                                        <option value="">Broker3</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="broker_name">Broker Name: *</label>
+                                    <input type="text" class="form-control" id="broker_name" readonly name="broker_name" placeholder="Broker Name">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="user_id">Select User: *</label>
+                                    <select name="user_id" id="user_id" class="form-control">
+                                        <option value="">Select User</option>
+                                        <option value="">User1</option>
+                                        <option value="">User2</option>
+                                        <option value="">User3</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="system_name">System Name: *</label>
+                                    <input type="text" class="form-control" id="system_name" readonly name="system_name" placeholder="System Name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" name="next" class="btn btn-primary next action-button float-right" value="Next" >Next</button>
+                    <button type="button" name="previous" class="btn btn-dark previous action-button-previous float-right mr-3" value="Previous" >Previous</button>
+                </fieldset>
+                <fieldset>
+                    <div class="form-card text-left">
+                        <div class="row">
+                            <div class="col-12">
+                                <h3 class="mb-4">Goods Detail:</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="purchase_master_id">Invoice No: *</label>
+                                    <input type="text" class="form-control" id="purchase_master_id" name="purchase_master_id" readonly placeholder="Invoice No.">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="good_master_id">Bilty No: *</label>
+                                    <input type="text" class="form-control" id="good_master_id" readonly name="good_master_id" placeholder="Bilty No.">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="vehicle_no">Vehicle No: *</label>
+                                    <input type="text" class="form-control" id="vehicle_no" name="vehicle_no" placeholder="vehicle No.">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="qty">Qty: *</label>
+                                    <input type="text" class="form-control" id="qty" name="qty" placeholder="Qunatity">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="gate_pass_no">Gate Pass No: *</label>
+                                    <input type="text" class="form-control" id="gate_pass_no" name="gate_pass_no" placeholder="Gate Pass No">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" name="next" class="btn btn-primary next action-button float-right" value="Next" >Next</button>
+                    <button type="submit"class="btn btn-danger float-right mr-3">Save</button>
+                    <button type="button" name="previous" class="btn btn-dark previous action-button-previous float-right mr-3" value="Previous" >Previous</button>
+                    <table class="table">
+                        <thead>
+                        <tr class="">
+                            <th scope="col">#</th>
+                            <th scope="col">Invoice No.</th>
+                            <th scope="col">Bilty No.</th>
+                            <th scope="col">Vehicle No.</th>
+                            <th scope="col">Qty</th>
+                            <th scope="col">Gate Pass No.</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </fieldset>
+                <fieldset>
+                    <div class="form-card text-left">
+                        <div class="row">
+                            <div class="col-12">
+                                <h3 class="mb-4 text-left">Purchase Detail:</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="purchase_master_id">Invoice No: *</label>
+                                    <input type="text" class="form-control" readonly id="purchase_master_id" name="purchase_master_id" placeholder="Invoice No.">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="row_no">Row No: *</label>
+                                    <input type="text" class="form-control" id="row_no" name="row_no" placeholder="Row No." />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="item_id">Select Item: *</label>
+                                    <select name="item_id" id="item_id" class="form-control">
+                                        <option value="">Select Item</option>
+                                        <option value="">Item1</option>
+                                        <option value="">Item2</option>
+                                        <option value="">Item3</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="item_name">Item Name: *</label>
+                                    <input type="text" class="form-control" id="item_name" name="item_name" placeholder="Item Name" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="barcode">Barcode: *</label>
+                                    <input type="text" class="form-control" id="barcode" name="barcode" placeholder="Barcode." />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="status_id">Select Status: *</label>
+                                    <select name="status_id" id="status_id" class="form-control">
+                                        <option value="">Select Status</option>
+                                        <option value="">Status1</option>
+                                        <option value="">Status2</option>
+                                        <option value="">Status3</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="color_id">Select Color: *</label>
+                                    <select name="color_id" id="color_id" class="form-control">
+                                        <option value="">Select Color</option>
+                                        <option value="">Color1</option>
+                                        <option value="">Color2</option>
+                                        <option value="">Color3</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="warranty_id">Select Warranty: *</label>
+                                    <select name="warranty_id" id="warranty_id" class="form-control">
+                                        <option value="">Select Warranty</option>
+                                        <option value="">Warranty1</option>
+                                        <option value="">Warranty2</option>
+                                        <option value="">Warranty3</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="qty">Qty: *</label>
+                                    <input type="text" class="form-control" id="qty" name="qty" placeholder="Qty." />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="rate">Rate: *</label>
+                                    <input type="text" class="form-control" id="rate" name="rate" placeholder="Rate." />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="gross_total">Gross Total: *</label>
+                                    <input type="text" class="form-control" id="gross_total" name="gross_total" placeholder="Gross Total." />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="discount_1">Discount 1: *</label>
+                                    <input type="text" class="form-control" id="discount_1" name="discount_1" placeholder="Discount 1." />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="discount_2">Discount 2: *</label>
+                                    <input type="text" class="form-control" id="discount_2" name="discount_2" placeholder="Discount 2." />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="tax">Tax: *</label>
+                                    <input type="text" class="form-control" id="tax" name="tax" placeholder="Tax." />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="tax_percentage">Tax Percentage: *</label>
+                                    <input type="text" class="form-control" id="tax_percentage" name="tax_percentage" placeholder="Tax Percentage." />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="tax_value">Tax Value: *</label>
+                                    <input type="text" class="form-control" id="tax_value" name="tax_value" placeholder="Tax Value." />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="Total">Total: *</label>
+                                    <input type="text" class="form-control" id="Total" name="Total" placeholder="Total." />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" name="next" class="btn btn-primary next action-button float-right" value="Next" >Next</button>
+                    <button type="submit" class="btn btn-danger float-right mr-3">Save</button>
+                    <button type="button" name="previous" class="btn btn-dark previous action-button-previous float-right mr-3" value="Previous" >Previous</button>
+                    <table class="table">
+                        <thead>
+                        <tr class="">
+                            <th scope="col">#</th>
+                            <th scope="col">Item Name.</th>
+                            <th scope="col">Barcode</th>
+                            <th scope="col">Qty</th>
+                            <th scope="col">Rate</th>
+                            <th scope="col">Gross Total</th>
+                            <th scope="col">Discount 1</th>
+                            <th scope="col">Discount 2</th>
+                            <th scope="col">Tax</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </fieldset>
+                <fieldset>
+                    <div class="form-card text-left">
+                        <div class="row">
+                            <div class="col-12">
+                                <h3 class="mb-4 text-left">Purchase Footer:</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="gross_value">Gross Value: *</label>
+                                    <input type="text" class="form-control" id="gross_value" readonly name="gross_value" placeholder="Gross Value." />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="discount_1_total">Discount 1 Total: *</label>
+                                    <input type="text" class="form-control" id="discount_1_total" readonly name="discount_1_total" placeholder="Discount 1 Total." />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="discount_2_total">Discount 2 Total: *</label>
+                                    <input type="text" class="form-control" id="discount_2_total" readonly name="discount_2_total" placeholder="Discount 2 Total." />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="tax_total">Tax Total: *</label>
+                                    <input type="text" class="form-control" id="tax_total" readonly name="tax_total" placeholder="Tax Total." />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="other_expenses">Other Expenses: *</label>
+                                    <input type="text" class="form-control" id="other_expenses" name="other_expenses" placeholder="Other Expenses." />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="extra_discount">Extra Discount: *</label>
+                                    <input type="text" class="form-control" id="extra_discount" name="extra_discount" placeholder="Extra Discount." />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="net_value">Net Value: *</label>
+                                    <input type="text" class="form-control" id="net_value" readonly name="net_value" placeholder="Net Value." />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="remarks">Remarks: *</label>
+                                    <input type="text" class="form-control" id="remarks" name="remarks" placeholder="Remarks." />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="btn btn-primary action-button float-right" href="form-wizard-vertical.html" >Submit</a>
+                    <button type="button" name="previous" class="btn btn-dark previous action-button-previous float-right mr-3" value="Previous" >Previous</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

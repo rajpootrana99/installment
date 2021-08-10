@@ -214,6 +214,11 @@
                                         <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('recovery_officer_id') }}</div>
                                     </div>
                                     <div class="form-group col-2">
+                                        <label for="remarks">Remarks:</label>
+                                        <input type="text" name="remarks" id="remarks" readonly class="form-control" placeholder="Enter Remarks" value="{{ old('remarks') }}">
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('remarks') }}</div>
+                                    </div>
+                                    <div class="form-group col-2">
                                         <label for="item_id">Select Item:</label>
                                         <select class="form-control" name="item_id" id="item_id">
                                             <option value="">Select Item</option>
@@ -285,6 +290,61 @@
                                         <label for="installment">Installment:</label>
                                         <input type="text" name="installment" id="installment" readonly class="form-control" placeholder="Enter Installment" value="{{ old('installment') }}">
                                         <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('installment') }}</div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <div class="row mt-5">
+                                            <div class="col-4">
+                                                <label for="total_purchase">Total Purchase:</label>
+                                            </div>
+                                            <div class="col-8">
+                                                <input type="text" name="total_purchase" id="total_purchase" readonly class="form-control" value="{{ old('total_purchase') }}">
+                                                <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('total_purchase') }}</div>
+                                            </div>
+                                            <div class="col-4">
+                                                <label for="total_sales">Total Sales:</label>
+                                            </div>
+                                            <div class="col-8">
+                                                <input type="text" name="total_sales" id="total_sales" readonly class="form-control" value="{{ old('total_sales') }}">
+                                                <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('total_sales') }}</div>
+                                            </div>
+                                            <div class="col-4">
+                                                <label for="no_of_installment">No. of Inst.:</label>
+                                            </div>
+                                            <div class="col-8">
+                                                <input type="text" name="no_of_installment" id="no_of_installment" readonly class="form-control" value="{{ old('no_of_installment') }}">
+                                                <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('no_of_installment') }}</div>
+                                            </div>
+                                            <div class="col-4">
+                                                <label for="installment_month">Installment / Month:</label>
+                                            </div>
+                                            <div class="col-8">
+                                                <input type="text" name="installment_month" id="installment_month" readonly class="form-control" value="{{ old('installment_month') }}">
+                                                <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('installment_month') }}</div>
+                                            </div>
+                                            <div class="col-4">
+                                                <label for="down_payment">Down Payment:</label>
+                                            </div>
+                                            <div class="col-8">
+                                                <input type="text" name="down_payment" id="down_payment" readonly class="form-control" value="{{ old('down_payment') }}">
+                                                <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('down_payment') }}</div>
+                                            </div>
+                                            <div class="col-4">
+                                                <label for="total_balance">Total Balance:</label>
+                                            </div>
+                                            <div class="col-8">
+                                                <input type="text" name="total_balance" id="total_balance" readonly class="form-control" value="{{ old('total_balance') }}">
+                                                <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('total_balance') }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="guaranter_id">Select Guaranter:</label>
+                                        <select class="form-control" style="height: 300px" name="guaranter_id[]" multiple>
+                                            @foreach($guaranters as $guaranter)
+                                                <option value="{{ $guaranter->id }}">{{ $guaranter->id }} {{ $guaranter->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <div style="color: #ff0000; font-size: x-small; margin-top: 3px;">{{ $errors->first('guaranter_id') }}</div>
                                     </div>
                                 </div>
                                 <div class="text-right">

@@ -45,9 +45,14 @@ Route::resource('employee', 'EmployeeController')->middleware(['auth']);
 Route::resource('vendor', 'VendorController')->middleware(['auth']);
 Route::resource('customer', 'CustomerController')->middleware(['auth']);
 Route::resource('guaranter', 'GuaranterController')->middleware(['auth']);
+Route::resource('tax', 'TaxController')->middleware(['auth']);
+Route::get('fetchTax', 'TaxController@fetchTax')->middleware(['auth']);
 
 // Sales
 Route::resource('sale', 'SaleController')->middleware(['auth']);
 Route::get('sale/create/fetchItem/{id}', 'SaleController@fetchItem')->middleware(['auth']);
+
+// Purchase
+Route::resource('purchase', 'PurchaseController')->middleware(['auth']);
 
 require __DIR__.'/auth.php';
