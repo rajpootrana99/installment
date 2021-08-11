@@ -6,7 +6,9 @@ use App\Http\Requests\AccountDetailRequest;
 use App\Models\AccountDetail;
 use App\Models\Head;
 use App\Models\SubHead;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AccountDetailController extends Controller
 {
@@ -17,8 +19,12 @@ class AccountDetailController extends Controller
      */
     public function index()
     {
+        return view('accountDetail.index');
+    }
+
+    public function fetchAccountDetails(){
         $accountDetails = AccountDetail::with('head', 'subHead')->get();
-        return view('accountDetail.index', [
+        return response()->json([
             'accountDetails' => $accountDetails,
         ]);
     }
@@ -38,13 +44,46 @@ class AccountDetailController extends Controller
             $serial_number = 0;
         }
         $heads = Head::all();
-        $subHeads = SubHead::all();
-        return view('accountDetail.create', [
+        return response()->json([
             'heads' => $heads,
-            'subHeads' => $subHeads,
             'serial_number' => $serial_number+1,
-            'accountDetail' => new AccountDetail(),
         ]);
+    }
+
+    public function fetchSubHeads($id){
+        $head = Head::find($id);
+        $subHeads = SubHead::where('head_id', $id)->get();
+        if($subHeads){
+            return response()->json([
+                'status' => 1,
+                'subHeads' => $subHeads,
+                'head' => $head,
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => 0,
+                'message' => 'Sub Heads not exist against this head',
+            ]);
+        }
+    }
+
+    public function fetchBoth($id){
+        $subHead = SubHead::find($id);
+        $heads = Head::all();
+        if($subHead){
+            return response()->json([
+                'status' => 1,
+                'subHead' => $subHead,
+                'heads' => $heads,
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => 0,
+                'message' => 'Sub Heads not exist against this head',
+            ]);
+        }
     }
 
     /**
@@ -53,23 +92,27 @@ class AccountDetailController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AccountDetailRequest $request)
+    public function store(Request $request)
     {
-        $head_serial_code = Head::where('id', $request->head_id)->first();
-        $sub_head_serial_code = SubHead::where('id', $request->sub_head_id)->first();
-        $account_code = $head_serial_code->serial_code.$sub_head_serial_code->serial_code.$request->serial_number;
-        AccountDetail::create([
-            'head_id' => $request->head_id,
-            'sub_head_id' => $request->sub_head_id,
-            'account_detail_name' => $request->account_detail_name,
-            'account_nature' => $request->account_nature,
-            'account_code' => $account_code,
-            'serial_number' => $request->serial_number,
+        $validator = Validator::make($request->all(), [
+            'head_id' => 'required',
+            'sub_head_id' => 'required',
+            'account_detail_name' => 'required',
+            'account_nature' => 'required',
+            'account_code' => 'required',
+            'serial_number' => 'required',
         ]);
-        if($request->account_nature == 4){
-            return redirect(route('contact.create'));
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
         }
-        return redirect(route('accountDetail.index'));
+        $accountDetail = AccountDetail::create($request->all());
+        if ($accountDetail){
+            return response()->json(['status' => 1, 'message' => 'Account Detail Added Successfully']);
+        }
+
+        /*if($request->account_nature == 4){
+            return redirect(route('contact.create'));
+        }*/
     }
 
     /**
@@ -89,15 +132,29 @@ class AccountDetailController extends Controller
      * @param  \App\Models\AccountDetail  $accountDetail
      * @return \Illuminate\Http\Response
      */
-    public function edit(AccountDetail $accountDetail)
+    public function edit($accountDetail)
     {
+        $accountDetail = AccountDetail::find($accountDetail);
+        $account_nature = $accountDetail->getAttributes()['account_nature'];
         $heads = Head::all();
-        $subHeads = SubHead::all();
-        return view('accountDetail.edit', [
-            'heads' => $heads,
-            'subHeads' => $subHeads,
-            'accountDetail' => $accountDetail,
-        ]);
+        $subHeads = SubHead::where('head_id', $accountDetail->head_id)->get();
+        if ($accountDetail){
+            return response()->json([
+                'status' => 200,
+                'heads' => $heads,
+                'subHeads' => $subHeads,
+                'accountDetail' => $accountDetail,
+                'account_nature' => $account_nature,
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => 404,
+                'heads' => $heads,
+                'subHeads' => $subHeads,
+                'accountDetail' => 'Account Detail not found',
+            ]);
+        }
     }
 
     /**
@@ -107,10 +164,24 @@ class AccountDetailController extends Controller
      * @param  \App\Models\AccountDetail  $accountDetail
      * @return \Illuminate\Http\Response
      */
-    public function update(AccountDetailRequest $request, AccountDetail $accountDetail)
+    public function update(Request $request, $accountDetail)
     {
+        $validator = Validator::make($request->all(), [
+            'head_id' => 'required',
+            'sub_head_id' => 'required',
+            'account_detail_name' => 'required',
+            'account_nature' => 'required',
+            'account_code' => 'required',
+            'serial_number' => 'required',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $accountDetail = AccountDetail::find($accountDetail);
         $accountDetail->update($request->all());
-        return redirect(route('accountDetail.index'));
+        if ($accountDetail){
+            return response()->json(['status' => 1, 'message' => 'Account Detail Updated Successfully']);
+        }
     }
 
     /**
@@ -119,9 +190,19 @@ class AccountDetailController extends Controller
      * @param  \App\Models\AccountDetail  $accountDetail
      * @return \Illuminate\Http\Response
      */
-    public function destroy(AccountDetail $accountDetail)
+    public function destroy($accountDetail)
     {
+        $accountDetail = AccountDetail::find($accountDetail);
+        if (!$accountDetail){
+            return response()->json([
+                'status' => 0,
+                'message' => 'Account Detail not exist'
+            ]);
+        }
         $accountDetail->delete();
-        return redirect(route('accountDetail.index'));
+        return response()->json([
+            'status' => 1,
+            'message' => 'Account Deleted Successfully'
+        ]);
     }
 }

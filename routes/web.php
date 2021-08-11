@@ -24,6 +24,9 @@ Route::get('fetchHeads', 'HeadController@fetchHeads')->middleware(['auth']);
 Route::resource('subHead', 'SubHeadController')->middleware(['auth']);
 Route::get('fetchSubHeads', 'SubHeadController@fetchSubHeads')->middleware(['auth']);
 Route::resource('accountDetail', 'AccountDetailController')->middleware(['auth']);
+Route::get('fetchAccountDetails', 'AccountDetailController@fetchAccountDetails')->middleware(['auth']);
+Route::get('accountDetail/fetchSubHeads/{id}', 'AccountDetailController@fetchSubHeads')->middleware(['auth']);
+Route::get('accountDetail/fetchBoth/{id}', 'AccountDetailController@fetchBoth')->middleware(['auth']);
 Route::resource('contact', 'ContactController')->middleware(['auth']);
 
 // Inventory Routes
