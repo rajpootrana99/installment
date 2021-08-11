@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\HeadRequest;
 use App\Models\Head;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class HeadController extends Controller
 {
@@ -15,8 +16,12 @@ class HeadController extends Controller
      */
     public function index()
     {
+        return view('head.index');
+    }
+
+    public function fetchHeads(){
         $heads = Head::all();
-        return view('head.index', [
+        return response()->json([
             'heads' => $heads,
         ]);
     }
@@ -35,7 +40,8 @@ class HeadController extends Controller
         else{
             $serial_code = 0;
         }
-        return view('head.create', [
+        return response()->json([
+            'status' => 1,
             'serial_code' => $serial_code+1,
         ]);
     }
@@ -46,10 +52,19 @@ class HeadController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(HeadRequest $request)
+    public function store(Request $request)
     {
-        Head::create($request->all());
-        return redirect(route('head.index'));
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'serial_code' => 'required',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $head = Head::create($request->all());
+        if ($head){
+            return response()->json(['status' => 1, 'message' => 'Head Added Successfully']);
+        }
     }
 
     /**
@@ -69,11 +84,21 @@ class HeadController extends Controller
      * @param  \App\Models\Head  $head
      * @return \Illuminate\Http\Response
      */
-    public function edit(Head $head)
+    public function edit($head)
     {
-        return view('head.edit', [
-            'head' => $head,
-        ]);
+        $head = Head::find($head);
+        if ($head){
+            return response()->json([
+                'status' => 200,
+                'head' => $head,
+            ]);
+        }
+        else {
+            return response()->json([
+                'status' => 404,
+                'head' => 'Head Not Found',
+            ]);
+        }
     }
 
     /**
@@ -83,10 +108,20 @@ class HeadController extends Controller
      * @param  \App\Models\Head  $head
      * @return \Illuminate\Http\Response
      */
-    public function update(HeadRequest $request, Head $head)
+    public function update(Request $request, $head)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'serial_code' => 'required',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $head = Head::find($head);
         $head->update($request->all());
-        return redirect(route('head.index'));
+        if ($head){
+            return response()->json(['status' => 1, 'message' => 'Head Updated Successfully']);
+        }
     }
 
     /**
@@ -95,9 +130,19 @@ class HeadController extends Controller
      * @param  \App\Models\Head  $head
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Head $head)
+    public function destroy($head)
     {
+        $head = Head::find($head);
+        if (!$head){
+            return response()->json([
+                'status' => 0,
+                'message' => 'Head not exist'
+            ]);
+        }
         $head->delete();
-        return redirect(route('head.index'));
+        return response()->json([
+            'status' => 1,
+            'message' => 'Head deleted Successfully'
+        ]);
     }
 }

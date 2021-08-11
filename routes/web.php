@@ -20,7 +20,9 @@ Route::get('/admin', function () {
 
 // Account Routes
 Route::resource('head', 'HeadController')->middleware(['auth']);
+Route::get('fetchHeads', 'HeadController@fetchHeads')->middleware(['auth']);
 Route::resource('subHead', 'SubHeadController')->middleware(['auth']);
+Route::get('fetchSubHeads', 'SubHeadController@fetchSubHeads')->middleware(['auth']);
 Route::resource('accountDetail', 'AccountDetailController')->middleware(['auth']);
 Route::resource('contact', 'ContactController')->middleware(['auth']);
 
