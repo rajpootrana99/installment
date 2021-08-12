@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
@@ -15,8 +16,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        return view('category.index');
+    }
+
+    public function fetchCategories(){
         $categories = Category::all();
-        return view('category.index', [
+        return response()->json([
             'categories' => $categories,
         ]);
     }
@@ -28,7 +33,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('category.create');
+
     }
 
     /**
@@ -37,10 +42,18 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CategoryRequest $request)
+    public function store(Request $request)
     {
-        Category::create($request->all());
-        return redirect(route('category.index'));
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $category = Category::create($request->all());
+        if ($category){
+            return response()->json(['status' => 1, 'message' => 'Category Added Successfully']);
+        }
     }
 
     /**
@@ -60,11 +73,21 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit($category)
     {
-        return view('category.edit', [
-            'category' => $category,
-        ]);
+        $category = Category::find($category);
+        if ($category){
+            return response()->json([
+                'status' => 200,
+                'category' => $category,
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => 404,
+                'message' => 'Category not found'
+            ]);
+        }
     }
 
     /**
@@ -74,10 +97,19 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(CategoryRequest $request, Category $category)
+    public function update(Request $request, $category)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $category = Category::find($category);
         $category->update($request->all());
-        return redirect(route('category.index'));
+        if ($category){
+            return response()->json(['status' => 1, 'message' => 'Category Updated Successfully']);
+        }
     }
 
     /**
@@ -86,9 +118,19 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($category)
     {
+        $category = Category::find($category);
+        if (!$category){
+            return response()->json([
+                'status' => 0,
+                'message' => 'Category not exist'
+            ]);
+        }
         $category->delete();
-        return redirect(route('category.index'));
+        return response()->json([
+            'status' => 1,
+            'message' => 'Category deleted successfully'
+        ]);
     }
 }

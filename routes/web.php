@@ -31,8 +31,11 @@ Route::resource('contact', 'ContactController')->middleware(['auth']);
 
 // Inventory Routes
 Route::resource('category', 'CategoryController')->middleware(['auth']);
+Route::get('fetchCategories', 'CategoryController@fetchCategories')->middleware(['auth']);
 Route::resource('subCategory', 'SubCategoryController')->middleware(['auth']);
+Route::get('fetchSubCategories', 'SubCategoryController@fetchSubCategories')->middleware(['auth']);
 Route::resource('manufacturer', 'ManufacturerController')->middleware(['auth']);
+Route::get('fetchManufacturers', 'ManufacturerController@fetchManufacturers')->middleware(['auth']);
 Route::resource('warehouse', 'WarehouseController')->middleware(['auth']);
 Route::resource('item', 'ItemController')->middleware(['auth']);
 Route::resource('barcode', 'BarcodeController')->middleware(['auth']);

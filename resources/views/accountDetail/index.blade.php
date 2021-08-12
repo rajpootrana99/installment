@@ -8,9 +8,9 @@
                 <div class="page-title-box">
                     <div class="row">
                         <div class="col">
-                            <h4 class="page-title">Account Detail</h4>
+                            <h4 class="page-title">Account Details</h4>
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="javascript:void(0);">Account Detail</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:void(0);">Account Details</a></li>
                                 <li class="breadcrumb-item active">List</li>
                             </ol>
                         </div><!--end col-->
@@ -23,7 +23,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title mt-4">Account Detail
+                        <div class="card-title mt-4">Account Details
                             <a href="" data-toggle="modal" data-target="#addAccountDetail" id="addAccountDetailButton" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Account Detail </a>
                         </div>
                     </div><!--end card-header-->

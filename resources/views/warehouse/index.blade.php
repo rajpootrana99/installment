@@ -1,115 +1,287 @@
-@extends('layout.base')
+@extends('layouts.base')
 
-@section('section')
-    <!-- TOP Nav Bar -->
-    <div class="iq-top-navbar">
-        <div class="iq-navbar-custom">
-            <div class="iq-sidebar-logo">
-                <div class="top-logo">
-                    <a href="index.html" class="logo">
-                        <img src="images/logo.gif" class="img-fluid" alt="">
-                        <span>Metorik</span>
-                    </a>
-                </div>
-            </div>
-            <div class="navbar-breadcrumb">
-                <h5 class="mb-0">Warehouse</h5>
-                <nav aria-label="breadcrumb">
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('warehouse.index') }}">Warehouse</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">List</li>
-                    </ul>
-                </nav>
-            </div>
-            <nav class="navbar navbar-expand-lg navbar-light p-0">
+@section('content')
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="row">
+                        <div class="col">
+                            <h4 class="page-title">Categories</h4>
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="javascript:void(0);">Categories</a></li>
+                                <li class="breadcrumb-item active">List</li>
+                            </ol>
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </div><!--end page-title-box-->
+            </div><!--end col-->
+        </div><!--end row-->
+        <!-- end page title end breadcrumb -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title mt-4">Categories
+                            <a href="" data-toggle="modal" data-target="#addCategory" id="addCategoryButton" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Category </a>
+                        </div>
+                    </div><!--end card-header-->
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered mb-0 table-centered">
+                                <thead>
+                                <tr>
+                                    <th width="5%">#</th>
+                                    <th>Name</th>
+                                    <th width="3%"><i class="fa fa-edit"></i></th>
+                                    <th width="3%"><i class="fa fa-trash"></i></th>
+                                </tr>
+                                </thead>
+                                <tbody>
 
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ml-auto navbar-list">
-
-
-
-
-                    </ul>
-                </div>
-                <ul class="navbar-list">
-                    <li>
-                        <a href="#" class="search-toggle iq-waves-effect bg-primary text-white"><img src="images/user/1.jpg" class="img-fluid rounded" alt="user"></a>
-                        <div class="iq-sub-dropdown iq-user-dropdown">
-                            <div class="iq-card shadow-none m-0">
-                                <div class="iq-card-body p-0 ">
-                                    <div class="bg-primary p-3">
-                                        <h5 class="mb-0 text-white line-height">Hello Nik jone</h5>
-                                        <span class="text-white font-size-12">Available</span>
-                                    </div>
-                                    <div class="d-inline-block w-100 text-center p-3">
-                                        <form action="{{ route('logout') }}"  style="display: none;" method="post" id="lgut">
-                                            @csrf
-                                            <input type="submit" id="logoutbtn">
-                                        </form>
-                                        <a class="iq-bg-danger iq-sign-btn" type="button" onclick="$('#lgut').submit()">Sign out<i class="ri-login-box-line ml-2"></i></a>
-                                    </div>
+                                </tbody>
+                            </table><!--end /table-->
+                        </div><!--end /tableresponsive-->
+                    </div><!--end card-body-->
+                </div><!--end card-->
+            </div> <!-- end col -->
+        </div> <!-- end row -->
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="addCategory" tabindex="-1" role="dialog" aria-labelledby="addCategoryLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title m-0" id="addCategoryLabel">Category</h6>
+                    <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="la la-times"></i></span>
+                    </button>
+                </div><!--end modal-header-->
+                <form method="post" id="addCategoryForm">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label for="name" class="col-form-label text-right">Category Name</label>
+                                    <input class="form-control" type="text" name="name" placeholder="Enter Name" id="name">
+                                    <span class="text-danger error-text name_error"></span>
                                 </div>
                             </div>
-                        </div>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+                        </div><!--end row-->
+                    </div><!--end modal-body-->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                    </div><!--end modal-footer-->
+                </form>
+            </div><!--end modal-content-->
+        </div><!--end modal-dialog-->
     </div>
-    <!-- TOP Nav Bar END -->
-    <!-- Page Content  -->
-    <div id="content-page" class="content-page">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="iq-card">
-                        <div class="iq-card-header d-flex justify-content-between">
-                            <div class="iq-header-title">
-                                <div class="row card-title">
-                                    <h4>Warehouse</h4>
+
+    <div class="modal fade" id="editCategory" tabindex="-1" role="dialog" aria-labelledby="editCategoryLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title m-0" id="editCategoryLabel">Category</h6>
+                    <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="la la-times"></i></span>
+                    </button>
+                </div><!--end modal-header-->
+                <form method="post" id="editCategoryForm">
+                    @csrf
+                    @method('PATCH')
+                    <div class="modal-body">
+                        <div class="row">
+                            <input type="hidden" id="category_id" name="category_id">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label for="name" class="col-form-label text-right">Category Name</label>
+                                    <input class="form-control" type="text" name="name" placeholder="Enter Name" id="edit_name">
+                                    <span class="text-danger error-text name_update_error"></span>
                                 </div>
                             </div>
-                        </div>
-                        <div class="iq-card-body">
-                            <a href="{{ route('warehouse.create') }}" class="btn btn-primary float-right mb-4"><i class="fa fa-plus"></i> New Warehouse </a>
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                    <tr class="text-center">
-                                        <th scope="col">#</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($warehouses as $warehouse)
-                                        <tr class="text-center">
-                                            <td >{{ $warehouse->id }}</td>
-                                            <td>{{ $warehouse->name }}</td>
-                                            <td>
-                                                <div class="row justify-content-center">
-                                                    <a href="{{ route('warehouse.edit', ['warehouse' => $warehouse]) }}" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="View">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-                                                    <form id="{{ 'delete_'.$warehouse->id }}" method="post" action="{{ route('warehouse.destroy', ['warehouse' => $warehouse]) }}">
-                                                        @method('DELETE')
-                                                        @csrf
-                                                        <a onclick="document.getElementById('{{ 'delete_'.$warehouse->id }}').submit()" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="View">
-                                                            <i class="fa fa-trash"></i>
-                                                        </a>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                        </div><!--end row-->
+                    </div><!--end modal-body-->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                    </div><!--end modal-footer-->
+                </form>
+            </div><!--end modal-content-->
+        </div><!--end modal-dialog-->
     </div>
+
+    <div class="modal fade" id="deleteCategory" tabindex="-1" role="dialog" aria-labelledby="deleteCategoryLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title m-0" id="deleteCategoryLabel">Delete</h6>
+                    <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="la la-times"></i></span>
+                    </button>
+                </div><!--end modal-header-->
+                <form method="post" id="deleteCategoryForm">
+                    @csrf
+                    @method('DELETE')
+                    <div class="modal-body">
+                        <div class="row">
+                            <input type="hidden" id="category_id" name="category_id">
+                            <p class="mb-4">Are you sure want to delete?</p>
+                        </div><!--end row-->
+                    </div><!--end modal-body-->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Yes</button>
+                    </div><!--end modal-footer-->
+                </form>
+            </div><!--end modal-content-->
+        </div><!--end modal-dialog-->
+    </div>
+
+    <script>
+        $(document).ready(function (){
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            fetchCategories();
+
+            function fetchCategories()
+            {
+                $.ajax({
+                    type: "GET",
+                    url: "fetchCategories",
+                    dataType: "json",
+                    success: function (response) {
+                        $('tbody').html("");
+                        $.each(response.categories, function (key, item) {
+                            $('tbody').append('<tr>\
+                            <td>'+item.id+'</td>\
+                            <td>'+item.name+'</td>\
+                            <td><button value="'+item.id+'" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
+                            <td><button value="'+item.id+'" style="border: none; background-color: #fff" class="delete_btn"><i class="fa fa-trash"></i></button></td>\
+                    </tr>');
+                        });
+                    }
+                });
+            }
+
+            $(document).on('click', '.delete_btn', function (e) {
+                e.preventDefault();
+                var category_id = $(this).val();
+                $('#deleteCategory').modal('show');
+                $('#category_id').val(category_id)
+            });
+
+            $(document).on('submit', '#deleteCategoryForm', function (e) {
+                e.preventDefault();
+                var category_id = $('#category_id').val();
+
+                $.ajax({
+                    type: 'delete',
+                    url: 'category/'+category_id,
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.status == 0) {
+                            $('#deleteCategory').modal('hide');
+                        }
+                        else {
+                            fetchCategories();
+                            $('#deleteCategory').modal('hide');
+                        }
+                    }
+                });
+            });
+
+            $(document).on('click', '.edit_btn', function (e) {
+                e.preventDefault();
+                var category_id = $(this).val();
+                $('#editCategory').modal('show');
+                $.ajax({
+                    type: "GET",
+                    url: 'category/'+category_id+'/edit',
+                    success: function (response) {
+                        if (response.status == 404) {
+                            alertify.set('notifier','position', 'top-right');
+                            alertify.success(response.message);
+                            $('#editCategory').modal('hide');
+                        }
+                        else {
+                            $('#category_id').val(response.category.id);
+                            $('#edit_name').val(response.category.name);
+                        }
+                    }
+                });
+            });
+
+            $(document).on('submit', '#editCategoryForm', function (e) {
+                e.preventDefault();
+                var category_id = $('#category_id').val();
+                let EditFormData = new FormData($('#editCategoryForm')[0]);
+
+                $.ajax({
+                    type: "post",
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content'), '_method': 'patch'},
+                    url: "category/"+category_id,
+                    data: EditFormData,
+                    contentType: false,
+                    processData: false,
+                    beforeSend:function (){
+                        $(document).find('span.error-text').text('');
+                    },
+                    success: function (response) {
+                        if (response.status == 0){
+                            $('#editCategory').modal('show')
+                            $.each(response.error, function (prefix, val){
+                                $('span.'+prefix+'_update_error').text(val[0]);
+                            });
+                        }else {
+                            $('#editCategoryForm')[0].reset();
+                            $('#editCategory').modal('hide');
+                            fetchCategories();
+                        }
+                    },
+                    error: function (error){
+                        console.log(error)
+                        $('#editCategory').modal('show');
+                    }
+                });
+            })
+
+            $(document).on('submit', '#addCategoryForm', function (e){
+                e.preventDefault();
+                let formDate = new FormData($('#addCategoryForm')[0]);
+                $.ajax({
+                    type: "post",
+                    url: "category",
+                    data: formDate,
+                    contentType: false,
+                    processData: false,
+                    beforeSend:function (){
+                        $(document).find('span.error-text').text('');
+                    },
+                    success: function (response) {
+                        if (response.status == 0){
+                            $('#addCategory').modal('show')
+                            $.each(response.error, function (prefix, val){
+                                $('span.'+prefix+'_error').text(val[0]);
+                            });
+                        }else {
+                            $('#addCategoryForm')[0].reset();
+                            $('#addCategory').modal('hide')
+                            fetchCategories()
+                        }
+                    },
+                    error: function (error){
+                        $('#addCategory').modal('show')
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
