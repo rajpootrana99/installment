@@ -8,9 +8,9 @@
                 <div class="page-title-box">
                     <div class="row">
                         <div class="col">
-                            <h4 class="page-title">Categories</h4>
+                            <h4 class="page-title">Warehouses</h4>
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="javascript:void(0);">Categories</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:void(0);">Warehouses</a></li>
                                 <li class="breadcrumb-item active">List</li>
                             </ol>
                         </div><!--end col-->
@@ -23,7 +23,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title mt-4">Categories
+                        <div class="card-title mt-4">Warehouses
                             <a href="" data-toggle="modal" data-target="#addCategory" id="addCategoryButton" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Category </a>
                         </div>
                     </div><!--end card-header-->
