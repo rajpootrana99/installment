@@ -92,7 +92,7 @@
                                     <span class="text-danger error-text account_code_error"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <div class="form-group">
                                     <label for="account_detail_name" class="col-form-label text-right">Name</label>
                                     <input class="form-control" type="text" name="account_detail_name" placeholder="Enter Name" id="account_detail_name">
@@ -147,7 +147,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="edit_head_id" class="col-form-label text-right">Select Head</label>
-                                    <select name="head_id" id="edit_head_id" class="form-control" disabled>
+                                    <select name="head_id" id="edit_head_id" class="form-control">
 
                                     </select>
                                     <span class="text-danger error-text head_id_error"></span>
@@ -156,7 +156,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="edit_sub_head_id" class="col-form-label text-right">Select Sub Head</label>
-                                    <select name="sub_head_id" id="edit_sub_head_id" class="form-control" disabled>
+                                    <select name="sub_head_id" id="edit_sub_head_id" class="form-control">
 
                                     </select>
                                     <span class="text-danger error-text sub_head_id_error"></span>
@@ -169,7 +169,7 @@
                                     <span class="text-danger error-text account_code_error"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <div class="form-group">
                                     <label for="edit_account_detail_name" class="col-form-label text-right">Name</label>
                                     <input class="form-control" type="text" name="account_detail_name" placeholder="Enter Name" id="edit_account_detail_name">

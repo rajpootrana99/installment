@@ -24,7 +24,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title mt-4">Warehouses
-                            <a href="" data-toggle="modal" data-target="#addCategory" id="addCategoryButton" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Category </a>
+                            <a href="" data-toggle="modal" data-target="#addWarehouse" id="addWarehouseButton" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Warehouse </a>
                         </div>
                     </div><!--end card-header-->
                     <div class="card-body">
@@ -49,22 +49,22 @@
         </div> <!-- end row -->
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="addCategory" tabindex="-1" role="dialog" aria-labelledby="addCategoryLabel" aria-hidden="true">
+    <div class="modal fade" id="addWarehouse" tabindex="-1" role="dialog" aria-labelledby="addWarehouseLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title m-0" id="addCategoryLabel">Category</h6>
+                    <h6 class="modal-title m-0" id="addWarehouseLabel">Warehouse</h6>
                     <button type="button" class="close " data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"><i class="la la-times"></i></span>
                     </button>
                 </div><!--end modal-header-->
-                <form method="post" id="addCategoryForm">
+                <form method="post" id="addWarehouseForm">
                     @csrf
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label for="name" class="col-form-label text-right">Category Name</label>
+                                    <label for="name" class="col-form-label text-right">Warehouse Name</label>
                                     <input class="form-control" type="text" name="name" placeholder="Enter Name" id="name">
                                     <span class="text-danger error-text name_error"></span>
                                 </div>
@@ -80,24 +80,24 @@
         </div><!--end modal-dialog-->
     </div>
 
-    <div class="modal fade" id="editCategory" tabindex="-1" role="dialog" aria-labelledby="editCategoryLabel" aria-hidden="true">
+    <div class="modal fade" id="editWarehouse" tabindex="-1" role="dialog" aria-labelledby="editWarehouseLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title m-0" id="editCategoryLabel">Category</h6>
+                    <h6 class="modal-title m-0" id="editWarehouseLabel">Warehouse</h6>
                     <button type="button" class="close " data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"><i class="la la-times"></i></span>
                     </button>
                 </div><!--end modal-header-->
-                <form method="post" id="editCategoryForm">
+                <form method="post" id="editWarehouseForm">
                     @csrf
                     @method('PATCH')
                     <div class="modal-body">
                         <div class="row">
-                            <input type="hidden" id="category_id" name="category_id">
+                            <input type="hidden" id="warehouse_id" name="warehouse_id">
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label for="name" class="col-form-label text-right">Category Name</label>
+                                    <label for="name" class="col-form-label text-right">Warehouse Name</label>
                                     <input class="form-control" type="text" name="name" placeholder="Enter Name" id="edit_name">
                                     <span class="text-danger error-text name_update_error"></span>
                                 </div>
@@ -113,21 +113,21 @@
         </div><!--end modal-dialog-->
     </div>
 
-    <div class="modal fade" id="deleteCategory" tabindex="-1" role="dialog" aria-labelledby="deleteCategoryLabel" aria-hidden="true">
+    <div class="modal fade" id="deleteWarehouse" tabindex="-1" role="dialog" aria-labelledby="deleteWarehouseLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title m-0" id="deleteCategoryLabel">Delete</h6>
+                    <h6 class="modal-title m-0" id="deleteWarehouseLabel">Delete</h6>
                     <button type="button" class="close " data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"><i class="la la-times"></i></span>
                     </button>
                 </div><!--end modal-header-->
-                <form method="post" id="deleteCategoryForm">
+                <form method="post" id="deleteWarehouseForm">
                     @csrf
                     @method('DELETE')
                     <div class="modal-body">
                         <div class="row">
-                            <input type="hidden" id="category_id" name="category_id">
+                            <input type="hidden" id="warehouse_id" name="warehouse_id">
                             <p class="mb-4">Are you sure want to delete?</p>
                         </div><!--end row-->
                     </div><!--end modal-body-->
@@ -149,17 +149,17 @@
                 }
             });
 
-            fetchCategories();
+            fetchWarehouses();
 
-            function fetchCategories()
+            function fetchWarehouses()
             {
                 $.ajax({
                     type: "GET",
-                    url: "fetchCategories",
+                    url: "fetchWarehouses",
                     dataType: "json",
                     success: function (response) {
                         $('tbody').html("");
-                        $.each(response.categories, function (key, item) {
+                        $.each(response.warehouses, function (key, item) {
                             $('tbody').append('<tr>\
                             <td>'+item.id+'</td>\
                             <td>'+item.name+'</td>\
@@ -173,26 +173,26 @@
 
             $(document).on('click', '.delete_btn', function (e) {
                 e.preventDefault();
-                var category_id = $(this).val();
-                $('#deleteCategory').modal('show');
-                $('#category_id').val(category_id)
+                var warehouse_id = $(this).val();
+                $('#deleteWarehouse').modal('show');
+                $('#warehouse_id').val(warehouse_id)
             });
 
-            $(document).on('submit', '#deleteCategoryForm', function (e) {
+            $(document).on('submit', '#deleteWarehouseForm', function (e) {
                 e.preventDefault();
-                var category_id = $('#category_id').val();
+                var warehouse_id = $('#warehouse_id').val();
 
                 $.ajax({
                     type: 'delete',
-                    url: 'category/'+category_id,
+                    url: 'warehouse/'+warehouse_id,
                     dataType: 'json',
                     success: function (response) {
                         if (response.status == 0) {
-                            $('#deleteCategory').modal('hide');
+                            $('#deleteWarehouse').modal('hide');
                         }
                         else {
-                            fetchCategories();
-                            $('#deleteCategory').modal('hide');
+                            fetchWarehouses();
+                            $('#deleteWarehouse').modal('hide');
                         }
                     }
                 });
@@ -200,34 +200,34 @@
 
             $(document).on('click', '.edit_btn', function (e) {
                 e.preventDefault();
-                var category_id = $(this).val();
-                $('#editCategory').modal('show');
+                var warehouse_id = $(this).val();
+                $('#editWarehouse').modal('show');
                 $.ajax({
                     type: "GET",
-                    url: 'category/'+category_id+'/edit',
+                    url: 'warehouse/'+warehouse_id+'/edit',
                     success: function (response) {
                         if (response.status == 404) {
                             alertify.set('notifier','position', 'top-right');
                             alertify.success(response.message);
-                            $('#editCategory').modal('hide');
+                            $('#editWarehouse').modal('hide');
                         }
                         else {
-                            $('#category_id').val(response.category.id);
-                            $('#edit_name').val(response.category.name);
+                            $('#warehouse_id').val(response.warehouse.id);
+                            $('#edit_name').val(response.warehouse.name);
                         }
                     }
                 });
             });
 
-            $(document).on('submit', '#editCategoryForm', function (e) {
+            $(document).on('submit', '#editWarehouseForm', function (e) {
                 e.preventDefault();
-                var category_id = $('#category_id').val();
-                let EditFormData = new FormData($('#editCategoryForm')[0]);
+                var warehouse_id = $('#warehouse_id').val();
+                let EditFormData = new FormData($('#editWarehouseForm')[0]);
 
                 $.ajax({
                     type: "post",
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content'), '_method': 'patch'},
-                    url: "category/"+category_id,
+                    url: "warehouse/"+warehouse_id,
                     data: EditFormData,
                     contentType: false,
                     processData: false,
@@ -236,29 +236,29 @@
                     },
                     success: function (response) {
                         if (response.status == 0){
-                            $('#editCategory').modal('show')
+                            $('#editWarehouse').modal('show')
                             $.each(response.error, function (prefix, val){
                                 $('span.'+prefix+'_update_error').text(val[0]);
                             });
                         }else {
-                            $('#editCategoryForm')[0].reset();
-                            $('#editCategory').modal('hide');
-                            fetchCategories();
+                            $('#editWarehouseForm')[0].reset();
+                            $('#editWarehouse').modal('hide');
+                            fetchWarehouses();
                         }
                     },
                     error: function (error){
                         console.log(error)
-                        $('#editCategory').modal('show');
+                        $('#editWarehouse').modal('show');
                     }
                 });
             })
 
-            $(document).on('submit', '#addCategoryForm', function (e){
+            $(document).on('submit', '#addWarehouseForm', function (e){
                 e.preventDefault();
-                let formDate = new FormData($('#addCategoryForm')[0]);
+                let formDate = new FormData($('#addWarehouseForm')[0]);
                 $.ajax({
                     type: "post",
-                    url: "category",
+                    url: "warehouse",
                     data: formDate,
                     contentType: false,
                     processData: false,
@@ -267,18 +267,18 @@
                     },
                     success: function (response) {
                         if (response.status == 0){
-                            $('#addCategory').modal('show')
+                            $('#addWarehouse').modal('show')
                             $.each(response.error, function (prefix, val){
                                 $('span.'+prefix+'_error').text(val[0]);
                             });
                         }else {
-                            $('#addCategoryForm')[0].reset();
-                            $('#addCategory').modal('hide')
-                            fetchCategories()
+                            $('#addWarehouseForm')[0].reset();
+                            $('#addWarehouse').modal('hide')
+                            fetchWarehouses()
                         }
                     },
                     error: function (error){
-                        $('#addCategory').modal('show')
+                        $('#addWarehouse').modal('show')
                     }
                 });
             });

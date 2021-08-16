@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\WarehouseRequest;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class WarehouseController extends Controller
 {
@@ -15,8 +16,12 @@ class WarehouseController extends Controller
      */
     public function index()
     {
+        return view('warehouse.index');
+    }
+
+    public function fetchWarehouses(){
         $warehouses = Warehouse::all();
-        return view('warehouse.index', [
+        return response()->json([
             'warehouses' => $warehouses,
         ]);
     }
@@ -28,7 +33,7 @@ class WarehouseController extends Controller
      */
     public function create()
     {
-        return view('warehouse.create');
+
     }
 
     /**
@@ -37,10 +42,18 @@ class WarehouseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(WarehouseRequest $request)
+    public function store(Request $request)
     {
-        Warehouse::create($request->all());
-        return redirect(route('warehouse.index'));
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $warehouse = Warehouse::create($request->all());
+        if ($warehouse){
+            return response()->json(['status' => 1, 'message' => 'Warehouse Added Successfully']);
+        }
     }
 
     /**
@@ -60,11 +73,21 @@ class WarehouseController extends Controller
      * @param  \App\Models\Warehouse  $warehouse
      * @return \Illuminate\Http\Response
      */
-    public function edit(Warehouse $warehouse)
+    public function edit($warehouse)
     {
-        return view('warehouse.edit', [
-            'warehouse' => $warehouse,
-        ]);
+        $warehouse = Warehouse::find($warehouse);
+        if ($warehouse){
+            return response()->json([
+                'status' => 200,
+                'warehouse' => $warehouse,
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => 404,
+                'message' => 'Warehouse not found',
+            ]);
+        }
     }
 
     /**
@@ -74,10 +97,19 @@ class WarehouseController extends Controller
      * @param  \App\Models\Warehouse  $warehouse
      * @return \Illuminate\Http\Response
      */
-    public function update(WarehouseRequest $request, Warehouse $warehouse)
+    public function update(Request $request, $warehouse)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $warehouse = Warehouse::find($warehouse);
         $warehouse->update($request->all());
-        return redirect(route('warehouse.index'));
+        if ($warehouse){
+            return response()->json(['status' => 1, 'message' => 'Warehouse Updated Successfully']);
+        }
     }
 
     /**
@@ -86,9 +118,19 @@ class WarehouseController extends Controller
      * @param  \App\Models\Warehouse  $warehouse
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Warehouse $warehouse)
+    public function destroy($warehouse)
     {
+        $warehouse = Warehouse::find($warehouse);
+        if (!$warehouse){
+            return response()->json([
+                'status' => 0,
+                'message' => 'Warehouse not exist',
+            ]);
+        }
         $warehouse->delete();
-        return redirect(route('warehouse.index'));
+        return response()->json([
+            'status' => 1,
+            'message' => 'Warehouse deleted successfully',
+        ]);
     }
 }

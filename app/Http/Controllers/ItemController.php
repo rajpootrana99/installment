@@ -10,6 +10,7 @@ use App\Models\Manufacturer;
 use App\Models\SubCategory;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ItemController extends Controller
 {
@@ -21,8 +22,12 @@ class ItemController extends Controller
      */
     public function index()
     {
+        return view('item.index');
+    }
+
+    public function fetchItems(){
         $items = Item::with('category', 'subCategory', 'manufacturer')->get();
-        return view('item.index', [
+        return response()->json([
             'items' => $items,
         ]);
     }
@@ -38,12 +43,11 @@ class ItemController extends Controller
         $subCategories = SubCategory::all();
         $manufacturers = Manufacturer::all();
         $warehouses = Warehouse::all();
-        return view('item.create', [
+        return response()->json([
             'categories' => $categories,
+            'warehouses' => $warehouses,
             'subCategories' => $subCategories,
             'manufacturers' => $manufacturers,
-            'warehouses' => $warehouses,
-            'item' => new Item(),
         ]);
     }
 
@@ -53,22 +57,56 @@ class ItemController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ItemRequest $request)
+    public function store(Request $request)
     {
-        if($request->is_sale_price_defined == 0){
-            $sale_price_1 = $request->purchase_price + ($request->sale_price_1/100)*$request->purchase_price;
-            $sale_price_2 = $request->purchase_price + ($request->sale_price_2/100)*$request->purchase_price;
-            $sale_price_3 = $request->purchase_price + ($request->sale_price_3/100)*$request->purchase_price;
-            $sale_price_4 = $request->purchase_price + ($request->sale_price_4/100)*$request->purchase_price;
-            $sale_price_5 = $request->purchase_price + ($request->sale_price_5/100)*$request->purchase_price;
+        $validator = Validator::make($request->all(), [
+            'category_id' => 'required',
+            'sub_category_id' => 'required',
+            'manufacturer_id' => 'required',
+            'warehouse_id' => 'required',
+            'item_code' => 'required',
+            'name' => 'required',
+            'cost_price' => 'required',
+            'purchase_price' => 'required',
+            'company_price' => 'required',
+            'is_sale_price_defined' => 'required',
+            'sale_price_1' => 'required',
+            'sale_price_2' => 'required',
+            'sale_price_3' => 'required',
+            'sale_price_4' => 'required',
+            'sale_price_5' => 'required',
+            'remarks' => 'required',
+            'description' => 'required',
+            'image' => 'required|file|image',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+
+        if ($request->sale_price_format == 1){
+            if($request->is_sale_price_defined == 0){
+                $sale_price_1 = (($request->sale_price_1/$request->purchase_price) * 100) - 100;
+                $sale_price_2 = (($request->sale_price_2/$request->purchase_price) * 100) - 100;
+                $sale_price_3 = (($request->sale_price_3/$request->purchase_price) * 100) - 100;
+                $sale_price_4 = (($request->sale_price_4/$request->purchase_price) * 100) - 100;
+                $sale_price_5 = (($request->sale_price_5/$request->purchase_price) * 100) - 100;
+            }
+            else{
+                $sale_price_1 = (($request->sale_price_1/$request->company_price) * 100) - 100;
+                $sale_price_2 = (($request->sale_price_2/$request->company_price) * 100) - 100;
+                $sale_price_3 = (($request->sale_price_3/$request->company_price) * 100) - 100;
+                $sale_price_4 = (($request->sale_price_4/$request->company_price) * 100) - 100;
+                $sale_price_5 = (($request->sale_price_5/$request->company_price) * 100) - 100;
+            }
         }
         else{
-            $sale_price_1 = $request->company_price + ($request->sale_price_1/100)*$request->company_price;
-            $sale_price_2 = $request->company_price + ($request->sale_price_2/100)*$request->company_price;
-            $sale_price_3 = $request->company_price + ($request->sale_price_3/100)*$request->company_price;
-            $sale_price_4 = $request->company_price + ($request->sale_price_4/100)*$request->company_price;
-            $sale_price_5 = $request->company_price + ($request->sale_price_5/100)*$request->company_price;
+            $sale_price_1 = $request->sale_price_1;
+            $sale_price_2 = $request->sale_price_2;
+            $sale_price_3 = $request->sale_price_3;
+            $sale_price_4 = $request->sale_price_4;
+            $sale_price_5 = $request->sale_price_5;
         }
+
         $item = Item::create([
             'item_code' => $request->item_code,
             'name' => $request->name,
@@ -87,9 +125,12 @@ class ItemController extends Controller
             'sale_price_3' => $sale_price_3,
             'sale_price_4' => $sale_price_4,
             'sale_price_5' => $sale_price_5,
+            'status' => $request->status,
         ]);
         $this->storeImage($item);
-        return redirect(route('item.index'));
+        if ($item){
+            return response()->json(['status' => 1, 'message' => 'Item Added Successfully']);
+        }
     }
 
     /**
@@ -109,19 +150,37 @@ class ItemController extends Controller
      * @param  \App\Models\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function edit(Item $item)
+    public function edit($item)
     {
+        $item = Item::find($item);
+        $is_sale_price_defined = $item->getAttributes()['is_sale_price_defined'];
+        $status = $item->getAttributes()['status'];
         $categories = Category::all();
         $subCategories = SubCategory::all();
         $manufacturers = Manufacturer::all();
         $warehouses = Warehouse::all();
-        return view('item.edit', [
-            'categories' => $categories,
-            'subCategories' => $subCategories,
-            'manufacturers' => $manufacturers,
-            'warehouses' => $warehouses,
-            'item' => $item,
-        ]);
+        if ($item){
+            return response()->json([
+                'status' => 200,
+                'categories' => $categories,
+                'subCategories' => $subCategories,
+                'manufacturers' => $manufacturers,
+                'warehouses' => $warehouses,
+                'is_sale_price_defined' => $is_sale_price_defined,
+                'status' => $status,
+                'item' => $item,
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => 404,
+                'categories' => $categories,
+                'subCategories' => $subCategories,
+                'manufacturers' => $manufacturers,
+                'warehouses' => $warehouses,
+                'item' => 'Item not found',
+            ]);
+        }
     }
 
     /**
@@ -131,22 +190,55 @@ class ItemController extends Controller
      * @param  \App\Models\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Item $item)
+    public function update(Request $request, $item)
     {
-        if($request->is_sale_price_defined == 0){
-            $sale_price_1 = $request->purchase_price + ($request->sale_price_1/100)*$request->purchase_price;
-            $sale_price_2 = $request->purchase_price + ($request->sale_price_2/100)*$request->purchase_price;
-            $sale_price_3 = $request->purchase_price + ($request->sale_price_3/100)*$request->purchase_price;
-            $sale_price_4 = $request->purchase_price + ($request->sale_price_4/100)*$request->purchase_price;
-            $sale_price_5 = $request->purchase_price + ($request->sale_price_5/100)*$request->purchase_price;
+        $validator = Validator::make($request->all(), [
+            'category_id' => 'required',
+            'sub_category_id' => 'required',
+            'manufacturer_id' => 'required',
+            'warehouse_id' => 'required',
+            'item_code' => 'required',
+            'name' => 'required',
+            'cost_price' => 'required',
+            'purchase_price' => 'required',
+            'company_price' => 'required',
+            'is_sale_price_defined' => 'required',
+            'sale_price_1' => 'required',
+            'sale_price_2' => 'required',
+            'sale_price_3' => 'required',
+            'sale_price_4' => 'required',
+            'sale_price_5' => 'required',
+            'remarks' => 'required',
+            'description' => 'required',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+
+        if ($request->sale_price_format == 1){
+            if($request->is_sale_price_defined == 0){
+                $sale_price_1 = (($request->sale_price_1/$request->purchase_price) * 100) - 100;
+                $sale_price_2 = (($request->sale_price_2/$request->purchase_price) * 100) - 100;
+                $sale_price_3 = (($request->sale_price_3/$request->purchase_price) * 100) - 100;
+                $sale_price_4 = (($request->sale_price_4/$request->purchase_price) * 100) - 100;
+                $sale_price_5 = (($request->sale_price_5/$request->purchase_price) * 100) - 100;
+            }
+            else{
+                $sale_price_1 = (($request->sale_price_1/$request->company_price) * 100) - 100;
+                $sale_price_2 = (($request->sale_price_2/$request->company_price) * 100) - 100;
+                $sale_price_3 = (($request->sale_price_3/$request->company_price) * 100) - 100;
+                $sale_price_4 = (($request->sale_price_4/$request->company_price) * 100) - 100;
+                $sale_price_5 = (($request->sale_price_5/$request->company_price) * 100) - 100;
+            }
         }
         else{
-            $sale_price_1 = $request->company_price + ($request->sale_price_1/100)*$request->company_price;
-            $sale_price_2 = $request->company_price + ($request->sale_price_2/100)*$request->company_price;
-            $sale_price_3 = $request->company_price + ($request->sale_price_3/100)*$request->company_price;
-            $sale_price_4 = $request->company_price + ($request->sale_price_4/100)*$request->company_price;
-            $sale_price_5 = $request->company_price + ($request->sale_price_5/100)*$request->company_price;
+            $sale_price_1 = $request->sale_price_1;
+            $sale_price_2 = $request->sale_price_2;
+            $sale_price_3 = $request->sale_price_3;
+            $sale_price_4 = $request->sale_price_4;
+            $sale_price_5 = $request->sale_price_5;
         }
+        $item = Item::find($item);
         $item->update([
             'item_code' => $request->item_code,
             'name' => $request->name,
@@ -165,9 +257,12 @@ class ItemController extends Controller
             'sale_price_3' => $sale_price_3,
             'sale_price_4' => $sale_price_4,
             'sale_price_5' => $sale_price_5,
+            'status' => $request->status,
         ]);
         $this->storeImage($item);
-        return redirect(route('item.index'));
+        if ($item){
+            return response()->json(['status' => 1, 'message' => 'Item Updated Successfully']);
+        }
     }
 
     /**
@@ -176,10 +271,20 @@ class ItemController extends Controller
      * @param  \App\Models\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Item $item)
+    public function destroy($item)
     {
+        $item = Item::find($item);
+        if (!$item){
+            return response()->json([
+                'status' => 0,
+                'message' => 'Item not exist'
+            ]);
+        }
         $item->delete();
-        return redirect(route('item.index'));
+        return response()->json([
+            'status' => 1,
+            'message' => 'Item Deleted Successfully'
+        ]);
     }
 
     public function storeImage($item)

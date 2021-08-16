@@ -28,6 +28,7 @@ class Item extends Model
         'sale_price_3',
         'sale_price_4',
         'sale_price_5',
+        'status',
     ];
 
     public function getIsSalePriceDefinedAttribute($attribute){
@@ -38,6 +39,17 @@ class Item extends Model
         return [
             0 => 'Purchase Price',
             1 => 'Company Price',
+        ];
+    }
+
+    public function getStatusAttribute($attribute){
+        return $this->statusOptions()[$attribute] ?? 0;
+    }
+
+    public function statusOptions(){
+        return [
+            0 => 'Inactive',
+            1 => 'Active',
         ];
     }
 

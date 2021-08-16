@@ -37,7 +37,9 @@ Route::get('fetchSubCategories', 'SubCategoryController@fetchSubCategories')->mi
 Route::resource('manufacturer', 'ManufacturerController')->middleware(['auth']);
 Route::get('fetchManufacturers', 'ManufacturerController@fetchManufacturers')->middleware(['auth']);
 Route::resource('warehouse', 'WarehouseController')->middleware(['auth']);
+Route::get('fetchWarehouses', 'WarehouseController@fetchWarehouses')->middleware(['auth']);
 Route::resource('item', 'ItemController')->middleware(['auth']);
+Route::get('fetchItems', 'ItemController@fetchItems')->middleware(['auth']);
 Route::resource('barcode', 'BarcodeController')->middleware(['auth']);
 
 // Application Setting
