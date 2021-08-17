@@ -46,7 +46,9 @@ Route::resource('barcode', 'BarcodeController')->middleware(['auth']);
 Route::resource('financialYear', 'FinancialYearController')->middleware(['auth']);
 Route::get('fetchFinancialYears', 'FinancialYearController@fetchFinancialYears')->middleware(['auth']);
 Route::resource('company', 'CompanyController')->middleware(['auth']);
+Route::get('fetchCompanies', 'CompanyController@fetchCompanies')->middleware(['auth']);
 Route::resource('site', 'SiteController')->middleware(['auth']);
+Route::get('fetchSites', 'SiteController@fetchSites')->middleware(['auth']);
 
 // General Setting
 Route::resource('city', 'CityController')->middleware(['auth']);
