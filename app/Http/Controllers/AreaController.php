@@ -55,8 +55,10 @@ class AreaController extends Controller
         if (!$validator->passes()){
             return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
         }
-        Area::create($request->all());
-        return response()->json(['status' => 1, 'message' => 'Area added successfully']);
+        $area = Area::create($request->all());
+        if ($area){
+            return response()->json(['status' => 1, 'message' => 'Area added successfully']);
+        }
     }
 
     /**
