@@ -6,6 +6,7 @@ use App\Http\Requests\SiteRequest;
 use App\Models\Company;
 use App\Models\Site;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SiteController extends Controller
 {
@@ -16,8 +17,12 @@ class SiteController extends Controller
      */
     public function index()
     {
-        $sites = Site::all();
-        return view('site.index', [
+        return view('site.index');
+    }
+
+    public function fetchSites(){
+        $sites = Site::with('company')->get();
+        return response()->json([
             'sites' => $sites,
         ]);
     }
@@ -30,7 +35,7 @@ class SiteController extends Controller
     public function create()
     {
         $companies = Company::all();
-        return view('site.create', [
+        return response()->json([
             'companies' => $companies,
         ]);
     }
@@ -41,10 +46,19 @@ class SiteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(SiteRequest $request)
+    public function store(Request $request)
     {
-        Site::create($request->all());
-        return redirect(route('site.index'));
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'company_id' => 'required',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $site = Site::create($request->all());
+        if ($site){
+            return response()->json(['status' => 1, 'message' => 'Site added successfully']);
+        }
     }
 
     /**
@@ -64,13 +78,24 @@ class SiteController extends Controller
      * @param  \App\Models\Site  $site
      * @return \Illuminate\Http\Response
      */
-    public function edit(Site $site)
+    public function edit($site)
     {
+        $site = Site::find($site);
         $companies = Company::all();
-        return view('site.edit', [
-            'companies' => $companies,
-            'site' => $site,
-        ]);
+        if ($site){
+            return response()->json([
+                'status' => 200,
+                'site' => $site,
+                'companies' => $companies,
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => 200,
+                'message' => 'Site not found',
+                'companies' => $companies,
+            ]);
+        }
     }
 
     /**
@@ -80,10 +105,20 @@ class SiteController extends Controller
      * @param  \App\Models\Site  $site
      * @return \Illuminate\Http\Response
      */
-    public function update(SiteRequest $request, Site $site)
+    public function update(Request $request, $site)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'company_id' => 'required',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $site = Site::find($site);
         $site->update($request->all());
-        return redirect(route('site.index'));
+        if ($site){
+            return response()->json(['status' => 1, 'message' => 'Site Updated successfully']);
+        }
     }
 
     /**
@@ -92,9 +127,13 @@ class SiteController extends Controller
      * @param  \App\Models\Site  $site
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Site $site)
+    public function destroy($site)
     {
+        $site = Site::find($site);
+        if (!$site){
+            return response()->json(['status' => 0, 'message' => 'Site not found']);
+        }
         $site->delete();
-        return redirect(route('site.index'));
+        return response()->json(['status' => 1, 'message' => 'Site deleted successfully']);
     }
 }

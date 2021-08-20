@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CityRequest;
 use App\Models\City;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CityController extends Controller
 {
@@ -15,8 +16,12 @@ class CityController extends Controller
      */
     public function index()
     {
+        return view('city.index');
+    }
+
+    public function fetchCities(){
         $cities = City::all();
-        return view('city.index', [
+        return response()->json([
             'cities' => $cities,
         ]);
     }
@@ -28,7 +33,7 @@ class CityController extends Controller
      */
     public function create()
     {
-        return view('city.create');
+
     }
 
     /**
@@ -37,10 +42,18 @@ class CityController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CityRequest $request)
+    public function store(Request $request)
     {
-        City::create($request->all());
-        return redirect(route('city.index'));
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:cities',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $city = City::create($request->all());
+        if ($city){
+            return response()->json(['status' => 1, 'message' => 'City added successfully']);
+        }
     }
 
     /**
@@ -60,11 +73,21 @@ class CityController extends Controller
      * @param  \App\Models\City  $city
      * @return \Illuminate\Http\Response
      */
-    public function edit(City $city)
+    public function edit($city)
     {
-        return view('city.edit', [
-            'city' => $city,
-        ]);
+        $city = City::find($city);
+        if ($city){
+            return response()->json([
+                'status' => 200,
+                'city' => $city,
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => 404,
+                'message' => 'City not found',
+            ]);
+        }
     }
 
     /**
@@ -74,10 +97,19 @@ class CityController extends Controller
      * @param  \App\Models\City  $city
      * @return \Illuminate\Http\Response
      */
-    public function update(CityRequest $request, City $city)
+    public function update(Request $request,$city)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:cities',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $city = City::find($city);
         $city->update($request->all());
-        return redirect(route('city.index'));
+        if ($city){
+            return response()->json(['status' => 1, 'message' => 'City updated successfully']);
+        }
     }
 
     /**
@@ -86,9 +118,19 @@ class CityController extends Controller
      * @param  \App\Models\City  $city
      * @return \Illuminate\Http\Response
      */
-    public function destroy(City $city)
+    public function destroy($city)
     {
+        $city = City::find($city);
+        if (!$city){
+            return response()->json([
+                'status' => 0,
+                'message' => 'City not found',
+            ]);
+        }
         $city->delete();
-        return redirect(route('city.index'));
+        return response()->json([
+            'status' => 1,
+            'message' => 'City deleted successfully',
+        ]);
     }
 }

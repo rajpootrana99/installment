@@ -6,6 +6,7 @@ use App\Http\Requests\AreaRequest;
 use App\Models\Area;
 use App\Models\City;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AreaController extends Controller
 {
@@ -16,8 +17,12 @@ class AreaController extends Controller
      */
     public function index()
     {
+        return view('area.index');
+    }
+
+    public function fetchAreas(){
         $areas = Area::with('city')->get();
-        return view('area.index', [
+        return response()->json([
             'areas' => $areas,
         ]);
     }
@@ -30,7 +35,7 @@ class AreaController extends Controller
     public function create()
     {
         $cities = City::all();
-        return view('area.create', [
+        return response()->json([
             'cities' => $cities,
         ]);
     }
@@ -41,10 +46,17 @@ class AreaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AreaRequest $request)
+    public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:areas',
+            'city_id' => 'required',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
         Area::create($request->all());
-        return redirect(route('area.index'));
+        return response()->json(['status' => 1, 'message' => 'Area added successfully']);
     }
 
     /**
@@ -64,13 +76,24 @@ class AreaController extends Controller
      * @param  \App\Models\Area  $area
      * @return \Illuminate\Http\Response
      */
-    public function edit(Area $area)
+    public function edit($area)
     {
+        $area = Area::find($area);
         $cities = City::all();
-        return view('area.edit', [
-            'area' => $area,
-            'cities' => $cities,
-        ]);
+        if ($area){
+            return response()->json([
+                'status' => 200,
+                'area' => $area,
+                'cities' => $cities,
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => 404,
+                'area' => $area,
+                'message' => 'City not found',
+            ]);
+        }
     }
 
     /**
@@ -80,10 +103,20 @@ class AreaController extends Controller
      * @param  \App\Models\Area  $area
      * @return \Illuminate\Http\Response
      */
-    public function update(AreaRequest $request, Area $area)
+    public function update(Request $request, $area)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:areas',
+            'city_id' => 'required',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $area = Area::find($area);
         $area->update($request->all());
-        return redirect(route('area.index'));
+        if ($area){
+            return response()->json(['status' => 1, 'message' => 'Area Updated Successfully']);
+        }
     }
 
     /**
@@ -92,9 +125,19 @@ class AreaController extends Controller
      * @param  \App\Models\Area  $area
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Area $area)
+    public function destroy($area)
     {
+        $area = Area::find($area);
+        if (!$area){
+            return response()->json([
+                'status' => 0,
+                'message' => 'Area not found',
+            ]);
+        }
         $area->delete();
-        return redirect(route('area.index'));
+        return response()->json([
+            'status' => 1,
+            'message' => 'Area deleted successfully',
+        ]);
     }
 }

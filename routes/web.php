@@ -52,8 +52,11 @@ Route::get('fetchSites', 'SiteController@fetchSites')->middleware(['auth']);
 
 // General Setting
 Route::resource('city', 'CityController')->middleware(['auth']);
+Route::get('fetchCities', 'CityController@fetchCities')->middleware(['auth']);
 Route::resource('area', 'AreaController')->middleware(['auth']);
+Route::get('fetchAreas', 'AreaController@fetchAreas')->middleware(['auth']);
 Route::resource('route', 'RouteController')->middleware(['auth']);
+Route::get('fetchRoutes', 'RouteController@fetchRoutes')->middleware(['auth']);
 Route::resource('employee', 'EmployeeController')->middleware(['auth']);
 Route::resource('vendor', 'VendorController')->middleware(['auth']);
 Route::resource('customer', 'CustomerController')->middleware(['auth']);
