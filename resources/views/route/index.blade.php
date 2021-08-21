@@ -8,9 +8,9 @@
                 <div class="page-title-box">
                     <div class="row">
                         <div class="col">
-                            <h4 class="page-title">Sites</h4>
+                            <h4 class="page-title">Routes</h4>
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="javascript:void(0);">Sites</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:void(0);">Routes</a></li>
                                 <li class="breadcrumb-item active">List</li>
                             </ol>
                         </div><!--end col-->
@@ -23,8 +23,8 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title mt-4">Sites
-                            <a href="" data-toggle="modal" data-target="#addSite" id="addSiteButton" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Site </a>
+                        <div class="card-title mt-4">Routes
+                            <a href="" data-toggle="modal" data-target="#addRoute" id="addRouteButton" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Route </a>
                         </div>
                     </div><!--end card-header-->
                     <div class="card-body">
@@ -33,8 +33,8 @@
                                 <thead>
                                 <tr>
                                     <th width="5%">#</th>
-                                    <th>Site Name</th>
-                                    <th>Company Name</th>
+                                    <th>Route Name</th>
+                                    <th>Area Name</th>
                                     <th width="3%"><i class="fa fa-edit"></i></th>
                                     <th width="3%"><i class="fa fa-trash"></i></th>
                                 </tr>
@@ -50,33 +50,33 @@
         </div> <!-- end row -->
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="addSite" tabindex="-1" role="dialog" aria-labelledby="addSiteLabel" aria-hidden="true">
+    <div class="modal fade" id="addRoute" tabindex="-1" role="dialog" aria-labelledby="addRouteLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title m-0" id="addSiteLabel">Site</h6>
+                    <h6 class="modal-title m-0" id="addRouteLabel">Route</h6>
                     <button type="button" class="close " data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"><i class="la la-times"></i></span>
                     </button>
                 </div><!--end modal-header-->
-                <form method="post" id="addSiteForm">
+                <form method="post" id="addRouteForm">
                     @csrf
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label for="company_id" class="col-form-label text-right">Select Company</label>
-                                    <select name="company_id" id="company_id" class="form-control">
-
-                                    </select>
-                                    <span class="text-danger error-text company_id_error"></span>
+                                    <label for="name" class="col-form-label text-right">Route Name</label>
+                                    <input class="form-control" type="text" name="name" placeholder="Enter Route Name" id="name">
+                                    <span class="text-danger error-text name_error"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label for="name" class="col-form-label text-right">Name</label>
-                                    <input class="form-control" type="text" name="name" placeholder="Enter Name" id="name">
-                                    <span class="text-danger error-text name_error"></span>
+                                    <label for="area_id" class="col-form-label text-right">Select Area</label>
+                                    <select class="select2 mb-3 select2-multiple" name="area_id[]" id="area_id" style="width: 100%; height:36px;" data-placeholder="Select Areas" multiple="multiple">
+
+                                    </select>
+                                    <span class="text-danger error-text area_id_error"></span>
                                 </div>
                             </div>
                         </div><!--end row-->
@@ -90,35 +90,35 @@
         </div><!--end modal-dialog-->
     </div>
 
-    <div class="modal fade" id="editSite" tabindex="-1" role="dialog" aria-labelledby="editSiteLabel" aria-hidden="true">
+    <div class="modal fade" id="editRoute" tabindex="-1" role="dialog" aria-labelledby="editRouteLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title m-0" id="editSiteLabel">Site</h6>
+                    <h6 class="modal-title m-0" id="editRouteLabel">Route</h6>
                     <button type="button" class="close " data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"><i class="la la-times"></i></span>
                     </button>
                 </div><!--end modal-header-->
-                <form method="post" id="editSiteForm">
+                <form method="post" id="editRouteForm">
                     @csrf
                     @method('PATCH')
                     <div class="modal-body">
                         <div class="row">
-                            <input type="hidden" id="site_id" name="site_id">
-                            <div class="col-lg-6">
+                            <input type="hidden" id="route_id" name="route_id">
+                            <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label for="company_id" class="col-form-label text-right">Select Company</label>
-                                    <select name="company_id" id="edit_company_id" class="form-control edit_company_id">
-
-                                    </select>
-                                    <span class="text-danger error-text company_id_update_error"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="name" class="col-form-label text-right">Name</label>
+                                    <label for="name" class="col-form-label text-right">Area Name</label>
                                     <input class="form-control" type="text" name="name" placeholder="Enter Name" id="edit_name">
                                     <span class="text-danger error-text name_update_error"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label for="area_id" class="col-form-label text-right">Select Area</label>
+                                    <select class="select2 mb-3 select2-multiple" name="area_id[]" id="edit_area_id" style="width: 100%; height:36px;" data-placeholder="Select Areas" multiple="multiple">
+
+                                    </select>
+                                    <span class="text-danger error-text area_id_update_error"></span>
                                 </div>
                             </div>
                         </div><!--end row-->
@@ -132,21 +132,21 @@
         </div><!--end modal-dialog-->
     </div>
 
-    <div class="modal fade" id="deleteSite" tabindex="-1" role="dialog" aria-labelledby="deleteSiteLabel" aria-hidden="true">
+    <div class="modal fade" id="deleteRoute" tabindex="-1" role="dialog" aria-labelledby="deleteRouteLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title m-0" id="deleteSiteLabel">Delete</h6>
+                    <h6 class="modal-title m-0" id="deleteRouteLabel">Delete</h6>
                     <button type="button" class="close " data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"><i class="la la-times"></i></span>
                     </button>
                 </div><!--end modal-header-->
-                <form method="post" id="deleteSiteForm">
+                <form method="post" id="deleteRouteForm">
                     @csrf
                     @method('DELETE')
                     <div class="modal-body">
                         <div class="row">
-                            <input type="hidden" id="site_id" name="site_id">
+                            <input type="hidden" id="route_id" name="route_id">
                             <p class="mb-4">Are you sure want to delete?</p>
                         </div><!--end row-->
                     </div><!--end modal-body-->
@@ -168,22 +168,22 @@
                 }
             });
 
-            fetchSites();
+            fetchRoutes();
 
-            function fetchSites()
+            function fetchRoutes()
             {
                 $.ajax({
                     type: "GET",
-                    url: "fetchSites",
+                    url: "fetchRoutes",
                     dataType: "json",
                     success: function (response) {
                         $('tbody').html("");
-                        $.each(response.sites, function (key, item) {
-                            console.log(response.sites);
+                        $.each(response.routes, function (key, item) {
+                            var area = item.areas;
                             $('tbody').append('<tr>\
                             <td>'+item.id+'</td>\
                             <td>'+item.name+'</td>\
-                            <td>'+item.company.name+'</td>\
+                            <td>'+item.areas+'</td>\
                             <td><button value="'+item.id+'" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
                             <td><button value="'+item.id+'" style="border: none; background-color: #fff" class="delete_btn"><i class="fa fa-trash"></i></button></td>\
                     </tr>');
@@ -192,23 +192,23 @@
                 });
             }
 
-            $(document).on('click', '#addSiteButton', function (e) {
+            $(document).on('click', '#addRouteButton', function (e) {
                 e.preventDefault();
-                $('#addSite').modal('show');
+                $('#addRoute').modal('show');
                 $(document).find('span.error-text').text('');
                 $.ajax({
                     type: 'get',
-                    url: 'site/create',
+                    url: 'route/create',
                     dataType: 'json',
                     success: function (response) {
                         if (response.status == 0) {
-                            $('#addSite').modal('hide');
+                            $('#addRoute').modal('hide');
                         }
                         else {
-                            var company_id = $('#company_id');
-                            $('#company_id').children().remove().end()
-                            $.each(response.companies, function (company) {
-                                company_id.append($("<option />").val(response.companies[company].id).text(response.companies[company].name));
+                            var area_id = $('#area_id');
+                            $('#area_id').children().remove().end()
+                            $.each(response.areas, function (area) {
+                                area_id.append($("<option />").val(response.areas[area].id).text(response.areas[area].name));
                             });
                         }
                     }
@@ -217,26 +217,26 @@
 
             $(document).on('click', '.delete_btn', function (e) {
                 e.preventDefault();
-                var site_id = $(this).val();
-                $('#deleteSite').modal('show');
-                $('#site_id').val(site_id)
+                var route_id = $(this).val();
+                $('#deleteRoute').modal('show');
+                $('#route_id').val(route_id)
             });
 
-            $(document).on('submit', '#deleteSiteForm', function (e) {
+            $(document).on('submit', '#deleteRouteForm', function (e) {
                 e.preventDefault();
-                var site_id = $('#site_id').val();
+                var route_id = $('#route_id').val();
 
                 $.ajax({
                     type: 'delete',
-                    url: 'site/'+site_id,
+                    url: 'route/'+route_id,
                     dataType: 'json',
                     success: function (response) {
                         if (response.status == 0) {
-                            $('#deleteSite').modal('hide');
+                            $('#deleteRoute').modal('hide');
                         }
                         else {
-                            fetchSites();
-                            $('#deleteSite').modal('hide');
+                            $('#deleteRoute').modal('hide');
+                            fetchRoutes();
                         }
                     }
                 });
@@ -244,39 +244,43 @@
 
             $(document).on('click', '.edit_btn', function (e) {
                 e.preventDefault();
-                var site_id = $(this).val();
-                $('#editSite').modal('show');
+                var route_id = $(this).val();
+                $('#editRoute').modal('show');
                 $(document).find('span.error-text').text('');
                 $.ajax({
                     type: "GET",
-                    url: 'site/'+site_id+'/edit',
+                    url: 'route/'+route_id+'/edit',
                     success: function (response) {
                         if (response.status == 404) {
-                            $('#editSite').modal('hide');
+                            $('#editRoute').modal('hide');
                         }
                         else {
-                            var company_id = $('#edit_company_id');
-                            $('#edit_company_id').children().remove().end()
-                            $.each(response.companies, function (company) {
-                                company_id.append($("<option />").val(response.companies[company].id).text(response.companies[company].name));
+                            var area_id = $('#edit_area_id');
+                            $('#edit_area_id').children().remove().end()
+                            $.each(response.areas, function (area) {
+                                area_id.append($("<option />").val(response.areas[area].id).text(response.areas[area].name));
                             });
-                            $('#site_id').val(response.site.id);
-                            $('#edit_name').val(response.site.name);
-                            $('#edit_company_id').val(response.site.company_id).change();
+                            $('#route_id').val(response.route.id);
+                            $('#edit_name').val(response.route.name);
+                            var options = new Array();
+                            $.each(response.route.areas, function (key, area) {
+                                options[key] = area.id;
+                            });
+                            $('#edit_area_id').val(options);
                         }
                     }
                 });
             });
 
-            $(document).on('submit', '#editSiteForm', function (e) {
+            $(document).on('submit', '#editRouteForm', function (e) {
                 e.preventDefault();
-                var site_id = $('#site_id').val();
-                let EditFormData = new FormData($('#editSiteForm')[0]);
+                var route_id = $('#route_id').val();
+                let EditFormData = new FormData($('#editRouteForm')[0]);
 
                 $.ajax({
                     type: "post",
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content'), '_method': 'patch'},
-                    url: "site/"+site_id,
+                    url: "route/"+route_id,
                     data: EditFormData,
                     contentType: false,
                     processData: false,
@@ -285,29 +289,29 @@
                     },
                     success: function (response) {
                         if (response.status == 0){
-                            $('#editSite').modal('show')
+                            $('#editRoute').modal('show')
                             $.each(response.error, function (prefix, val){
                                 $('span.'+prefix+'_update_error').text(val[0]);
                             });
                         }else {
-                            $('#editSiteForm')[0].reset();
-                            $('#editSite').modal('hide');
-                            fetchSites();
+                            $('#editRouteForm')[0].reset();
+                            $('#editRoute').modal('hide');
+                            fetchRoutes();
                         }
                     },
                     error: function (error){
                         console.log(error)
-                        $('#editSite').modal('show');
+                        $('#editRoute').modal('show');
                     }
                 });
             })
 
-            $(document).on('submit', '#addSiteForm', function (e){
+            $(document).on('submit', '#addRouteForm', function (e){
                 e.preventDefault();
-                let formDate = new FormData($('#addSiteForm')[0]);
+                let formDate = new FormData($('#addRouteForm')[0]);
                 $.ajax({
                     type: "post",
-                    url: "site",
+                    url: "route",
                     data: formDate,
                     contentType: false,
                     processData: false,
@@ -316,18 +320,18 @@
                     },
                     success: function (response) {
                         if (response.status == 0){
-                            $('#addSite').modal('show')
+                            $('#addRoute').modal('show')
                             $.each(response.error, function (prefix, val){
                                 $('span.'+prefix+'_error').text(val[0]);
                             });
                         }else {
-                            $('#addSiteForm')[0].reset();
-                            $('#addSite').modal('hide')
-                            fetchSites()
+                            $('#addRouteForm')[0].reset();
+                            $('#addRoute').modal('hide')
+                            fetchRoutes()
                         }
                     },
                     error: function (error){
-                        $('#addSite').modal('show')
+                        $('#addRoute').modal('show')
                     }
                 });
             });

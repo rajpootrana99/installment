@@ -21,7 +21,7 @@ class RouteController extends Controller
     }
 
     public function fetchRoutes(){
-        $routes = Route::with('areas');
+        $routes = Route::with('areas')->get();
         return response()->json([
             'routes' => $routes,
         ]);
@@ -84,7 +84,7 @@ class RouteController extends Controller
     public function edit($route)
     {
         $areas = Area::all();
-        $route = Route::find($route);
+        $route = Route::with('areas')->where('id', $route)->first();
         if ($route){
             return response()->json([
                 'status' => 200,
@@ -143,10 +143,10 @@ class RouteController extends Controller
                 'message' => 'Route not found',
             ]);
         }
-        $route->delete();
         $route->areas()->detach();
+        $route->delete();
         return response()->json([
-            'status' => 0,
+            'status' => 1,
             'message' => 'Route deleted successfully',
         ]);
     }
