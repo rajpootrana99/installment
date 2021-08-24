@@ -60,6 +60,13 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('tax.index') }}"><i class="ti-control-record"></i>Taxes</a></li>
                 </ul>
             </li>
+            <li>
+                <a href="javascript: void(0);"> <i data-feather="credit-card" class="align-self-center menu-icon"></i><span>Multi Currency Module</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+                <ul class="nav-second-level" aria-expanded="false">
+                    <li class="nav-item"><a class="nav-link" href="{{ route('purchase.index') }}"><i class="ti-control-record"></i>Purchase Invoice</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('sale.index') }}"><i class="ti-control-record"></i>Sales Invoice</a></li>
+                </ul>
+            </li>
         </ul>
     </div>
 </div>

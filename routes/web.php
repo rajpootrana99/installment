@@ -64,11 +64,11 @@ Route::resource('guaranter', 'GuaranterController')->middleware(['auth']);
 Route::resource('tax', 'TaxController')->middleware(['auth']);
 Route::get('fetchTax', 'TaxController@fetchTax')->middleware(['auth']);
 
-// Sales
+// multi currency module
+//sales
 Route::resource('sale', 'SaleController')->middleware(['auth']);
-Route::get('sale/create/fetchItem/{id}', 'SaleController@fetchItem')->middleware(['auth']);
-
-// Purchase
+Route::get('sale/fetchItem/{id}', 'SaleController@fetchItem')->middleware(['auth']);
+//purchase
 Route::resource('purchase', 'PurchaseController')->middleware(['auth']);
 
 require __DIR__.'/auth.php';
