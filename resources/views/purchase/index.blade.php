@@ -184,7 +184,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="5"></td>
+                                        <td colspan="5" class="text-right"><strong>Sub Total</strong></td>
                                         <td><input type="text" style="height: 30px" name="gross_value" class="form-control" /></td>
                                         <td><input type="text" style="height: 30px" name="discount_1_total" class="form-control" /></td>
                                         <td><input type="text" style="height: 30px" name="discount_2_total" class="form-control" /></td>
@@ -246,24 +246,28 @@
             function itemsDetailDynamicField(number){
                 html = '<tr>';
                 html += '<td>'+number+'</td>';
-                html += '<td><select class="select2 form-control custom-select" name="item_id[]" id="item_id" style="width: 100%; height:30px;" data-placeholder="Select Item"></select></td>';
+                html += '<td><select class="select2 form-control custom-select" name="item_id[]" id="item_id_'+number+'" style="width: 100%; height:30px;" data-placeholder="Select Item"></select></td>';
                 html += '<td><input type="text" style="height: 30px" name="barcode[]" class="form-control" /></td>';
                 html += '<td><input type="text" style="height: 30px" name="qty[]" class="form-control" /></td>';
                 html += '<td><input type="text" style="height: 30px" name="rate[]" class="form-control" /></td>';
                 html += '<td><input type="text" style="height: 30px" name="gross_total[]" class="form-control" /></td>';
                 html += '<td><input type="text" style="height: 30px" name="discount_1[]" class="form-control" /></td>';
                 html += '<td><input type="text" style="height: 30px" name="discount_2[]" class="form-control" /></td>';
-                html += '<td><select class="select2 form-control custom-select" name="tax_id[]" id="tax_id" style="width: 100%; height:30px;" data-placeholder="Select Tax"></select></td>';
+                html += '<td><select class="select2 form-control custom-select" name="tax_id[]" id="tax_id_'+number+'" style="width: 100%; height:30px;" data-placeholder="Select Tax"></select></td>';
                 html += '<td><input type="text" style="height: 30px" name="total[]" class="form-control" /></td>';
                 if (number > 1){
                     html += '<td><button style="border: none; background-color: #fff" name="addItems" id="addItems"><i class="fa fa-plus-circle"></i></button></td>';
                     html += '<td><button style="border: none; background-color: #fff" name="removeItems" id="removeItems"><i class="fa fa-minus-circle"></i></button></td></tr>';
                     $('#itemsDetailTableBody').append(html);
+                    fetchItems();
+                    fetchTaxes();
                 }
                 else {
                     html += '<td><button style="border: none; background-color: #fff" name="addItems" id="addItems"><i class="fa fa-plus-circle"></i></button></td>';
                     html += '<td></td></tr>';
                     $('#itemsDetailTableBody').html(html);
+                    fetchItems();
+                    fetchTaxes();
                 }
             }
             $(document).on('click', '#addItems', function (e){
@@ -278,6 +282,7 @@
             });
 
             fetchItems();
+            fetchTaxes();
 
             function fetchItems()
             {
@@ -287,16 +292,14 @@
                     dataType: "json",
                     success: function (response) {
 
-                        var item_id = $('#item_id');
-                        $('#item_id').children().remove().end()
+                        var item_id = $('#item_id_'+itemsCount+'');
+                        $('#item_id_'+itemsCount+'').children().remove().end()
                         $.each(response.items, function (item) {
                             item_id.append($("<option />").val(response.items[item].id).text(response.items[item].name));
                         });
                     }
                 });
             }
-
-            fetchTaxes();
 
             function fetchTaxes()
             {
@@ -306,8 +309,8 @@
                     dataType: "json",
                     success: function (response) {
 
-                        var tax_id = $('#tax_id');
-                        $('#tax_id').children().remove().end()
+                        var tax_id = $('#tax_id_'+itemsCount+'');
+                        $('#tax_id_'+itemsCount+'').children().remove().end()
                         $.each(response.taxes, function (tax) {
                             tax_id.append($("<option />").val(response.taxes[tax].id).text(response.taxes[tax].name+' '+response.taxes[tax].percentage+'%'));
                         });
