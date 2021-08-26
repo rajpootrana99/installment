@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Item;
 use App\Models\PurchaseMaster;
+use App\Models\Tax;
+use App\Models\Vendor;
 use Illuminate\Http\Request;
 
 class PurchaseController extends Controller
@@ -14,7 +17,14 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        return view('purchase.index');
+        $vendors = Vendor::all();
+        $items = Item::all();
+        $taxes = Tax::all();
+        return view('purchase.index', [
+            'vendors' => $vendors,
+            'items' => $items,
+            'taxes' => $taxes,
+        ]);
     }
 
     /**
