@@ -8,11 +8,7 @@
                 <div class="page-title-box">
                     <div class="row">
                         <div class="col">
-                            <h4 class="page-title">Purchase</h4>
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="javascript:void(0);">Purchase</a></li>
-                                <li class="breadcrumb-item active">Invoice</li>
-                            </ol>
+                            <h4 class="page-title">Purchase Invoice</h4>
                         </div><!--end col-->
                     </div><!--end row-->
                 </div><!--end page-title-box-->
@@ -22,9 +18,6 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
-                    <div class="card-header">
-                        <div class="card-title mt-4">Purchase</div>
-                    </div><!--end card-header-->
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-2">
@@ -66,7 +59,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title mt-4">Goods</div>
+                        <div class="card-title">Goods</div>
                     </div><!--end card-header-->
                     <div class="card-body">
                         <div class="row">
@@ -107,22 +100,6 @@
                                     <span class="text-danger error-text broker_id_error"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-3">
-                                <div class="form-group">
-                                    <label for="user_id" class="col-form-label text-right">Select User</label>
-                                    <select class="select2 mb-3 form-control custom-select" name="user_id" id="user_id" style="width: 100%; height:36px;" data-placeholder="Select User">
-
-                                    </select>
-                                    <span class="text-danger error-text user_id_error"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="form-group">
-                                    <label for="system_name" class="col-form-label text-right">System Name</label>
-                                    <input class="form-control" type="text" name="system_name" placeholder="Enter System Name" id="system_name">
-                                    <span class="text-danger error-text system_name_error"></span>
-                                </div>
-                            </div>
                         </div><!--end row-->
                     </div><!--end card-body-->
                 </div><!--end card-->
@@ -130,7 +107,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title mt-4">Goods Detail</div>
+                        <div class="card-title">Goods Detail</div>
                     </div><!--end card-header-->
                     <div class="card-body">
                         <div class="table-responsive">
@@ -139,10 +116,10 @@
                                 <tr>
                                     <th width="3%">#</th>
                                     <th width="10%">Invoice No</th>
-                                    <th width="10%">Bilty No</th>
-                                    <th width="10%">Vehicle No</th>
+                                    <th width="20%">Bilty No</th>
+                                    <th width="20%">Vehicle No</th>
                                     <th width="5%">Qty</th>
-                                    <th width="25%">Gate Pass No</th>
+                                    <th width="15%">Gate Pass No</th>
                                     <th width="3%"><i class="fa fa-plus-circle"></i></th>
                                     <th width="3%"><i class="fa fa-minus-circle"></i></th>
                                 </tr>
@@ -158,7 +135,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title mt-4">Purchase Detail</div>
+                        <div class="card-title">Purchase Detail</div>
                     </div><!--end card-header-->
                     <div class="card-body">
                         <div class="table-responsive">
@@ -194,6 +171,31 @@
                                 </tfoot>
                             </table><!--end /table-->
                         </div><!--end /tableresponsive-->
+                        <div class="float-right mt-3">
+                            <div class="row">
+                                <div class="form-group col-5">
+                                    <label for="other_expenses" class="col-form-label text-right" style="color: #000000"><i class="fa fa-plus-circle" style="color: #000000"></i><strong> Other Expenses</strong></label>
+                                </div>
+                                <div class="form-group col-7">
+                                    <input type="text" style="height: 30px" name="other_expenses" class="form-control" />
+                                </div>
+                            </div>
+                            <span class="text-danger error-text other_expenses_error"></span>
+                            <div class="form-group">
+                                <label for="user_id" class="col-form-label text-right" style="color: #000000"><i class="fa fa-plus-circle" style="color: #000000"></i><strong> Extra Discount</strong></label>
+                                <input type="text" style="height: 30px" name="extra_discount" class="form-control" />
+                                <span class="text-danger error-text extra_discount_error"></span>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-4">
+                                    <label for="net_value" class="col-form-label text-right" style="color: #000000"><strong>Net Value</strong></label>
+                                </div>
+                                <div class="form-group col-8">
+                                    <input type="text" style="height: 30px" name="net_value" class="form-control" />
+                                </div>
+                            </div>
+                            <span class="text-danger error-text net_value_error"></span>
+                        </div>
                     </div><!--end card-body-->
                 </div><!--end card-->
             </div> <!-- end col -->
