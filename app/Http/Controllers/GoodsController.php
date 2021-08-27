@@ -3,14 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Goods;
-use App\Models\Item;
-use App\Models\PurchaseMaster;
-use App\Models\Tax;
-use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class PurchaseController extends Controller
+class GoodsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,16 +15,15 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        $vendors = Vendor::all();
-        $items = Item::all();
-        $taxes = Tax::all();
-        return view('purchase.index', [
-            'vendors' => $vendors,
-            'items' => $items,
-            'taxes' => $taxes,
-        ]);
+        //
     }
 
+    public function fetchGoods(){
+        $goods = Goods::all();
+        return response()->json([
+            'goods' => $goods,
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -36,7 +31,7 @@ class PurchaseController extends Controller
      */
     public function create()
     {
-        return view('purchase.create');
+        //
     }
 
     /**
@@ -47,16 +42,25 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $goods = Goods::create($request->all());
+        if ($goods){
+            return response()->json(['status' => 1, 'message' => 'Goods Added Successfully']);
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\PurchaseMaster  $purchaseMaster
+     * @param  \App\Models\Goods  $goods
      * @return \Illuminate\Http\Response
      */
-    public function show(PurchaseMaster $purchaseMaster)
+    public function show(Goods $goods)
     {
         //
     }
@@ -64,10 +68,10 @@ class PurchaseController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\PurchaseMaster  $purchaseMaster
+     * @param  \App\Models\Goods  $goods
      * @return \Illuminate\Http\Response
      */
-    public function edit(PurchaseMaster $purchaseMaster)
+    public function edit(Goods $goods)
     {
         //
     }
@@ -76,10 +80,10 @@ class PurchaseController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\PurchaseMaster  $purchaseMaster
+     * @param  \App\Models\Goods  $goods
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PurchaseMaster $purchaseMaster)
+    public function update(Request $request, Goods $goods)
     {
         //
     }
@@ -87,12 +91,11 @@ class PurchaseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\PurchaseMaster  $purchaseMaster
+     * @param  \App\Models\Goods  $goods
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PurchaseMaster $purchaseMaster)
+    public function destroy(Goods $goods)
     {
         //
     }
-
 }

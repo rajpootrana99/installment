@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Goods;
-use App\Models\Item;
-use App\Models\PurchaseMaster;
-use App\Models\Tax;
-use App\Models\Vendor;
+use App\Models\Broker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class PurchaseController extends Controller
+class BrokerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,13 +15,13 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        $vendors = Vendor::all();
-        $items = Item::all();
-        $taxes = Tax::all();
-        return view('purchase.index', [
-            'vendors' => $vendors,
-            'items' => $items,
-            'taxes' => $taxes,
+        //
+    }
+
+    public function fetchBrokers(){
+        $brokers = Broker::all();
+        return response()->json([
+            'brokers' => $brokers,
         ]);
     }
 
@@ -36,7 +32,7 @@ class PurchaseController extends Controller
      */
     public function create()
     {
-        return view('purchase.create');
+        //
     }
 
     /**
@@ -47,16 +43,25 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $broker = Broker::create($request->all());
+        if ($broker){
+            return response()->json(['status' => 1, 'message' => 'Broker Added Successfully']);
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\PurchaseMaster  $purchaseMaster
+     * @param  \App\Models\Broker  $broker
      * @return \Illuminate\Http\Response
      */
-    public function show(PurchaseMaster $purchaseMaster)
+    public function show(Broker $broker)
     {
         //
     }
@@ -64,10 +69,10 @@ class PurchaseController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\PurchaseMaster  $purchaseMaster
+     * @param  \App\Models\Broker  $broker
      * @return \Illuminate\Http\Response
      */
-    public function edit(PurchaseMaster $purchaseMaster)
+    public function edit(Broker $broker)
     {
         //
     }
@@ -76,10 +81,10 @@ class PurchaseController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\PurchaseMaster  $purchaseMaster
+     * @param  \App\Models\Broker  $broker
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PurchaseMaster $purchaseMaster)
+    public function update(Request $request, Broker $broker)
     {
         //
     }
@@ -87,12 +92,11 @@ class PurchaseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\PurchaseMaster  $purchaseMaster
+     * @param  \App\Models\Broker  $broker
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PurchaseMaster $purchaseMaster)
+    public function destroy(Broker $broker)
     {
         //
     }
-
 }

@@ -70,13 +70,52 @@
                                     <span class="text-danger error-text bilty_no_error"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label for="goods_name" class="col-form-label text-right">Goods Name</label>
-                                    <input class="form-control" type="text" name="goods_name" placeholder="Enter Goods Name" id="goods_name">
-                                    <span class="text-danger error-text goods_name_error"></span>
+                                    <label for="goods_id" class="col-form-label text-right">Select Goods</label>
+                                    <select class="select2 mb-3 form-control custom-select" name="goods_id" id="goods_id" style="width: 100%; height:36px;" data-placeholder="Select Goods">
+
+                                    </select>
+                                    <span class="text-danger error-text goods_id_error"></span>
                                 </div>
                             </div>
+                            <div class="col-lg-1">
+                                <div class="form-group">
+                                    <label for="shipment_date" class="col-form-label text-right text-white">New Good</label>
+                                    <button data-toggle="modal" data-target="#addGoods" id="addGoodsButton" style="border: 1px solid #E3EBF6; background: #FFFFFF; height: 38px; width: 38px; border-radius: 5px;"><i class="fas fa-cogs"></i></button>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="addGoods" tabindex="-1" role="dialog" aria-labelledby="addGoodsLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h6 class="modal-title m-0" id="addGoodsLabel">Goods</h6>
+                                            <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true"><i class="la la-times"></i></span>
+                                            </button>
+                                        </div><!--end modal-header-->
+                                        <form method="post" id="addGoodsForm">
+                                            @csrf
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            <label for="name" class="col-form-label text-right">Goods Name</label>
+                                                            <input class="form-control" type="text" name="name" placeholder="Enter Name" id="goods_name">
+                                                            <span class="text-danger error-text name_error"></span>
+                                                        </div>
+                                                    </div>
+                                                </div><!--end row-->
+                                            </div><!--end modal-body-->
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary btn-sm" id="saveGoods">Save</button>
+                                            </div><!--end modal-footer-->
+                                        </form>
+                                    </div><!--end modal-content-->
+                                </div><!--end modal-dialog-->
+                            </div>
+
                             <div class="col-lg-3">
                                 <div class="form-group">
                                     <label for="shipment_date" class="col-form-label text-right">Shipment Date</label>
@@ -100,6 +139,43 @@
                                     <span class="text-danger error-text broker_id_error"></span>
                                 </div>
                             </div>
+                            <div class="col-lg-1">
+                                <div class="form-group">
+                                    <label for="shipment_date" class="col-form-label text-right text-white">New Good</label>
+                                    <button data-toggle="modal" data-target="#addBroker" id="addBrokerButton" style="border: 1px solid #E3EBF6; background: #FFFFFF; height: 38px; width: 38px; border-radius: 5px;"><i class="fas fa-cogs"></i></button>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="addBroker" tabindex="-1" role="dialog" aria-labelledby="addBrokerLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h6 class="modal-title m-0" id="addBrokerLabel">Goods</h6>
+                                            <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true"><i class="la la-times"></i></span>
+                                            </button>
+                                        </div><!--end modal-header-->
+                                        <form method="post" id="addBrokerForm">
+                                            @csrf
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            <label for="name" class="col-form-label text-right">Broker Name</label>
+                                                            <input class="form-control" type="text" name="name" placeholder="Enter Name" id="broker_name">
+                                                            <span class="text-danger error-text name_error"></span>
+                                                        </div>
+                                                    </div>
+                                                </div><!--end row-->
+                                            </div><!--end modal-body-->
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary btn-sm" id="saveBroker">Save</button>
+                                            </div><!--end modal-footer-->
+                                        </form>
+                                    </div><!--end modal-content-->
+                                </div><!--end modal-dialog-->
+                            </div>
+
                         </div><!--end row-->
                     </div><!--end card-body-->
                 </div><!--end card-->
@@ -285,6 +361,8 @@
 
             fetchItems();
             fetchTaxes();
+            fetchGoods();
+            fetchBrokers();
 
             function fetchItems()
             {
@@ -320,124 +398,46 @@
                 });
             }
 
-            $(document).on('click', '#addSubHeadButton', function (e) {
-                e.preventDefault();
-                $('#addSubHead').modal('show');
-                $(document).find('span.error-text').text('');
-                $.ajax({
-                    type: 'get',
-                    url: 'subHead/create',
-                    dataType: 'json',
-                    success: function (response) {
-                        if (response.status == 0) {
-                            $('#addSubHead').modal('hide');
-                        }
-                        else {
-                            var head_id = $('#head_id');
-                            $('#head_id').children().remove().end()
-                            $.each(response.heads, function (head) {
-                                head_id.append($("<option />").val(response.heads[head].id).text(response.heads[head].name));
-                            });
-                            $('#serial_code').val(pad(response.serial_code,2));
-                        }
-                    }
-                });
-            })
-
-            $(document).on('click', '.delete_btn', function (e) {
-                e.preventDefault();
-                var sub_head_id = $(this).val();
-                $('#deleteSubHead').modal('show');
-                $('#sub_head_id').val(sub_head_id)
-            });
-
-            $(document).on('submit', '#deleteSubHeadForm', function (e) {
-                e.preventDefault();
-                var sub_head_id = $('#sub_head_id').val();
-
-                $.ajax({
-                    type: 'delete',
-                    url: 'subHead/'+sub_head_id,
-                    dataType: 'json',
-                    success: function (response) {
-                        if (response.status == 0) {
-                            $('#deleteSubHead').modal('hide');
-                        }
-                        else {
-                            fetchSubHeads();
-                            $('#deleteSubHead').modal('hide');
-                        }
-                    }
-                });
-            });
-
-            $(document).on('click', '.edit_btn', function (e) {
-                e.preventDefault();
-                var sub_head_id = $(this).val();
-                $('#editSubHead').modal('show');
-                $(document).find('span.error-text').text('');
+            function fetchGoods()
+            {
                 $.ajax({
                     type: "GET",
-                    url: 'subHead/'+sub_head_id+'/edit',
+                    url: "fetchGoods",
+                    dataType: "json",
                     success: function (response) {
-                        if (response.status == 404) {
-                            $('#editSubHead').modal('hide');
-                        }
-                        else {
-                            var head_id = $('#edit_head_id');
-                            $('#edit_head_id').children().remove().end()
-                            $.each(response.heads, function (head) {
-                                head_id.append($("<option />").val(response.heads[head].id).text(response.heads[head].name));
-                            });
-                            $('#sub_head_id').val(response.subHead.id);
-                            $('#edit_name').val(response.subHead.name);
-                            $('#edit_serial_code').val(response.subHead.serial_code);
-                            $('#edit_head_id').val(response.subHead.head_id).change();
-                        }
+                        console.log(response);
+                        var goods_id = $('#goods_id');
+                        $('#goods_id').children().remove().end()
+                        $.each(response.goods, function (good) {
+                            goods_id.append($("<option />").val(response.goods[good].id).text(response.goods[good].name));
+                        });
                     }
                 });
-            });
+            }
 
-            $(document).on('submit', '#editSubHeadForm', function (e) {
-                e.preventDefault();
-                var sub_head_id = $('#sub_head_id').val();
-                let EditFormData = new FormData($('#editSubHeadForm')[0]);
-
+            function fetchBrokers()
+            {
                 $.ajax({
-                    type: "post",
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content'), '_method': 'patch'},
-                    url: "subHead/"+sub_head_id,
-                    data: EditFormData,
-                    contentType: false,
-                    processData: false,
-                    beforeSend:function (){
-                        $(document).find('span.error-text').text('');
-                    },
+                    type: "GET",
+                    url: "fetchBrokers",
+                    dataType: "json",
                     success: function (response) {
-                        if (response.status == 0){
-                            $('#editSubHead').modal('show')
-                            $.each(response.error, function (prefix, val){
-                                $('span.'+prefix+'_update_error').text(val[0]);
-                            });
-                        }else {
-                            $('#editSubHeadForm')[0].reset();
-                            $('#editSubHead').modal('hide');
-                            fetchSubHeads();
-                        }
-                    },
-                    error: function (error){
-                        console.log(error)
-                        $('#editSubHead').modal('show');
+                        console.log(response);
+                        var broker_id = $('#broker_id');
+                        $('#broker_id').children().remove().end()
+                        $.each(response.brokers, function (broker) {
+                            broker_id.append($("<option />").val(response.brokers[broker].id).text(response.brokers[broker].name));
+                        });
                     }
                 });
-            })
+            }
 
-            $(document).on('submit', '#addSubHeadForm', function (e){
+            $(document).on('click', '#saveGoods', function (e){
                 e.preventDefault();
-                let formDate = new FormData($('#addSubHeadForm')[0]);
+                let formDate = new FormData($('#addGoodsForm')[0]);
                 $.ajax({
                     type: "post",
-                    url: "subHead",
+                    url: "goods",
                     data: formDate,
                     contentType: false,
                     processData: false,
@@ -446,21 +446,52 @@
                     },
                     success: function (response) {
                         if (response.status == 0){
-                            $('#addSubHead').modal('show')
+                            $('#addGoods').modal('show');
                             $.each(response.error, function (prefix, val){
                                 $('span.'+prefix+'_error').text(val[0]);
                             });
                         }else {
-                            $('#addSubHeadForm')[0].reset();
-                            $('#addSubHead').modal('hide')
-                            fetchSubHeads()
+                            $('#addGoodsForm')[0].reset();
+                            $('#addGoods').modal('hide');
+                            fetchGoods();
                         }
                     },
                     error: function (error){
-                        $('#addSubHead').modal('show')
+                        $('#addGoods').modal('show');
                     }
                 });
             });
+
+            $(document).on('click', '#saveBroker', function (e){
+                e.preventDefault();
+                let formDate = new FormData($('#addBrokerForm')[0]);
+                $.ajax({
+                    type: "post",
+                    url: "broker",
+                    data: formDate,
+                    contentType: false,
+                    processData: false,
+                    beforeSend:function (){
+                        $(document).find('span.error-text').text('');
+                    },
+                    success: function (response) {
+                        if (response.status == 0){
+                            $('#addBroker').modal('show');
+                            $.each(response.error, function (prefix, val){
+                                $('span.'+prefix+'_error').text(val[0]);
+                            });
+                        }else {
+                            $('#addBrokerForm')[0].reset();
+                            $('#addBroker').modal('hide');
+                            fetchBrokers();
+                        }
+                    },
+                    error: function (error){
+                        $('#addBroker').modal('show');
+                    }
+                });
+            });
+
         });
     </script>
 @endsection
