@@ -15,7 +15,7 @@ class CreatePurchaseFootersTable extends Migration
     {
         Schema::create('purchase_footers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('purchase_detail_id')->index();
+            $table->unsignedBigInteger('purchase_master_id')->index();
             $table->string('gross_value');
             $table->string('discount_1_total');
             $table->string('discount_2_total');
@@ -25,7 +25,7 @@ class CreatePurchaseFootersTable extends Migration
             $table->string('net_value');
             $table->string('remarks')->nullable();
 
-            $table->foreign('purchase_detail_id')->references('id')->on('purchase_details');
+            $table->foreign('purchase_master_id')->references('id')->on('purchase_masters');
 
             $table->timestamps();
         });

@@ -72,4 +72,8 @@ class Item extends Model
     public function barcodes(){
         return $this->hasMany(Barcode::class);
     }
+
+    public function purchaseMasters(){
+        return $this->belongsToMany(PurchaseMaster::class)->withPivot('tax_id', 'qty', 'rate', 'gross_total', 'discount_1', 'discount_2', 'total')->withTimestamps();
+    }
 }

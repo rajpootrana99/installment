@@ -70,6 +70,7 @@ Route::resource('sale', 'SaleController')->middleware(['auth']);
 Route::get('sale/fetchItem/{id}', 'SaleController@fetchItem')->middleware(['auth']);
 //purchase
 Route::resource('purchase', 'PurchaseController')->middleware(['auth']);
+Route::get('fetchTaxPercentage/{id}', 'PurchaseController@fetchTaxPercentage')->middleware(['auth']);
 Route::resource('goods', 'GoodsController')->middleware(['auth']);
 Route::get('fetchGoods', 'GoodsController@fetchGoods')->middleware(['auth']);
 Route::resource('broker', 'BrokerController')->middleware(['auth']);

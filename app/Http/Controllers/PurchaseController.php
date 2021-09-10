@@ -95,4 +95,20 @@ class PurchaseController extends Controller
         //
     }
 
+    public function fetchTaxPercentage($id){
+        $tax = Tax::where('id', $id)->first();
+        if($tax){
+            return response()->json([
+                'status' => 1,
+                'tax' => $tax,
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => 0,
+                'message' => 'Tax not found',
+            ]);
+        }
+    }
+
 }
