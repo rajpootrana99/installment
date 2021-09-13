@@ -177,11 +177,11 @@
                                     <tfoot>
                                     <tr>
                                         <td colspan="5" class="text-right"><strong>Sub Total</strong></td>
-                                        <td><input type="text" style="height: 30px" name="gross_value" class="form-control" /></td>
-                                        <td><input type="text" style="height: 30px" name="discount_1_total" class="form-control" /></td>
-                                        <td><input type="text" style="height: 30px" name="discount_2_total" class="form-control" /></td>
-                                        <td><input type="text" style="height: 30px" name="tax_total" class="form-control" /></td>
-                                        <td colspan="3"><input type="text" style="height: 30px" name="sub_total" class="form-control" /></td>
+                                        <td><input type="text" style="height: 30px" name="gross_value" disabled id="gross_value" class="form-control" /></td>
+                                        <td><input type="text" style="height: 30px" name="discount_1_total" disabled id="discount_1_total" class="form-control" /></td>
+                                        <td><input type="text" style="height: 30px" name="discount_2_total" disabled id="discount_2_total" class="form-control" /></td>
+                                        <td><input type="text" style="height: 30px" name="tax_total" disabled id="tax_total" class="form-control" /></td>
+                                        <td colspan="3"><input type="text" style="height: 30px" name="sub_total" disabled id="sub_total" class="form-control" /></td>
                                     </tr>
                                     </tfoot>
                                 </table><!--end /table-->
@@ -192,21 +192,21 @@
                                         <label for="other_expenses" class="col-form-label text-right" style="color: #000000"><strong>Other Expenses</strong></label>
                                     </div>
                                     <div class="form-group col-7">
-                                        <input type="text" style="height: 30px" name="other_expenses" class="form-control" />
+                                        <input type="text" style="height: 30px" name="other_expenses" onchange="subTotal()" id="other_expenses" class="form-control" />
                                     </div>
                                 </div>
                                 <span class="text-danger error-text other_expenses_error"></span>
                                 <div class="form-group">
                                     <label for="user_id" class="col-form-label text-right" style="color: #000000"><i data-toggle="modal" data-target="#extraDiscount" id="extraDiscountButton" class="fa fa-plus-circle" style="color: #000000"></i><strong> Extra Discount</strong></label>
-                                    <input type="text" style="height: 30px" name="extra_discount" class="form-control" />
-                                    <span class="text-danger error-text extra_discount_error"></span>
+                                    <input type="text" style="height: 30px" name="extra_discount_amount" disabled id="extra_discount_amount" class="form-control" /><input type="hidden" style="height: 30px" name="extra_discount" id="extra_discount" class="form-control" />
+                                    <label id="extra_discount_label"></label>
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-4">
                                         <label for="net_value" class="col-form-label text-right" style="color: #000000"><strong>Net Value</strong></label>
                                     </div>
                                     <div class="form-group col-8">
-                                        <input type="text" style="height: 30px" name="net_value" class="form-control" />
+                                        <input type="text" style="height: 30px" name="net_value" disabled id="net_value" class="form-control" />
                                     </div>
                                 </div>
                                 <span class="text-danger error-text net_value_error"></span>
@@ -374,7 +374,7 @@
                     <form method="post" id="extraDiscountForm">
                         @csrf
                         <div class="form-group p-3">
-                            <label for="discount_1_percentage" class="col-form-label text-right">Enter Discount Percentage</label>
+                            <label for="extra_discount_percentage" class="col-form-label text-right">Enter Discount Percentage</label>
                             <input class="form-control" type="text" name="extra_discount_percentage" id="extra_discount_percentage" placeholder="Enter Percentage">
                             <span class="text-danger error-text extra_discount_percentage_error"></span>
                         </div>
@@ -389,6 +389,9 @@
     </div>
 
     <script>
+        var itemsCount = 1;
+        var goodsCount = 1;
+
         $(document).ready(function (){
 
             $.ajaxSetup({
@@ -397,7 +400,6 @@
                 }
             });
 
-            var goodsCount = 1;
             goodsDetailDynamicField(goodsCount);
             function goodsDetailDynamicField(number){
                 html = '<tr>';
@@ -429,7 +431,6 @@
                 $(this).closest("tr").remove();
             });
 
-            var itemsCount = 1;
             itemsDetailDynamicField(itemsCount);
             function itemsDetailDynamicField(number){
                 html = '<tr>';
@@ -468,12 +469,6 @@
                 itemsCount--;
                 $(this).closest("tr").remove();
             });
-
-            function subTotal(){
-                for (let i = 0; i < itemsCount; i++){
-
-                }
-            }
 
             fetchItems();
             fetchTaxes();
@@ -680,6 +675,19 @@
                 $('#selectDiscountTwo').modal('hide');
                 total(discount_2_field_id)
             });
+
+            $(document).on('submit', '#extraDiscountForm', function (e){
+                e.preventDefault();
+                let sub_total = $('#sub_total').val();
+                let extra_discount_percentage = $('#extra_discount_percentage').val();
+                let extra_discount = parseFloat(sub_total)/100 * parseFloat(extra_discount_percentage)
+                $('#extra_discount_amount').val(extra_discount);
+                $('#extra_discount_label').text('discount @'+extra_discount_percentage+'%');
+                $('#extra_discount').val(extra_discount_percentage);
+                $('#extraDiscountForm')[0].reset();
+                $('#extraDiscount').modal('hide');
+                subTotal();
+            });
         });
 
         function gross_total(number){
@@ -689,42 +697,54 @@
             if (!isNaN(gross_total)){
                 $('#gross_total_'+number+'').val(gross_total);
                 total(number);
+                subTotal();
             }
             else {
                 $('#gross_total_'+number+'').val(0.00);
                 total(number);
+                subTotal();
             }
         }
 
         function total(number){
-            var gross_total = $('#gross_total_'+number+'').val();
-            if (gross_total == ''){
-                gross_total = 0;
-            }
-            var discount_1_amount = $('#discount_1_amount_'+number+'').val();
-            if (discount_1_amount == ''){
-                discount_1_amount = 0;
-            }
-            var discount_2_amount = $('#discount_2_amount_'+number+'').val();
-            if (discount_2_amount == ''){
-                discount_2_amount = 0;
-            }
-            var tax_amount = $('#tax_amount_'+number+'').val();
-            if (tax_amount == ''){
-                tax_amount = 0;
-            }
-            console.log(gross_total);
-            console.log(discount_1_amount);
-            console.log(discount_2_amount);
-            console.log(tax_amount);
+            var gross_total = $('#gross_total_'+number+'').val() == '' ? 0 : $('#gross_total_'+number+'').val();
+            var discount_1_amount = $('#discount_1_amount_'+number+'').val() == '' ? 0 : $('#discount_1_amount_'+number+'').val();
+            var discount_2_amount = $('#discount_2_amount_'+number+'').val() == '' ? 0 : $('#discount_2_amount_'+number+'').val();
+            var tax_amount = $('#tax_amount_'+number+'').val() == '' ? 0 : $('#tax_amount_'+number+'').val();
             var total = (parseFloat(gross_total) - parseFloat(discount_1_amount) - parseFloat(discount_2_amount)) + parseFloat(tax_amount);
-            console.log(total);
             if (!isNaN(total)){
                 $('#total_'+number+'').val(total.toFixed(2));
+                subTotal();
             }
             else {
                 $('#total_'+number+'').val(0);
+                subTotal();
             }
+        }
+
+        function subTotal(){
+            let gross_value = 0;
+            let discount_1_total = 0
+            let discount_2_total = 0
+            let tax_total = 0
+            let sub_total = 0
+            let other_expenses = $('#other_expenses').val() == '' ? 0 : $('#other_expenses').val();
+            let extra_discount_amount = $('#extra_discount_amount').val() == '' ? 0 : $('#extra_discount_amount').val();
+            let net_value = 0;
+            for (let i = 1; i <= itemsCount; i++) {
+                gross_value = gross_value + parseFloat($('#gross_total_'+i+'').val() == '' ? 0 : $('#gross_total_'+i+'').val());
+                discount_1_total = discount_1_total + parseFloat($('#discount_1_amount_'+i+'').val() == '' ? 0 : $('#discount_1_amount_'+i+'').val());
+                discount_2_total = discount_2_total + parseFloat($('#discount_2_amount_'+i+'').val() == '' ? 0 : $('#discount_2_amount_'+i+'').val());
+                tax_total = tax_total + parseFloat($('#tax_amount_'+i+'').val() == '' ? 0 : $('#tax_amount_'+i+'').val());
+                sub_total = sub_total + parseFloat($('#total_'+i+'').val() == '' ? 0 : $('#total_'+i+'').val());
+            }
+            net_value = parseFloat(sub_total) + parseFloat(other_expenses) - parseFloat(extra_discount_amount);
+            $('#gross_value').val(gross_value.toFixed(2));
+            $('#discount_1_total').val(discount_1_total.toFixed(2));
+            $('#discount_2_total').val(discount_2_total.toFixed(2));
+            $('#tax_total').val(tax_total.toFixed(2));
+            $('#sub_total').val(sub_total.toFixed(2));
+            $('#net_value').val(net_value.toFixed(2));
         }
     </script>
 @endsection
