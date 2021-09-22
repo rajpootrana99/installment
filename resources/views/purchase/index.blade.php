@@ -15,7 +15,8 @@
             </div><!--end col-->
         </div><!--end row-->
         <!-- end page title end breadcrumb -->
-        <form>
+        <form method="post" id="purchaseForm">
+            @csrf
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
@@ -177,11 +178,11 @@
                                     <tfoot>
                                     <tr>
                                         <td colspan="5" class="text-right"><strong>Sub Total</strong></td>
-                                        <td><input type="text" style="height: 30px" name="gross_value" disabled id="gross_value" class="form-control" /></td>
-                                        <td><input type="text" style="height: 30px" name="discount_1_total" disabled id="discount_1_total" class="form-control" /></td>
-                                        <td><input type="text" style="height: 30px" name="discount_2_total" disabled id="discount_2_total" class="form-control" /></td>
-                                        <td><input type="text" style="height: 30px" name="tax_total" disabled id="tax_total" class="form-control" /></td>
-                                        <td colspan="3"><input type="text" style="height: 30px" name="sub_total" disabled id="sub_total" class="form-control" /></td>
+                                        <td><input type="text" style="height: 30px" name="gross_value" readonly id="gross_value" class="form-control" /></td>
+                                        <td><input type="text" style="height: 30px" name="discount_1_total" readonly id="discount_1_total" class="form-control" /></td>
+                                        <td><input type="text" style="height: 30px" name="discount_2_total" readonly id="discount_2_total" class="form-control" /></td>
+                                        <td><input type="text" style="height: 30px" name="tax_total" readonly id="tax_total" class="form-control" /></td>
+                                        <td colspan="3"><input type="text" style="height: 30px" name="sub_total" readonly id="sub_total" class="form-control" /></td>
                                     </tr>
                                     </tfoot>
                                 </table><!--end /table-->
@@ -198,7 +199,7 @@
                                 <span class="text-danger error-text other_expenses_error"></span>
                                 <div class="form-group">
                                     <label for="user_id" class="col-form-label text-right" style="color: #000000"><i data-toggle="modal" data-target="#extraDiscount" id="extraDiscountButton" class="fa fa-plus-circle" style="color: #000000"></i><strong> Extra Discount</strong></label>
-                                    <input type="text" style="height: 30px" name="extra_discount_amount" disabled id="extra_discount_amount" class="form-control" /><input type="hidden" style="height: 30px" name="extra_discount" id="extra_discount" class="form-control" />
+                                    <input type="text" style="height: 30px" name="extra_discount_amount" readonly id="extra_discount_amount" class="form-control" /><input type="hidden" style="height: 30px" name="extra_discount" id="extra_discount" class="form-control" />
                                     <label id="extra_discount_label"></label>
                                 </div>
                                 <div class="row">
@@ -206,7 +207,7 @@
                                         <label for="net_value" class="col-form-label text-right" style="color: #000000"><strong>Net Value</strong></label>
                                     </div>
                                     <div class="form-group col-8">
-                                        <input type="text" style="height: 30px" name="net_value" disabled id="net_value" class="form-control" />
+                                        <input type="text" style="height: 30px" name="net_value" readonly id="net_value" class="form-control" />
                                     </div>
                                 </div>
                                 <span class="text-danger error-text net_value_error"></span>
@@ -407,7 +408,7 @@
                 html += '<td><input type="text" style="height: 30px" name="invoice_id[]" class="form-control" /></td>';
                 html += '<td><input type="text" style="height: 30px" name="bilty_id[]" class="form-control" /></td>';
                 html += '<td><input type="text" style="height: 30px" name="vehicle_no[]" class="form-control" /></td>';
-                html += '<td><input type="text" style="height: 30px" name="qty[]" class="form-control" /></td>';
+                html += '<td><input type="text" style="height: 30px" name="goods_qty[]" class="form-control" /></td>';
                 html += '<td><input type="text" style="height: 30px" name="gate_pass_no[]" class="form-control" /></td>';
                 if (number > 1){
                     html += '<td><button style="border: none; background-color: #fff" name="addGoods" id="addGoods"><i class="fa fa-plus-circle"></i></button></td>';
@@ -688,11 +689,43 @@
                 $('#extraDiscount').modal('hide');
                 subTotal();
             });
+
+            $(document).on('submit', '#purchaseForm', function (e){
+                e.preventDefault();
+                let formDate = new FormData($('#purchaseForm')[0]);
+                $.ajax({
+                    type: "post",
+                    url: "purchase",
+                    data: formDate,
+                    contentType: false,
+                    processData: false,
+                    beforeSend:function (){
+                        $(document).find('span.error-text').text('');
+                    },
+                    success: function (response) {
+                        if (response.status == 0){
+                            $.each(response.error, function (prefix, val){
+                                $('span.'+prefix+'_error').text(val[0]);
+                            });
+                        }else {
+                            $('#purchaseForm')[0].reset();
+                            console.log(response.message);
+                            fetchItems();
+                            fetchTaxes();
+                            fetchGoods();
+                            fetchBrokers();
+                        }
+                    },
+                    error: function (error){
+
+                    }
+                });
+            });
         });
 
         function gross_total(number){
-            var qty = $('#qty_'+number+'').val();
-            var rate = $('#rate_'+number+'').val();
+            var qty = $('#qty_'+number+'').val() == '' ? 1 : $('#qty_'+number+'').val();
+            var rate = $('#rate_'+number+'').val() == '' ? 0 : $('#rate_'+number+'').val();
             var gross_total = parseInt(qty) * parseInt(rate);
             if (!isNaN(gross_total)){
                 $('#gross_total_'+number+'').val(gross_total);
