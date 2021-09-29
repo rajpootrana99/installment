@@ -15,7 +15,7 @@
             </div><!--end col-->
         </div><!--end row-->
         <!-- end page title end breadcrumb -->
-        <form method="post" id="purchaseForm">
+        <form method="post" id="saleForm">
             @csrf
             <div class="row">
                 <div class="col-lg-12">
@@ -508,12 +508,12 @@
                 subTotal();
             });
 
-            $(document).on('submit', '#purchaseForm', function (e){
+            $(document).on('submit', '#saleForm', function (e){
                 e.preventDefault();
-                let formDate = new FormData($('#purchaseForm')[0]);
+                let formDate = new FormData($('#saleForm')[0]);
                 $.ajax({
                     type: "post",
-                    url: "purchase",
+                    url: "sale",
                     data: formDate,
                     contentType: false,
                     processData: false,
@@ -526,7 +526,8 @@
                                 $('span.'+prefix+'_error').text(val[0]);
                             });
                         }else {
-                            $('#purchaseForm')[0].reset();
+                            $('#saleForm')[0].reset();
+                            location.reload();
                             console.log(response.message);
                             fetchItems();
                             fetchTaxes();

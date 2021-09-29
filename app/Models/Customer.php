@@ -56,7 +56,7 @@ class Customer extends Model
         ];
     }
 
-    public function sales(){
-        return $this->belongsToMany(Sale::class);
+    public function saleMasters(){
+        return $this->hasMany(SaleMaster::class);
     }
 }

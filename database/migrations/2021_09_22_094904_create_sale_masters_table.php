@@ -15,6 +15,15 @@ class CreateSaleMastersTable extends Migration
     {
         Schema::create('sale_masters', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('customer_id');
+            $table->unsignedBigInteger('site_id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('date');
+            $table->string('invoice_no');
+
+            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->foreign('site_id')->references('id')->on('sites');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

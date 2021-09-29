@@ -68,7 +68,6 @@ Route::get('fetchTax', 'TaxController@fetchTax')->middleware(['auth']);
 // multi currency module
 //sales
 Route::resource('sale', 'SaleController')->middleware(['auth']);
-Route::get('sale/fetchItem/{id}', 'SaleController@fetchItem')->middleware(['auth']);
 //purchase
 Route::resource('purchase', 'PurchaseController')->middleware(['auth']);
 Route::get('fetchTaxPercentage/{id}', 'PurchaseController@fetchTaxPercentage')->middleware(['auth']);

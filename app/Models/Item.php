@@ -76,4 +76,8 @@ class Item extends Model
     public function purchaseMasters(){
         return $this->belongsToMany(PurchaseMaster::class)->withPivot('tax_id', 'qty', 'rate', 'gross_total', 'discount_1', 'discount_2', 'total')->withTimestamps();
     }
+
+    public function saleMasters(){
+        return $this->belongsToMany(SaleMaster::class)->withPivot('tax_id', 'qty', 'rate', 'gross_total', 'discount', 'total')->withTimestamps();
+    }
 }

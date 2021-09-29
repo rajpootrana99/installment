@@ -18,7 +18,7 @@ class Site extends Model
         return $this->belongsTo(Company::class);
     }
 
-    public function sales(){
-        return $this->belongsToMany(Sale::class);
+    public function saleMasters(){
+        return $this->hasMany(SaleMaster::class);
     }
 }

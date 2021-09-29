@@ -15,6 +15,15 @@ class CreateSaleFootersTable extends Migration
     {
         Schema::create('sale_footers', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('sale_master_id')->index();
+            $table->string('gross_value');
+            $table->string('discount_total');
+            $table->string('tax_total');
+            $table->string('extra_discount')->nullable();
+            $table->string('net_value');
+            $table->string('remarks')->nullable();
+
+            $table->foreign('sale_master_id')->references('id')->on('sale_masters');
             $table->timestamps();
         });
     }
