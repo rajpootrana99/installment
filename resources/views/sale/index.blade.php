@@ -177,66 +177,6 @@
                 </div><!--end modal-content-->
             </div><!--end modal-dialog-->
         </div>
-        <div class="modal fade" id="addBroker" tabindex="-1" role="dialog" aria-labelledby="addBrokerLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h6 class="modal-title m-0" id="addBrokerLabel">Broker</h6>
-                        <button type="button" class="close " data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true"><i class="la la-times"></i></span>
-                        </button>
-                    </div><!--end modal-header-->
-                    <form method="post" id="addBrokerForm">
-                        @csrf
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label for="name" class="col-form-label text-right">Broker Name</label>
-                                        <input class="form-control" type="text" name="name" placeholder="Enter Name" id="broker_name">
-                                        <span class="text-danger error-text name_error"></span>
-                                    </div>
-                                </div>
-                            </div><!--end row-->
-                        </div><!--end modal-body-->
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary btn-sm">Save</button>
-                        </div><!--end modal-footer-->
-                    </form>
-                </div><!--end modal-content-->
-            </div><!--end modal-dialog-->
-        </div>
-        <div class="modal fade" id="addGood" tabindex="-1" role="dialog" aria-labelledby="addGoodLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h6 class="modal-title m-0" id="addGoodLabel">Goods</h6>
-                        <button type="button" class="close " data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true"><i class="la la-times"></i></span>
-                        </button>
-                    </div><!--end modal-header-->
-                    <form method="post" id="addGoodForm">
-                        @csrf
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label for="name" class="col-form-label text-right">Goods Name</label>
-                                        <input class="form-control" type="text" name="name" placeholder="Enter Name" id="goods_name">
-                                        <span class="text-danger error-text name_error"></span>
-                                    </div>
-                                </div>
-                            </div><!--end row-->
-                        </div><!--end modal-body-->
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary btn-sm">Save</button>
-                        </div><!--end modal-footer-->
-                    </form>
-                </div><!--end modal-content-->
-            </div><!--end modal-dialog-->
-        </div>
         <div class="modal fade" id="extraDiscount" tabindex="-1" role="dialog" aria-labelledby="extraDiscountLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -380,66 +320,6 @@
                     }
                 });
             }
-
-            $(document).on('submit', '#addGoodForm', function (e){
-                e.preventDefault();
-                let formDate = new FormData($('#addGoodForm')[0]);
-                $.ajax({
-                    type: "post",
-                    url: "goods",
-                    data: formDate,
-                    contentType: false,
-                    processData: false,
-                    beforeSend:function (){
-                        $(document).find('span.error-text').text('');
-                    },
-                    success: function (response) {
-                        if (response.status == 0){
-                            $('#addGood').modal('show');
-                            $.each(response.error, function (prefix, val){
-                                $('span.'+prefix+'_error').text(val[0]);
-                            });
-                        }else {
-                            $('#addGoodForm')[0].reset();
-                            $('#addGood').modal('hide');
-                            fetchCustomers();
-                        }
-                    },
-                    error: function (error){
-                        $('#addGood').modal('show');
-                    }
-                });
-            });
-
-            $(document).on('submit', '#addBrokerForm', function (e){
-                e.preventDefault();
-                let formDate = new FormData($('#addBrokerForm')[0]);
-                $.ajax({
-                    type: "post",
-                    url: "broker",
-                    data: formDate,
-                    contentType: false,
-                    processData: false,
-                    beforeSend:function (){
-                        $(document).find('span.error-text').text('');
-                    },
-                    success: function (response) {
-                        if (response.status == 0){
-                            $('#addBroker').modal('show');
-                            $.each(response.error, function (prefix, val){
-                                $('span.'+prefix+'_error').text(val[0]);
-                            });
-                        }else {
-                            $('#addBrokerForm')[0].reset();
-                            $('#addBroker').modal('hide');
-                            fetchSites();
-                        }
-                    },
-                    error: function (error){
-                        $('#addBroker').modal('show');
-                    }
-                });
-            });
 
             $(document).on('click', '#selectTaxButton', function (e){
                 e.preventDefault();
