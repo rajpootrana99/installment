@@ -17,7 +17,7 @@ class CreateVendorsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('father_name');
-            $table->string('material_status');
+            $table->string('marital_status');
             $table->string('cell');
             $table->string('cnic');
             $table->string('residential_address')->nullable();

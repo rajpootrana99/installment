@@ -12,7 +12,7 @@ class Vendor extends Model
     protected $fillable = [
         'name',
         'father_name',
-        'material_status',
+        'marital_status',
         'cell',
         'cnic',
         'residential_address',
@@ -25,11 +25,11 @@ class Vendor extends Model
         'cnic_back',
     ];
 
-    public function getMaterialStatusAttribute($attribute){
-        return $this->materialStatusOptions()[$attribute] ?? 0;
+    public function getMaritalStatusAttribute($attribute){
+        return $this->maritalStatusOptions()[$attribute] ?? 0;
     }
 
-    public function materialStatusOptions(){
+    public function maritalStatusOptions(){
         return [
             0 => 'Single',
             1 => 'Married',

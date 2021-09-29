@@ -13,7 +13,7 @@ class Customer extends Model
         'name',
         'father_name',
         'type',
-        'material_status',
+        'marital_status',
         'cell',
         'cnic',
         'monthly_income',
@@ -33,11 +33,11 @@ class Customer extends Model
         'cnic_back',
     ];
 
-    public function getMaterialStatusAttribute($attribute){
-        return $this->materialStatusOptions()[$attribute] ?? 0;
+    public function getMaritalStatusAttribute($attribute){
+        return $this->maritalStatusOptions()[$attribute] ?? 0;
     }
 
-    public function materialStatusOptions(){
+    public function maritalStatusOptions(){
         return [
             0 => 'Single',
             1 => 'Married',

@@ -18,7 +18,7 @@ class CreateEmployeesTable extends Migration
             $table->string('name');
             $table->string('father_name');
             $table->string('type');
-            $table->string('material_status');
+            $table->string('marital_status');
             $table->string('cell');
             $table->string('cnic');
             $table->string('monthly_income');
