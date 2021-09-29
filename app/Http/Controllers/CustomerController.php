@@ -23,6 +23,13 @@ class CustomerController extends Controller
         ]);
     }
 
+    public function fetchCustomers(){
+        $customers = Customer::all();
+        return response()->json([
+            'customers' => $customers,
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

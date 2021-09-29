@@ -60,6 +60,7 @@ Route::get('fetchRoutes', 'RouteController@fetchRoutes')->middleware(['auth']);
 Route::resource('employee', 'EmployeeController')->middleware(['auth']);
 Route::resource('vendor', 'VendorController')->middleware(['auth']);
 Route::resource('customer', 'CustomerController')->middleware(['auth']);
+Route::get('fetchCustomers', 'CustomerController@fetchCustomers')->middleware(['auth']);
 Route::resource('guaranter', 'GuaranterController')->middleware(['auth']);
 Route::resource('tax', 'TaxController')->middleware(['auth']);
 Route::get('fetchTax', 'TaxController@fetchTax')->middleware(['auth']);
