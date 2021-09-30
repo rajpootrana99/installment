@@ -62,7 +62,7 @@
                         <span aria-hidden="true"><i class="la la-times"></i></span>
                     </button>
                 </div><!--end modal-header-->
-                <form method="post" id="addCustomerDetailForm">
+                <form method="post" id="addCustomerDetailForm" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="row">
@@ -243,7 +243,7 @@
                         <span aria-hidden="true"><i class="la la-times"></i></span>
                     </button>
                 </div><!--end modal-header-->
-                <form method="post" id="editCustomerDetailForm">
+                <form method="post" id="editCustomerDetailForm" enctype="multipart/form-data">
                     @csrf
                     @method('PATCH')
                     <div class="modal-body">

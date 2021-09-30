@@ -6,6 +6,7 @@ use App\Http\Requests\GuaranterRequest;
 use App\Http\Traits\GeneralTrait;
 use App\Models\Guaranter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class GuaranterController extends Controller
 {
@@ -17,12 +18,15 @@ class GuaranterController extends Controller
      */
     public function index()
     {
+        return view('guaranter.index');
+    }
+
+    public function fetchGuaranters(){
         $guaranters = Guaranter::all();
-        return view('guaranter.index', [
+        return response()->json([
             'guaranters' => $guaranters,
         ]);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -30,9 +34,6 @@ class GuaranterController extends Controller
      */
     public function create()
     {
-        return view('guaranter.create', [
-            'guaranter' => new Guaranter(),
-        ]);
     }
 
     /**
@@ -41,11 +42,33 @@ class GuaranterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(GuaranterRequest $request)
+    public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'father_name' => 'required',
+            'marital_status' => 'required',
+            'phone' => 'required',
+            'cnic' => 'required',
+            'monthly_income' => 'required',
+            'residential_address' => 'required',
+            'office_address' => 'required',
+            'occupation' => 'required',
+            'designation' => 'required',
+            'work_since' => 'required',
+            'cnic_front' => 'sometimes|file|image',
+            'cnic_back' => 'sometimes|file|image',
+            'image' => 'sometimes|file|image',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+
         $guaranter = Guaranter::create($request->all());
         $this->storeImage($guaranter);
-        return redirect(route('guaranter.index'));
+        if ($guaranter){
+            return response()->json(['status' => 1, 'message' => 'Guaranter Added Successfully']);
+        }
     }
 
     /**
@@ -65,11 +88,23 @@ class GuaranterController extends Controller
      * @param  \App\Models\Guaranter  $guaranter
      * @return \Illuminate\Http\Response
      */
-    public function edit(Guaranter $guaranter)
+    public function edit($guaranter)
     {
-        return view('guaranter.edit', [
-            'guaranter' => $guaranter,
-        ]);
+        $guaranter = Guaranter::find($guaranter);
+        $marital_status = $guaranter->getAttributes()['marital_status'];
+        if ($guaranter){
+            return response()->json([
+                'status' => 200,
+                'guaranter' => $guaranter,
+                'marital_status' => $marital_status,
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => 404,
+                'message' => 'Guaranter not found'
+            ]);
+        }
     }
 
     /**
@@ -79,10 +114,33 @@ class GuaranterController extends Controller
      * @param  \App\Models\Guaranter  $guaranter
      * @return \Illuminate\Http\Response
      */
-    public function update(GuaranterRequest $request, Guaranter $guaranter)
+    public function update(Request $request, $guaranter)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'father_name' => 'required',
+            'marital_status' => 'required',
+            'phone' => 'required',
+            'cnic' => 'required',
+            'monthly_income' => 'required',
+            'residential_address' => 'required',
+            'office_address' => 'required',
+            'occupation' => 'required',
+            'designation' => 'required',
+            'work_since' => 'required',
+            'cnic_front' => 'sometimes|file|image',
+            'cnic_back' => 'sometimes|file|image',
+            'image' => 'sometimes|file|image',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $guaranter = Guaranter::find($guaranter);
         $guaranter->update($request->all());
-        return redirect(route('guaranter.index'));
+        $this->storeImage($guaranter);
+        if ($guaranter){
+            return response()->json(['status' => 1, 'message' => 'Guaranter Updated Successfully']);
+        }
     }
 
     /**
@@ -91,10 +149,20 @@ class GuaranterController extends Controller
      * @param  \App\Models\Guaranter  $guaranter
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Guaranter $guaranter)
+    public function destroy($guaranter)
     {
+        $guaranter = Guaranter::find($guaranter);
+        if (!$guaranter){
+            return response()->json([
+                'status' => 0,
+                'message' => 'Guaranter not exist'
+            ]);
+        }
         $guaranter->delete();
-        return redirect(route('guaranter.index'));
+        return response()->json([
+            'status' => 1,
+            'message' => 'Guaranter Deleted Successfully'
+        ]);
     }
 
     public function storeImage($guaranter)

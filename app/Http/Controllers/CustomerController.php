@@ -155,7 +155,9 @@ class CustomerController extends Controller
         $customer = Customer::find($customer);
         $customer->update($request->all());
         $this->storeImage($customer);
-        return redirect(route('customer.index'));
+        if ($customer){
+            return response()->json(['status' => 1, 'message' => 'Customer Updated Successfully']);
+        }
     }
 
     /**
