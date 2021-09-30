@@ -28,6 +28,7 @@ class Item extends Model
         'sale_price_3',
         'sale_price_4',
         'sale_price_5',
+        'status',
     ];
 
     public function getIsSalePriceDefinedAttribute($attribute){
@@ -38,6 +39,17 @@ class Item extends Model
         return [
             0 => 'Purchase Price',
             1 => 'Company Price',
+        ];
+    }
+
+    public function getStatusAttribute($attribute){
+        return $this->statusOptions()[$attribute] ?? 0;
+    }
+
+    public function statusOptions(){
+        return [
+            0 => 'Inactive',
+            1 => 'Active',
         ];
     }
 
@@ -59,5 +71,13 @@ class Item extends Model
 
     public function barcodes(){
         return $this->hasMany(Barcode::class);
+    }
+
+    public function purchaseMasters(){
+        return $this->belongsToMany(PurchaseMaster::class)->withPivot('tax_id', 'qty', 'rate', 'gross_total', 'discount_1', 'discount_2', 'total')->withTimestamps();
+    }
+
+    public function saleMasters(){
+        return $this->belongsToMany(SaleMaster::class)->withPivot('tax_id', 'qty', 'rate', 'gross_total', 'discount', 'total')->withTimestamps();
     }
 }

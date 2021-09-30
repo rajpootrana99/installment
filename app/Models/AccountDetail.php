@@ -28,7 +28,7 @@ class AccountDetail extends Model
             8 => 'Is Bank Account',
             7 => 'Is Sales Account',
             6 => 'Is COGS Account',
-            5 => 'Is Employe',
+            5 => 'Is Employee',
             4 => 'Is Customer Header',
             3 => 'Is Cash Account',
             2 => 'Is Inventory Account',

@@ -17,7 +17,7 @@ class CreateGuarantersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('father_name');
-            $table->string('material_status');
+            $table->string('marital_status');
             $table->string('phone');
             $table->string('cnic');
             $table->string('monthly_income');

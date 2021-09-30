@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CompanyRequest;
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CompanyController extends Controller
 {
@@ -15,8 +16,12 @@ class CompanyController extends Controller
      */
     public function index()
     {
+        return view('company.index');
+    }
+
+    public function fetchCompanies(){
         $companies = Company::all();
-        return view('company.index', [
+        return response()->json([
             'companies' => $companies,
         ]);
     }
@@ -28,7 +33,7 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        return view('company.create');
+
     }
 
     /**
@@ -37,10 +42,20 @@ class CompanyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CompanyRequest $request)
+    public function store(Request $request)
     {
-        Company::create($request->all());
-        return redirect(route('company.index'));
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'address' => 'required',
+            'contact' => 'required|numeric',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $company = Company::create($request->all());
+        if ($company){
+            return response()->json(['status' => 1, 'message' => 'Company Added Successfully']);
+        }
     }
 
     /**
@@ -60,11 +75,21 @@ class CompanyController extends Controller
      * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function edit(Company $company)
+    public function edit($company)
     {
-        return view('company.edit', [
-            'company' => $company,
-        ]);
+        $company = Company::find($company);
+        if ($company){
+            return response()->json([
+                'status' => 200,
+                'company' => $company,
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => 404,
+                'message' => 'Company not found',
+            ]);
+        }
     }
 
     /**
@@ -74,10 +99,21 @@ class CompanyController extends Controller
      * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function update(CompanyRequest $request, Company $company)
+    public function update(Request $request, $company)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'address' => 'required',
+            'contact' => 'required|numeric',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $company = Company::find($company);
         $company->update($request->all());
-        return redirect(route('company.index'));
+        if ($company){
+            return response()->json(['status' => 1, 'message' => 'Company Updated Successfully']);
+        }
     }
 
     /**
@@ -86,9 +122,19 @@ class CompanyController extends Controller
      * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Company $company)
+    public function destroy($company)
     {
+        $company = Company::find($company);
+        if (!$company){
+            return response()->json([
+                'status' => 0,
+                'message' => 'Company not found',
+            ]);
+        }
         $company->delete();
-        return redirect(route('company.index'));
+        return response()->json([
+            'status' => 1,
+            'message' => 'Company deleted successfully',
+        ]);
     }
 }

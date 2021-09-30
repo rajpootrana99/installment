@@ -6,6 +6,7 @@ use App\Http\Requests\SubHeadRequest;
 use App\Models\Head;
 use App\Models\SubHead;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SubHeadController extends Controller
 {
@@ -16,10 +17,7 @@ class SubHeadController extends Controller
      */
     public function index()
     {
-        $subHeads = SubHead::with('head')->get();
-        return view('subHead.index', [
-            'subHeads' => $subHeads
-        ]);
+        return view('subHead.index');
     }
 
     /**
@@ -27,6 +25,13 @@ class SubHeadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function fetchSubHeads(){
+        $subHeads = SubHead::with('head')->get();
+        return response()->json([
+            'subHeads' => $subHeads,
+        ]);
+    }
     public function create()
     {
         $subHead = SubHead::latest()->first();
@@ -37,7 +42,7 @@ class SubHeadController extends Controller
             $serial_code = 0;
         }
         $heads = Head::all();
-        return view('subHead.create', [
+        return response()->json([
             'heads' => $heads,
             'serial_code' => $serial_code+1,
         ]);
@@ -49,10 +54,20 @@ class SubHeadController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(SubHeadRequest $request)
+    public function store(Request $request)
     {
-        SubHead::create($request->all());
-        return redirect(route('subHead.index'));
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'serial_code' => 'required',
+            'head_id' => 'required',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $subHead = SubHead::create($request->all());
+        if ($subHead){
+            return response()->json(['status' => 1, 'message' => 'Sub Head Added Successfully']);
+        }
     }
 
     /**
@@ -72,13 +87,24 @@ class SubHeadController extends Controller
      * @param  \App\Models\SubHead  $subHead
      * @return \Illuminate\Http\Response
      */
-    public function edit(SubHead $subHead)
+    public function edit($subHead)
     {
         $heads = Head::all();
-        return view('subHead.edit', [
-            'subHead' => $subHead,
-            'heads' => $heads,
-        ]);
+        $subHead = SubHead::find($subHead);
+        if ($subHead){
+            return response()->json([
+                'status' => 200,
+                'subHead' => $subHead,
+                'heads' => $heads,
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => 404,
+                'subHead' => 'Sub Head Not Found',
+                'heads' => $heads,
+            ]);
+        }
     }
 
     /**
@@ -88,10 +114,21 @@ class SubHeadController extends Controller
      * @param  \App\Models\SubHead  $subHead
      * @return \Illuminate\Http\Response
      */
-    public function update(SubHeadRequest $request, SubHead $subHead)
+    public function update(Request $request, $subHead)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'serial_code' => 'required',
+            'head_id' => 'required',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $subHead = SubHead::find($subHead);
         $subHead->update($request->all());
-        return redirect(route('subHead.index'));
+        if ($subHead){
+            return response()->json(['status' => 1, 'message' => 'Sub Head Updated Successfully']);
+        }
     }
 
     /**
@@ -100,9 +137,19 @@ class SubHeadController extends Controller
      * @param  \App\Models\SubHead  $subHead
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SubHead $subHead)
+    public function destroy($subHead)
     {
+        $subHead = SubHead::find($subHead);
+        if(!$subHead){
+            return response()->json([
+                'status' => 0,
+                'message' => 'Sub Head not exist'
+            ]);
+        }
         $subHead->delete();
-        return redirect(route('subHead.index'));
+        return response()->json([
+            'status' => 1,
+            'message' => 'Sub Head Deleted Successfully'
+        ]);
     }
 }

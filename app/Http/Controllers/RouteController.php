@@ -6,6 +6,7 @@ use App\Http\Requests\RouteRequest;
 use App\Models\Area;
 use App\Models\Route;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class RouteController extends Controller
 {
@@ -16,8 +17,12 @@ class RouteController extends Controller
      */
     public function index()
     {
+        return view('route.index');
+    }
+
+    public function fetchRoutes(){
         $routes = Route::with('areas')->get();
-        return view('route.index', [
+        return response()->json([
             'routes' => $routes,
         ]);
     }
@@ -30,7 +35,7 @@ class RouteController extends Controller
     public function create()
     {
         $areas = Area::all();
-        return view('route.create', [
+        return response()->json([
             'areas' => $areas,
         ]);
     }
@@ -41,13 +46,22 @@ class RouteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(RouteRequest $request)
+    public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'area_id' => 'required',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
         $route = Route::create([
             'name' => $request->name,
         ]);
         $route->areas()->attach($request->area_id);
-        return redirect(route('route.index'));
+        if ($route){
+            return response()->json(['status' => 1, 'message' => 'Route added successfully']);
+        }
     }
 
     /**
@@ -67,13 +81,24 @@ class RouteController extends Controller
      * @param  \App\Models\Route  $route
      * @return \Illuminate\Http\Response
      */
-    public function edit(Route $route)
+    public function edit($route)
     {
         $areas = Area::all();
-        return view('route.edit', [
-            'areas' => $areas,
-            'route' => $route,
-        ]);
+        $route = Route::with('areas')->where('id', $route)->first();
+        if ($route){
+            return response()->json([
+                'status' => 200,
+                'areas' => $areas,
+                'route' => $route,
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => 404,
+                'areas' => $areas,
+                'message' => 'Route not found',
+            ]);
+        }
     }
 
     /**
@@ -83,14 +108,24 @@ class RouteController extends Controller
      * @param  \App\Models\Route  $route
      * @return \Illuminate\Http\Response
      */
-    public function update(RouteRequest $request, Route $route)
+    public function update(Request $request, $route)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'area_id' => 'required',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $route = Route::find($route);
         $route->update([
             'name' => $request->name,
         ]);
         $route->areas()->detach();
         $route->areas()->attach($request->area_id);
-        return redirect(route('route.index'));
+        if ($route){
+            return response()->json(['status' => 1, 'message' => 'Route updated successfully']);
+        }
     }
 
     /**
@@ -99,10 +134,20 @@ class RouteController extends Controller
      * @param  \App\Models\Route  $route
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Route $route)
+    public function destroy($route)
     {
-        $route->delete();
+        $route = Route::find($route);
+        if (!$route){
+            return response()->json([
+                'status' => 0,
+                'message' => 'Route not found',
+            ]);
+        }
         $route->areas()->detach();
-        return redirect(route('route.index'));
+        $route->delete();
+        return response()->json([
+            'status' => 1,
+            'message' => 'Route deleted successfully',
+        ]);
     }
 }

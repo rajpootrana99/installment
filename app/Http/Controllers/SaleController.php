@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
-use App\Models\Employee;
-use App\Models\Guaranter;
 use App\Models\Item;
-use App\Models\Sale;
+use App\Models\SaleFooter;
+use App\Models\SaleMaster;
 use App\Models\Site;
+use App\Models\Tax;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class SaleController extends Controller
 {
@@ -19,10 +21,7 @@ class SaleController extends Controller
      */
     public function index()
     {
-        $sales = Sale::all();
-        return view('sale.index', [
-            'sales' => $sales,
-        ]);
+        return view('sale.index');
     }
 
     /**
@@ -32,24 +31,7 @@ class SaleController extends Controller
      */
     public function create()
     {
-        $salesOfficers = Employee::where('type', '0')->get();
-        $marketingOfficers = Employee::where('type', '1')->get();
-        $inquiryOfficers = Employee::where('type', '2')->get();
-        $recoveryOfficers = Employee::where('type', '3')->get();
-        $customers = Customer::all();
-        $items = Item::with('barcodes')->get();
-        $guaranters = Guaranter::all();
-        $sites = Site::all();
-        return view('sale.create', [
-            'salesOfficers' => $salesOfficers,
-            'marketingOfficers' => $marketingOfficers,
-            'inquiryOfficers' => $inquiryOfficers,
-            'recoveryOfficers' => $recoveryOfficers,
-            'customers' => $customers,
-            'items' => $items,
-            'guaranters' => $guaranters,
-            'sites' => $sites,
-        ]);
+        //
     }
 
     /**
@@ -60,55 +42,78 @@ class SaleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'invoice_no' => 'required',
+            'date' => 'required',
+            'customer_id' => 'required',
+            'site_id' => 'required',
+            'item_id' => 'required',
+            'qty' => 'sometimes',
+            'rate' => 'required',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+
+        $saleMaster = SaleMaster::create([
+            'invoice_no' => $request->invoice_no,
+            'customer_id' => $request->customer_id,
+            'site_id' => $request->site_id,
+            'user_id' => Auth::id(),
+            'date' => $request->date,
+        ]);
+
+        $item_id = $request->item_id;
+        $tax_id = $request->tax_id;
+        $qty = $request->qty;
+        $rate = $request->rate;
+        $gross_total = $request->gross_total;
+        $discount = $request->discount;
+        $total = $request->total;
+        for ($count=0; $count < count($item_id); $count++){
+            $saleMaster->items()->attach($item_id[$count], [
+                'qty' => $qty[$count],
+                'rate' => $rate[$count],
+                'gross_total' => $gross_total[$count],
+                'discount' => $discount[$count],
+                'tax_id' => $tax_id[$count],
+                'total' => $total[$count],
+            ]);
+        }
+
+        $saleFooter = SaleFooter::create([
+            'sale_master_id' => $saleMaster->id,
+            'gross_value' => $request->gross_value,
+            'discount_total' => $request->discount_total,
+            'tax_total' => $request->tax_total,
+            'extra_discount' => $request->extra_discount,
+            'net_value' => $request->net_value,
+            'remarks' => $request->remarks,
+        ]);
+
+        if ($saleMaster && $saleFooter){
+            return response()->json(['status' => 1, 'message' => 'Sale Invoice Added Successfully']);
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Sale  $sale
+     * @param  \App\Models\SaleMaster  $saleMaster
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(SaleMaster $saleMaster)
     {
-        $customer = Customer::find($id);
-        if ($customer){
-            return response()->json([
-                'status' => 1,
-                'customer' => $customer,
-            ]);
-        }
-        else{
-            return response()->json([
-                'status' => 0,
-                'message' => 'Not Found',
-            ]);
-        }
-    }
-
-    public function fetchItem($id){
-        $item = Item::with('category', 'barcodes')->find($id);
-        if ($item){
-            return response()->json([
-                'status' => 1,
-                'item' => $item,
-            ]);
-        }
-        else{
-            return response()->json([
-                'status' => 0,
-                'message' => 'Not Found',
-            ]);
-        }
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Sale  $sale
+     * @param  \App\Models\SaleMaster  $saleMaster
      * @return \Illuminate\Http\Response
      */
-    public function edit(Sale $sale)
+    public function edit(SaleMaster $saleMaster)
     {
         //
     }
@@ -117,10 +122,10 @@ class SaleController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Sale  $sale
+     * @param  \App\Models\SaleMaster  $saleMaster
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Sale $sale)
+    public function update(Request $request, SaleMaster $saleMaster)
     {
         //
     }
@@ -128,10 +133,10 @@ class SaleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Sale  $sale
+     * @param  \App\Models\SaleMaster  $saleMaster
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Sale $sale)
+    public function destroy(SaleMaster $saleMaster)
     {
         //
     }

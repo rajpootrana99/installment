@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SubCategoryRequest;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SubCategoryController extends Controller
 {
@@ -15,12 +16,15 @@ class SubCategoryController extends Controller
      */
     public function index()
     {
+        return view('subCategory.index');
+    }
+
+    public function fetchSubCategories(){
         $subCategories = SubCategory::all();
-        return view('subCategory.index', [
+        return response()->json([
             'subCategories' => $subCategories,
         ]);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -28,7 +32,7 @@ class SubCategoryController extends Controller
      */
     public function create()
     {
-        return view('subCategory.create');
+
     }
 
     /**
@@ -37,10 +41,18 @@ class SubCategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(SubCategoryRequest $request)
+    public function store(Request $request)
     {
-        SubCategory::create($request->all());
-        return redirect(route('subCategory.index'));
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $subCategory = SubCategory::create($request->all());
+        if ($subCategory){
+            return response()->json(['status' => 1, 'message' => 'Sub Category Added Successfully']);
+        }
     }
 
     /**
@@ -60,11 +72,21 @@ class SubCategoryController extends Controller
      * @param  \App\Models\SubCategory  $subCategory
      * @return \Illuminate\Http\Response
      */
-    public function edit(SubCategory $subCategory)
+    public function edit($subCategory)
     {
-        return view('subCategory.edit', [
-            'subCategory' => $subCategory,
-        ]);
+        $subCategory = SubCategory::find($subCategory);
+        if ($subCategory){
+            return response()->json([
+                'status' => 200,
+                'subCategory' => $subCategory,
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => 404,
+                'message' => 'Sub Category not found'
+            ]);
+        }
     }
 
     /**
@@ -74,11 +96,19 @@ class SubCategoryController extends Controller
      * @param  \App\Models\SubCategory  $subCategory
      * @return \Illuminate\Http\Response
      */
-    public function update(SubCategoryRequest $request, SubCategory $subCategory)
+    public function update(Request $request, $subCategory)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $subCategory = SubCategory::find($subCategory);
         $subCategory->update($request->all());
-        return redirect(route('subCategory.index'));
-
+        if ($subCategory){
+            return response()->json(['status' => 1, 'message' => 'Sub Category Updated Successfully']);
+        }
     }
 
     /**
@@ -87,10 +117,19 @@ class SubCategoryController extends Controller
      * @param  \App\Models\SubCategory  $subCategory
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SubCategory $subCategory)
+    public function destroy($subCategory)
     {
+        $subCategory = SubCategory::find($subCategory);
+        if (!$subCategory){
+            return response()->json([
+                'status' => 0,
+                'message' => 'Sub Category not exist'
+            ]);
+        }
         $subCategory->delete();
-        return redirect(route('subCategory.index'));
-
+        return response()->json([
+            'status' => 1,
+            'message' => 'Sub Category deleted successfully'
+        ]);
     }
 }

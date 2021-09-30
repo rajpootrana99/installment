@@ -132,7 +132,7 @@ class TaxController extends Controller
         if (!$tax){
             return response()->json([
                 'status' => 0,
-                'message' => 'Tax deatail not exist'
+                'message' => 'Tax detail not exist'
             ]);
         }
         $tax->delete();

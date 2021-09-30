@@ -1,123 +1,783 @@
-@extends('layout.base')
+@extends('layouts.base')
 
-@section('section')
-    <!-- TOP Nav Bar -->
-    <div class="iq-top-navbar">
-        <div class="iq-navbar-custom">
-            <div class="iq-sidebar-logo">
-                <div class="top-logo">
-                    <a href="index.html" class="logo">
-                        <img src="images/logo.gif" class="img-fluid" alt="">
-                        <span>Metorik</span>
-                    </a>
-                </div>
-            </div>
-            <div class="navbar-breadcrumb">
-                <h5 class="mb-0">Purchases</h5>
-                <nav aria-label="breadcrumb">
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('purchase.index') }}">Purchases</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">List</li>
-                    </ul>
-                </nav>
-            </div>
-            <nav class="navbar navbar-expand-lg navbar-light p-0">
-
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ml-auto navbar-list">
-
-
-
-
-                    </ul>
-                </div>
-                <ul class="navbar-list">
-                    <li>
-                        <a href="#" class="search-toggle iq-waves-effect bg-primary text-white"><img src="images/user/1.jpg" class="img-fluid rounded" alt="user"></a>
-                        <div class="iq-sub-dropdown iq-user-dropdown">
-                            <div class="iq-card shadow-none m-0">
-                                <div class="iq-card-body p-0 ">
-                                    <div class="bg-primary p-3">
-                                        <h5 class="mb-0 text-white line-height">Hello Nik jone</h5>
-                                        <span class="text-white font-size-12">Available</span>
-                                    </div>
-                                    <div class="d-inline-block w-100 text-center p-3">
-                                        <form action="{{ route('logout') }}"  style="display: none;" method="post" id="lgut">
-                                            @csrf
-                                            <input type="submit" id="logoutbtn">
-                                        </form>
-                                        <a class="iq-bg-danger iq-sign-btn" type="button" onclick="$('#lgut').submit()">Sign out<i class="ri-login-box-line ml-2"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-    <!-- TOP Nav Bar END -->
-    <!-- Page Content  -->
-    <div id="content-page" class="content-page">
-        <div class="container-fluid">
+@section('content')
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="row">
+                        <div class="col">
+                            <h4 class="page-title">Purchase Invoice</h4>
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </div><!--end page-title-box-->
+            </div><!--end col-->
+        </div><!--end row-->
+        <!-- end page title end breadcrumb -->
+        <form method="post" id="purchaseForm">
+            @csrf
             <div class="row">
-                <div class="col-sm-12">
-                    <div class="iq-card">
-                        <div class="iq-card-header d-flex justify-content-between">
-                            <div class="iq-header-title">
-                                <div class="row card-title">
-                                    <h4>Purchases</h4>
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label for="invoice_no" class="col-form-label text-right">Invoice Number</label>
+                                        <input class="form-control" type="text" name="invoice_no" placeholder="Enter Invoice No." id="invoice_no">
+                                        <span class="text-danger error-text invoice_no_error"></span>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="iq-card-body">
-                            <a href="{{ route('purchase.create') }}" class="btn btn-primary float-right mb-4"><i class="fa fa-plus"></i> New Purchase Invoice </a>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="date" class="col-form-label text-right">Date</label>
+                                        <input class="form-control" type="date" name="date" id="date">
+                                        <span class="text-danger error-text date_error"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="vendor_id" class="col-form-label text-right">Select Vendor</label>
+                                        <select class="select2 mb-3 form-control custom-select" name="vendor_id" id="vendor_id" style="width: 100%; height:36px;" data-placeholder="Select Vendor">
+                                            @foreach($vendors as $vendor)
+                                                <option value="{{ $vendor->id }}">{{ $vendor->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <span class="text-danger error-text vendor_id_error"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label for="vendor_invoice_no" class="col-form-label text-right">Vendor Invoice Number</label>
+                                        <input class="form-control" type="text" name="vendor_invoice_no" placeholder="Enter Vendor Invoice No." id="vendor_invoice_no">
+                                        <span class="text-danger error-text vendor_invoice_no_error"></span>
+                                    </div>
+                                </div>
+                            </div><!--end row-->
+                        </div><!--end card-body-->
+                    </div><!--end card-->
+                </div> <!-- end col -->
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Goods</div>
+                        </div><!--end card-header-->
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label for="bilty_no" class="col-form-label text-right">Bilty No</label>
+                                        <input class="form-control" type="text" name="bilty_no" placeholder="Enter Bilty No." id="bilty_no">
+                                        <span class="text-danger error-text bilty_no_error"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="goods_id" class="col-form-label text-right">Select Goods</label>
+                                        <select class="select2 mb-3 form-control custom-select" name="goods_id" id="goods_id" style="width: 100%; height:36px;" data-placeholder="Select Goods">
+
+                                        </select>
+                                        <span class="text-danger error-text goods_id_error"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-1">
+                                    <div class="form-group">
+                                        <label for="shipment_date" class="col-form-label text-right text-white">New Good</label>
+                                        <button data-toggle="modal" data-target="#addGood" id="addGoodButton" style="border: 1px solid #E3EBF6; background: #FFFFFF; height: 38px; width: 38px; border-radius: 5px;"><i class="fas fa-cogs"></i></button>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="shipment_date" class="col-form-label text-right">Shipment Date</label>
+                                        <input class="form-control" type="date" name="shipment_date" id="shipment_date">
+                                        <span class="text-danger error-text shipment_date_error"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="delivery_date" class="col-form-label text-right">Delivery Date</label>
+                                        <input class="form-control" type="date" name="delivery_date" id="delivery_date">
+                                        <span class="text-danger error-text delivery_date_error"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="broker_id" class="col-form-label text-right">Select Broker</label>
+                                        <select class="select2 mb-3 form-control custom-select" name="broker_id" id="broker_id" style="width: 100%; height:36px;" data-placeholder="Select Broker">
+
+                                        </select>
+                                        <span class="text-danger error-text broker_id_error"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-1">
+                                    <div class="form-group">
+                                        <label for="shipment_date" class="col-form-label text-right text-white">New Good</label>
+                                        <button data-toggle="modal" data-target="#addBroker" id="addBrokerButton" style="border: 1px solid #E3EBF6; background: #FFFFFF; height: 38px; width: 38px; border-radius: 5px;"><i class="fas fa-cogs"></i></button>
+                                    </div>
+                                </div>
+                            </div><!--end row-->
+                        </div><!--end card-body-->
+                    </div><!--end card-->
+                </div> <!-- end col -->
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Goods Detail</div>
+                        </div><!--end card-header-->
+                        <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table">
+                                <table class="table table-bordered mb-0 table-centered">
                                     <thead>
-                                    <tr class="">
-                                        <th scope="col">#</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Father Name</th>
-                                        <th scope="col">Office Phone</th>
-                                        <th scope="col">CNIC</th>
-                                        <th scope="col">Phone</th>
-                                        <th scope="col">Action</th>
+                                    <tr>
+                                        <th width="3%">#</th>
+                                        <th width="10%">Invoice No</th>
+                                        <th width="20%">Bilty No</th>
+                                        <th width="20%">Vehicle No</th>
+                                        <th width="5%">Qty</th>
+                                        <th width="15%">Gate Pass No</th>
+                                        <th width="3%"><i class="fa fa-plus-circle"></i></th>
+                                        <th width="3%"><i class="fa fa-minus-circle"></i></th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    {{--@foreach($purchases as $purchase)
-                                        <tr class="">
-                                            <td >{{ $purchase->id }}</td>
-                                            <td><h6 class="row"><img class="profile-pic mr-2" src="{{ asset('storage/'.$purchase->image) }}" width="50px" height="50px" alt="profile-pic"> {{ $purchase->name }}</h6></td>
-                                            <td>{{ $purchase->father_name }}</td>
-                                            <td>{{ $purchase->office_phone }}</td>
-                                            <td>{{ $purchase->cnic }}</td>
-                                            <td>{{ $purchase->cell }}</td>
-                                            <td>
-                                                <div class="row">
-                                                    <a href="{{ route('purchase.edit', ['purchase' => $purchase]) }}" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="View">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-                                                    <form id="{{ 'delete_'.$purchase->id }}" method="post" action="{{ route('purchase.destroy', ['purchase' => $purchase]) }}">
-                                                        @method('DELETE')
-                                                        @csrf
-                                                        <a onclick="document.getElementById('{{ 'delete_'.$purchase->id }}').submit()" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="View">
-                                                            <i class="fa fa-trash"></i>
-                                                        </a>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach--}}
+                                    <tbody id="goodsDetailTableBody">
+
                                     </tbody>
-                                </table>
+                                </table><!--end /table-->
+                            </div><!--end /tableresponsive-->
+                        </div><!--end card-body-->
+                    </div><!--end card-->
+                </div> <!-- end col -->
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Purchase Detail</div>
+                        </div><!--end card-header-->
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered mb-0 table-centered">
+                                    <thead>
+                                    <tr>
+                                        <th width="3%">#</th>
+                                        <th width="15%">Item</th>
+                                        <th width="10%">Barcode</th>
+                                        <th width="5%">Qty</th>
+                                        <th width="10%">Rate</th>
+                                        <th width="10%">Gross Total</th>
+                                        <th width="11%">Discount 1</th>
+                                        <th width="11%">Discount 2</th>
+                                        <th width="15%">Tax</th>
+                                        <th width="10%">Total</th>
+                                        <th width="3%"><i class="fa fa-plus-circle"></i></th>
+                                        <th width="3%"><i class="fa fa-minus-circle"></i></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="itemsDetailTableBody">
+
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <td colspan="5" class="text-right"><strong>Sub Total</strong></td>
+                                        <td><input type="text" style="height: 30px" name="gross_value" readonly id="gross_value" class="form-control" /></td>
+                                        <td><input type="text" style="height: 30px" name="discount_1_total" readonly id="discount_1_total" class="form-control" /></td>
+                                        <td><input type="text" style="height: 30px" name="discount_2_total" readonly id="discount_2_total" class="form-control" /></td>
+                                        <td><input type="text" style="height: 30px" name="tax_total" readonly id="tax_total" class="form-control" /></td>
+                                        <td colspan="3"><input type="text" style="height: 30px" name="sub_total" readonly id="sub_total" class="form-control" /></td>
+                                    </tr>
+                                    </tfoot>
+                                </table><!--end /table-->
+                            </div><!--end /tableresponsive-->
+                            <div class="float-right mt-3">
+                                <div class="row">
+                                    <div class="form-group col-5">
+                                        <label for="other_expenses" class="col-form-label text-right" style="color: #000000"><strong>Other Expenses</strong></label>
+                                    </div>
+                                    <div class="form-group col-7">
+                                        <input type="text" style="height: 30px" name="other_expenses" onchange="subTotal()" id="other_expenses" class="form-control" />
+                                    </div>
+                                </div>
+                                <span class="text-danger error-text other_expenses_error"></span>
+                                <div class="form-group">
+                                    <label for="user_id" class="col-form-label text-right" style="color: #000000"><i data-toggle="modal" data-target="#extraDiscount" id="extraDiscountButton" class="fa fa-plus-circle" style="color: #000000"></i><strong> Extra Discount</strong></label>
+                                    <input type="text" style="height: 30px" name="extra_discount_amount" readonly id="extra_discount_amount" class="form-control" /><input type="hidden" style="height: 30px" name="extra_discount" id="extra_discount" class="form-control" />
+                                    <label id="extra_discount_label"></label>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-4">
+                                        <label for="net_value" class="col-form-label text-right" style="color: #000000"><strong>Net Value</strong></label>
+                                    </div>
+                                    <div class="form-group col-8">
+                                        <input type="text" style="height: 30px" name="net_value" readonly id="net_value" class="form-control" />
+                                    </div>
+                                </div>
+                                <span class="text-danger error-text net_value_error"></span>
+                                <div class="form-group">
+                                    <label for="user_id" class="col-form-label text-right" style="color: #000000"><strong>Remarks</strong></label>
+                                    <input type="text" style="height: 30px" name="remarks" class="form-control" />
+                                    <span class="text-danger error-text remarks_error"></span>
+                                </div>
                             </div>
+                        </div><!--end card-body-->
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary float-right">Save</button>
                         </div>
-                    </div>
-                </div>
-            </div>
+                    </div><!--end card-->
+                </div> <!-- end col -->
+            </div> <!-- end row -->
+        </form>
+
+        <div class="modal fade" id="selectTax" tabindex="-1" role="dialog" aria-labelledby="selectTaxLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title m-0" id="selectTaxLabel">Taxes</h6>
+                        <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i class="la la-times"></i></span>
+                        </button>
+                    </div><!--end modal-header-->
+                    <form method="post" id="selectTaxForm">
+                        @csrf
+                        <input type="hidden" id="tax_field_id">
+                        <div class="form-group p-3">
+                            <label for="tax_id" class="col-form-label text-right">Select Tax</label>
+                            <select class="select2 mb-3 form-control custom-select" name="tax_id" id="tax_id" style="width: 100%; height:36px;" data-placeholder="Select Tax">
+
+                            </select>
+                            <span class="text-danger error-text tax_id_error"></span>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                        </div><!--end modal-footer-->
+                    </form>
+                </div><!--end modal-content-->
+            </div><!--end modal-dialog-->
+        </div>
+        <div class="modal fade" id="selectDiscountOne" tabindex="-1" role="dialog" aria-labelledby="selectDiscountOneLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title m-0" id="selectDiscountOneLabel">Discount 1 Percentage</h6>
+                        <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i class="la la-times"></i></span>
+                        </button>
+                    </div><!--end modal-header-->
+                    <form method="post" id="selectDiscountOneForm">
+                        @csrf
+                        <input type="hidden" id="discount_1_field_id">
+                        <div class="form-group p-3">
+                            <label for="discount_1_percentage" class="col-form-label text-right">Enter Discount Percentage</label>
+                            <input class="form-control" type="text" name="discount_1_percentage" id="discount_1_percentage" placeholder="Enter Percentage">
+                            <span class="text-danger error-text discount_1_percentage_error"></span>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary btn-sm">Add</button>
+                        </div><!--end modal-footer-->
+                    </form>
+                </div><!--end modal-content-->
+            </div><!--end modal-dialog-->
+        </div>
+        <div class="modal fade" id="selectDiscountTwo" tabindex="-1" role="dialog" aria-labelledby="selectDiscountTwoLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title m-0" id="selectDiscountTwoLabel">Discount 2 Percentage</h6>
+                        <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i class="la la-times"></i></span>
+                        </button>
+                    </div><!--end modal-header-->
+                    <form method="post" id="selectDiscountTwoForm">
+                        @csrf
+                        <input type="hidden" id="discount_2_field_id">
+                        <div class="form-group p-3">
+                            <label for="discount_2_percentage" class="col-form-label text-right">Enter Discount Percentage</label>
+                            <input class="form-control" type="text" name="discount_2_percentage" id="discount_2_percentage" placeholder="Enter Percentage">
+                            <span class="text-danger error-text discount_2_percentage_error"></span>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary btn-sm">Add</button>
+                        </div><!--end modal-footer-->
+                    </form>
+                </div><!--end modal-content-->
+            </div><!--end modal-dialog-->
+        </div>
+        <div class="modal fade" id="addBroker" tabindex="-1" role="dialog" aria-labelledby="addBrokerLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title m-0" id="addBrokerLabel">Broker</h6>
+                        <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i class="la la-times"></i></span>
+                        </button>
+                    </div><!--end modal-header-->
+                    <form method="post" id="addBrokerForm">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="name" class="col-form-label text-right">Broker Name</label>
+                                        <input class="form-control" type="text" name="name" placeholder="Enter Name" id="broker_name">
+                                        <span class="text-danger error-text name_error"></span>
+                                    </div>
+                                </div>
+                            </div><!--end row-->
+                        </div><!--end modal-body-->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                        </div><!--end modal-footer-->
+                    </form>
+                </div><!--end modal-content-->
+            </div><!--end modal-dialog-->
+        </div>
+        <div class="modal fade" id="addGood" tabindex="-1" role="dialog" aria-labelledby="addGoodLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title m-0" id="addGoodLabel">Goods</h6>
+                        <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i class="la la-times"></i></span>
+                        </button>
+                    </div><!--end modal-header-->
+                    <form method="post" id="addGoodForm">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="name" class="col-form-label text-right">Goods Name</label>
+                                        <input class="form-control" type="text" name="name" placeholder="Enter Name" id="goods_name">
+                                        <span class="text-danger error-text name_error"></span>
+                                    </div>
+                                </div>
+                            </div><!--end row-->
+                        </div><!--end modal-body-->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                        </div><!--end modal-footer-->
+                    </form>
+                </div><!--end modal-content-->
+            </div><!--end modal-dialog-->
+        </div>
+        <div class="modal fade" id="extraDiscount" tabindex="-1" role="dialog" aria-labelledby="extraDiscountLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title m-0" id="extraDiscountLabel">Extra Discount Percentage</h6>
+                        <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i class="la la-times"></i></span>
+                        </button>
+                    </div><!--end modal-header-->
+                    <form method="post" id="extraDiscountForm">
+                        @csrf
+                        <div class="form-group p-3">
+                            <label for="extra_discount_percentage" class="col-form-label text-right">Enter Discount Percentage</label>
+                            <input class="form-control" type="text" name="extra_discount_percentage" id="extra_discount_percentage" placeholder="Enter Percentage">
+                            <span class="text-danger error-text extra_discount_percentage_error"></span>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary btn-sm">Add</button>
+                        </div><!--end modal-footer-->
+                    </form>
+                </div><!--end modal-content-->
+            </div><!--end modal-dialog-->
         </div>
     </div>
+
+    <script>
+        var itemsCount = 1;
+        var goodsCount = 1;
+
+        $(document).ready(function (){
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            goodsDetailDynamicField(goodsCount);
+            function goodsDetailDynamicField(number){
+                html = '<tr>';
+                html += '<td>'+number+'</td>';
+                html += '<td><input type="text" style="height: 30px" name="invoice_id[]" class="form-control" /></td>';
+                html += '<td><input type="text" style="height: 30px" name="bilty_id[]" class="form-control" /></td>';
+                html += '<td><input type="text" style="height: 30px" name="vehicle_no[]" class="form-control" /></td>';
+                html += '<td><input type="text" style="height: 30px" name="goods_qty[]" class="form-control" /></td>';
+                html += '<td><input type="text" style="height: 30px" name="gate_pass_no[]" class="form-control" /></td>';
+                if (number > 1){
+                    html += '<td><button style="border: none; background-color: #fff" name="addGoods" id="addGoods"><i class="fa fa-plus-circle"></i></button></td>';
+                    html += '<td><button style="border: none; background-color: #fff" name="removeGoods" id="removeGoods"><i class="fa fa-minus-circle"></i></button></td></tr>';
+                    $('#goodsDetailTableBody').append(html);
+                }
+                else {
+                    html += '<td><button style="border: none; background-color: #fff" name="addGoods" id="addGoods"><i class="fa fa-plus-circle"></i></button></td>';
+                    html += '<td></td></tr>';
+                    $('#goodsDetailTableBody').html(html);
+                }
+            }
+            $(document).on('click', '#addGoods', function (e){
+                e.preventDefault();
+                goodsCount++;
+                goodsDetailDynamicField(goodsCount);
+            });
+            $(document).on('click', '#removeGoods', function (e){
+                e.preventDefault();
+                goodsCount--;
+                $(this).closest("tr").remove();
+            });
+
+            itemsDetailDynamicField(itemsCount);
+            function itemsDetailDynamicField(number){
+                html = '<tr>';
+                html += '<td>'+number+'</td>';
+                html += '<td><select class="select2 form-control custom-select" name="item_id[]" id="item_id_'+number+'" style="width: 100%; height:30px;" data-placeholder="Select Item"></select></td>';
+                html += '<td><input type="text" style="height: 30px" name="barcode[]" class="form-control" /></td>';
+                html += '<td><input type="text" style="height: 30px" name="qty[]" id="qty_'+number+'" onchange="gross_total('+number+')" class="form-control" /></td>';
+                html += '<td><input type="text" style="height: 30px" name="rate[]" id="rate_'+number+'" onchange="gross_total('+number+')" class="form-control" /></td>';
+                html += '<td><input type="text" style="height: 30px" name="gross_total[]" readonly id="gross_total_'+number+'" class="form-control" /></td>';
+                html += '<td><div class="row"><input type="text" style="height: 30px" readonly id="discount_1_amount_'+number+'" class="form-control col-8 ml-2" /><input type="hidden" name="discount_1[]" id="discount_1_'+number+'"><button class="col-2" data-toggle="modal" data-target="#selectDiscountOne" id="selectDiscountOneButton" value="'+number+'" style="border: none; background: #FFFFFF;"><i class="fa fa-plus-circle"></i></button></div><label id="discount_1_percentage_'+number+'"></label></td>';
+                html += '<td><div class="row"><input type="text" style="height: 30px" readonly id="discount_2_amount_'+number+'" class="form-control col-8 ml-2" /><input type="hidden" name="discount_2[]" id="discount_2_'+number+'"><button class="col-2" data-toggle="modal" data-target="#selectDiscountTwo" id="selectDiscountTwoButton" value="'+number+'" style="border: none; background: #FFFFFF;"><i class="fa fa-plus-circle"></i></button></div><label id="discount_2_percentage_'+number+'"></label></td>';
+                html += '<td><div class="row"><input type="text" style="height: 30px" readonly id="tax_amount_'+number+'" class="form-control col-8 ml-2" /><input type="hidden" name="tax_id[]" id="tax_id_'+number+'"><button class="col-2" data-toggle="modal" data-target="#selectTax" id="selectTaxButton" value="'+number+'" style="border: none; background: #FFFFFF;"><i class="fa fa-plus-circle"></i></button></div><label id="tax_name_'+number+'"></label></td>';
+                html += '<td><input type="text" style="height: 30px" name="total[]" readonly id="total_'+number+'" class="form-control" /></td>';
+                if (number > 1){
+                    html += '<td><button style="border: none; background-color: #fff" name="addItems" id="addItems"><i class="fa fa-plus-circle"></i></button></td>';
+                    html += '<td><button style="border: none; background-color: #fff" name="removeItems" id="removeItems"><i class="fa fa-minus-circle"></i></button></td></tr>';
+                    $('#itemsDetailTableBody').append(html);
+                    fetchItems();
+                    fetchTaxes();
+                }
+                else {
+                    html += '<td><button style="border: none; background-color: #fff" name="addItems" id="addItems"><i class="fa fa-plus-circle"></i></button></td>';
+                    html += '<td></td></tr>';
+                    $('#itemsDetailTableBody').html(html);
+                    fetchItems();
+                    fetchTaxes();
+                }
+            }
+            $(document).on('click', '#addItems', function (e){
+                e.preventDefault();
+                itemsCount++;
+                itemsDetailDynamicField(itemsCount);
+            });
+            $(document).on('click', '#removeItems', function (e){
+                e.preventDefault();
+                itemsCount--;
+                $(this).closest("tr").remove();
+            });
+
+            fetchItems();
+            fetchTaxes();
+            fetchGoods();
+            fetchBrokers();
+
+            function fetchItems()
+            {
+                $.ajax({
+                    type: "GET",
+                    url: "fetchItems",
+                    dataType: "json",
+                    success: function (response) {
+                        var item_id = $('#item_id_'+itemsCount+'');
+                        $('#item_id_'+itemsCount+'').children().remove().end()
+                        $.each(response.items, function (item) {
+                            item_id.append($("<option />").val(response.items[item].id).text(response.items[item].name));
+                        });
+                    }
+                });
+            }
+
+            function fetchTaxes()
+            {
+                $.ajax({
+                    type: "GET",
+                    url: "fetchTax",
+                    dataType: "json",
+                    success: function (response) {
+                        var tax_id = $('#tax_id');
+                        $('#tax_id').children().remove().end()
+                        $.each(response.taxes, function (tax) {
+                            tax_id.append($("<option />").val(response.taxes[tax].id).text(response.taxes[tax].name+' '+response.taxes[tax].percentage+'%'));
+                        });
+                    }
+                });
+            }
+
+            function fetchGoods()
+            {
+                $.ajax({
+                    type: "GET",
+                    url: "fetchGoods",
+                    dataType: "json",
+                    success: function (response) {
+                        var goods_id = $('#goods_id');
+                        $('#goods_id').children().remove().end()
+                        $.each(response.goods, function (good) {
+                            goods_id.append($("<option />").val(response.goods[good].id).text(response.goods[good].name));
+                        });
+                    }
+                });
+            }
+
+            function fetchBrokers()
+            {
+                $.ajax({
+                    type: "GET",
+                    url: "fetchBrokers",
+                    dataType: "json",
+                    success: function (response) {
+                        var broker_id = $('#broker_id');
+                        $('#broker_id').children().remove().end()
+                        $.each(response.brokers, function (broker) {
+                            broker_id.append($("<option />").val(response.brokers[broker].id).text(response.brokers[broker].name));
+                        });
+                    }
+                });
+            }
+
+            $(document).on('submit', '#addGoodForm', function (e){
+                e.preventDefault();
+                let formDate = new FormData($('#addGoodForm')[0]);
+                $.ajax({
+                    type: "post",
+                    url: "goods",
+                    data: formDate,
+                    contentType: false,
+                    processData: false,
+                    beforeSend:function (){
+                        $(document).find('span.error-text').text('');
+                    },
+                    success: function (response) {
+                        if (response.status == 0){
+                            $('#addGood').modal('show');
+                            $.each(response.error, function (prefix, val){
+                                $('span.'+prefix+'_error').text(val[0]);
+                            });
+                        }else {
+                            $('#addGoodForm')[0].reset();
+                            $('#addGood').modal('hide');
+                            fetchGoods();
+                        }
+                    },
+                    error: function (error){
+                        $('#addGood').modal('show');
+                    }
+                });
+            });
+
+            $(document).on('submit', '#addBrokerForm', function (e){
+                e.preventDefault();
+                let formDate = new FormData($('#addBrokerForm')[0]);
+                $.ajax({
+                    type: "post",
+                    url: "broker",
+                    data: formDate,
+                    contentType: false,
+                    processData: false,
+                    beforeSend:function (){
+                        $(document).find('span.error-text').text('');
+                    },
+                    success: function (response) {
+                        if (response.status == 0){
+                            $('#addBroker').modal('show');
+                            $.each(response.error, function (prefix, val){
+                                $('span.'+prefix+'_error').text(val[0]);
+                            });
+                        }else {
+                            $('#addBrokerForm')[0].reset();
+                            $('#addBroker').modal('hide');
+                            fetchBrokers();
+                        }
+                    },
+                    error: function (error){
+                        $('#addBroker').modal('show');
+                    }
+                });
+            });
+
+            $(document).on('click', '#selectTaxButton', function (e){
+                e.preventDefault();
+                var tax_field_id = $(this).val();
+                $('#selectTax').modal('show');
+                $('#tax_field_id').val(tax_field_id);
+            });
+
+            $(document).on('submit', '#selectTaxForm', function (e){
+                e.preventDefault();
+                let tax_field_id = $('#tax_field_id').val();
+                let tax_name = $('#tax_id option:selected').text();
+                let tax_id = $('#tax_id').val();
+                let gross_total = $('#gross_total_'+tax_field_id+'').val();
+                $('#tax_id_'+tax_field_id+'').val(tax_id);
+                $('#tax_name_'+tax_field_id+'').text(tax_name);
+                $.ajax({
+                    type: "GET",
+                    url: "fetchTaxPercentage/"+tax_id,
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.status == 0) {
+                            $('#selectTax').modal('hide');
+                        }
+                        else {
+                            let tax_amount = parseFloat(gross_total)/100 * parseFloat(response.tax.percentage);
+                            $('#tax_amount_'+tax_field_id+'').val(tax_amount);
+                            $('#selectTax').modal('hide');
+                            total(tax_field_id);
+                        }
+                    }
+                });
+            });
+
+            $(document).on('click', '#selectDiscountOneButton', function (e){
+                e.preventDefault();
+                var discount_1_field_id = $(this).val();
+                $('#selectDiscountOne').modal('show');
+                $('#discount_1_field_id').val(discount_1_field_id);
+            });
+
+            $(document).on('submit', '#selectDiscountOneForm', function (e){
+                e.preventDefault();
+                let discount_1_field_id = $('#discount_1_field_id').val();
+                let discount_1_percentage = $('#discount_1_percentage').val();
+                let gross_total = $('#gross_total_'+discount_1_field_id+'').val();
+                let discount_1_amount = parseFloat(gross_total)/100 * parseFloat(discount_1_percentage)
+                $('#discount_1_amount_'+discount_1_field_id+'').val(discount_1_amount);
+                $('#discount_1_percentage_'+discount_1_field_id+'').text('discount @'+discount_1_percentage+'%');
+                $('#discount_1_'+discount_1_field_id+'').val(discount_1_percentage);
+                $('#selectDiscountOneForm')[0].reset();
+                $('#selectDiscountOne').modal('hide');
+                total(discount_1_field_id)
+            });
+
+            $(document).on('click', '#selectDiscountTwoButton', function (e){
+                e.preventDefault();
+                var discount_2_field_id = $(this).val();
+                $('#selectDiscountTwo').modal('show');
+                $('#discount_2_field_id').val(discount_2_field_id);
+            });
+
+            $(document).on('submit', '#selectDiscountTwoForm', function (e){
+                e.preventDefault();
+                let discount_2_field_id = $('#discount_2_field_id').val();
+                let discount_2_percentage = $('#discount_2_percentage').val();
+                let discount_1_amount = $('#discount_1_amount_'+discount_2_field_id+'').val();
+                let gross_total = $('#gross_total_'+discount_2_field_id+'').val();
+                gross_total = parseFloat(gross_total) - parseFloat(discount_1_amount);
+                let discount_2_amount = parseFloat(gross_total)/100 * parseFloat(discount_2_percentage)
+                $('#discount_2_amount_'+discount_2_field_id+'').val(discount_2_amount);
+                $('#discount_2_percentage_'+discount_2_field_id+'').text('discount @'+discount_2_percentage+'%');
+                $('#discount_2_'+discount_2_field_id+'').val(discount_2_percentage);
+                $('#selectDiscountTwoForm')[0].reset();
+                $('#selectDiscountTwo').modal('hide');
+                total(discount_2_field_id)
+            });
+
+            $(document).on('submit', '#extraDiscountForm', function (e){
+                e.preventDefault();
+                let sub_total = $('#sub_total').val();
+                let extra_discount_percentage = $('#extra_discount_percentage').val();
+                let extra_discount = parseFloat(sub_total)/100 * parseFloat(extra_discount_percentage)
+                $('#extra_discount_amount').val(extra_discount);
+                $('#extra_discount_label').text('discount @'+extra_discount_percentage+'%');
+                $('#extra_discount').val(extra_discount_percentage);
+                $('#extraDiscountForm')[0].reset();
+                $('#extraDiscount').modal('hide');
+                subTotal();
+            });
+
+            $(document).on('submit', '#purchaseForm', function (e){
+                e.preventDefault();
+                let formDate = new FormData($('#purchaseForm')[0]);
+                $.ajax({
+                    type: "post",
+                    url: "purchase",
+                    data: formDate,
+                    contentType: false,
+                    processData: false,
+                    beforeSend:function (){
+                        $(document).find('span.error-text').text('');
+                    },
+                    success: function (response) {
+                        if (response.status == 0){
+                            $.each(response.error, function (prefix, val){
+                                $('span.'+prefix+'_error').text(val[0]);
+                            });
+                        }else {
+                            $('#purchaseForm')[0].reset();
+                            console.log(response.message);
+                            fetchItems();
+                            fetchTaxes();
+                            fetchGoods();
+                            fetchBrokers();
+                        }
+                    },
+                    error: function (error){
+
+                    }
+                });
+            });
+        });
+
+        function gross_total(number){
+            var qty = $('#qty_'+number+'').val() == '' ? 1 : $('#qty_'+number+'').val();
+            var rate = $('#rate_'+number+'').val() == '' ? 0 : $('#rate_'+number+'').val();
+            var gross_total = parseInt(qty) * parseInt(rate);
+            if (!isNaN(gross_total)){
+                $('#gross_total_'+number+'').val(gross_total);
+                total(number);
+                subTotal();
+            }
+            else {
+                $('#gross_total_'+number+'').val(0.00);
+                total(number);
+                subTotal();
+            }
+        }
+
+        function total(number){
+            var gross_total = $('#gross_total_'+number+'').val() == '' ? 0 : $('#gross_total_'+number+'').val();
+            var discount_1_amount = $('#discount_1_amount_'+number+'').val() == '' ? 0 : $('#discount_1_amount_'+number+'').val();
+            var discount_2_amount = $('#discount_2_amount_'+number+'').val() == '' ? 0 : $('#discount_2_amount_'+number+'').val();
+            var tax_amount = $('#tax_amount_'+number+'').val() == '' ? 0 : $('#tax_amount_'+number+'').val();
+            var total = (parseFloat(gross_total) - parseFloat(discount_1_amount) - parseFloat(discount_2_amount)) + parseFloat(tax_amount);
+            if (!isNaN(total)){
+                $('#total_'+number+'').val(total.toFixed(2));
+                subTotal();
+            }
+            else {
+                $('#total_'+number+'').val(0);
+                subTotal();
+            }
+        }
+
+        function subTotal(){
+            let gross_value = 0;
+            let discount_1_total = 0
+            let discount_2_total = 0
+            let tax_total = 0
+            let sub_total = 0
+            let other_expenses = $('#other_expenses').val() == '' ? 0 : $('#other_expenses').val();
+            let extra_discount_amount = $('#extra_discount_amount').val() == '' ? 0 : $('#extra_discount_amount').val();
+            let net_value = 0;
+            for (let i = 1; i <= itemsCount; i++) {
+                gross_value = gross_value + parseFloat($('#gross_total_'+i+'').val() == '' ? 0 : $('#gross_total_'+i+'').val());
+                discount_1_total = discount_1_total + parseFloat($('#discount_1_amount_'+i+'').val() == '' ? 0 : $('#discount_1_amount_'+i+'').val());
+                discount_2_total = discount_2_total + parseFloat($('#discount_2_amount_'+i+'').val() == '' ? 0 : $('#discount_2_amount_'+i+'').val());
+                tax_total = tax_total + parseFloat($('#tax_amount_'+i+'').val() == '' ? 0 : $('#tax_amount_'+i+'').val());
+                sub_total = sub_total + parseFloat($('#total_'+i+'').val() == '' ? 0 : $('#total_'+i+'').val());
+            }
+            net_value = parseFloat(sub_total) + parseFloat(other_expenses) - parseFloat(extra_discount_amount);
+            $('#gross_value').val(gross_value.toFixed(2));
+            $('#discount_1_total').val(discount_1_total.toFixed(2));
+            $('#discount_2_total').val(discount_2_total.toFixed(2));
+            $('#tax_total').val(tax_total.toFixed(2));
+            $('#sub_total').val(sub_total.toFixed(2));
+            $('#net_value').val(net_value.toFixed(2));
+        }
+    </script>
 @endsection

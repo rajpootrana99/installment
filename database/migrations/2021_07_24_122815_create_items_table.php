@@ -33,6 +33,7 @@ class CreateItemsTable extends Migration
             $table->string('sale_price_3');
             $table->string('sale_price_4');
             $table->string('sale_price_5');
+            $table->string('status');
             $table->timestamps();
         });
     }

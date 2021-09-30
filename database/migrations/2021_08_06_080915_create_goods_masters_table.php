@@ -18,12 +18,11 @@ class CreateGoodsMastersTable extends Migration
             $table->unsignedBigInteger('purchase_master_id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('broker_id');
+            $table->unsignedBigInteger('goods_id');
             $table->string('bilty_no');
-            $table->string('goods_name');
             $table->string('shipment_date');
             $table->string('delivery_date');
-            $table->string('system_name');
-            $table->string('invoice_posted');
+            $table->string('invoice_type')->default(0);
             $table->timestamps();
         });
     }

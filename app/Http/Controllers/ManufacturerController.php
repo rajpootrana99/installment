@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ManufacturerRequest;
 use App\Models\Manufacturer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ManufacturerController extends Controller
 {
@@ -15,8 +16,12 @@ class ManufacturerController extends Controller
      */
     public function index()
     {
+        return view('manufacturer.index');
+    }
+
+    public function fetchManufacturers(){
         $manufacturers = Manufacturer::all();
-        return view('manufacturer.index', [
+        return response()->json([
             'manufacturers' => $manufacturers,
         ]);
     }
@@ -28,7 +33,7 @@ class ManufacturerController extends Controller
      */
     public function create()
     {
-        return view('manufacturer.create');
+
     }
 
     /**
@@ -37,10 +42,18 @@ class ManufacturerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ManufacturerRequest $request)
+    public function store(Request $request)
     {
-        Manufacturer::create($request->all());
-        return redirect(route('manufacturer.index'));
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $manufacturer = Manufacturer::create($request->all());
+        if ($manufacturer){
+            return response()->json(['status' => 1, 'message' => 'Manufacturer Added Successfully']);
+        }
     }
 
     /**
@@ -60,11 +73,21 @@ class ManufacturerController extends Controller
      * @param  \App\Models\Manufacturer  $manufacturer
      * @return \Illuminate\Http\Response
      */
-    public function edit(Manufacturer $manufacturer)
+    public function edit($manufacturer)
     {
-        return view('manufacturer.edit', [
-            'manufacturer' => $manufacturer,
-        ]);
+        $manufacturer = Manufacturer::find($manufacturer);
+        if ($manufacturer){
+            return response()->json([
+                'status' => 200,
+                'manufacturer' => $manufacturer,
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => 404,
+                'message' => 'Manufacturer not found'
+            ]);
+        }
     }
 
     /**
@@ -74,10 +97,19 @@ class ManufacturerController extends Controller
      * @param  \App\Models\Manufacturer  $manufacturer
      * @return \Illuminate\Http\Response
      */
-    public function update(ManufacturerRequest $request, Manufacturer $manufacturer)
+    public function update(Request $request, $manufacturer)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $manufacturer = Manufacturer::find($manufacturer);
         $manufacturer->update($request->all());
-        return redirect(route('manufacturer.index'));
+        if ($manufacturer){
+            return response()->json(['status' => 1, 'message' => 'Manufacturer Updated Successfully']);
+        }
     }
 
     /**
@@ -86,9 +118,19 @@ class ManufacturerController extends Controller
      * @param  \App\Models\Manufacturer  $manufacturer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Manufacturer $manufacturer)
+    public function destroy($manufacturer)
     {
+        $manufacturer = Manufacturer::find($manufacturer);
+        if (!$manufacturer){
+            return response()->json([
+                'status' => 0,
+                'message' => 'Manufacturer not exist'
+            ]);
+        }
         $manufacturer->delete();
-        return redirect(route('manufacturer.index'));
+        return response()->json([
+            'status' => 1,
+            'message' => 'Manufacturer deleted successfully'
+        ]);
     }
 }

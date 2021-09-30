@@ -6,6 +6,7 @@ use App\Http\Requests\VendorRequest;
 use App\Http\Traits\GeneralTrait;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class VendorController extends Controller
 {
@@ -17,8 +18,12 @@ class VendorController extends Controller
      */
     public function index()
     {
+        return view('vendor.index');
+    }
+
+    public function fetchVendors(){
         $vendors = Vendor::all();
-        return view('vendor.index', [
+        return response()->json([
             'vendors' => $vendors,
         ]);
     }
@@ -30,9 +35,6 @@ class VendorController extends Controller
      */
     public function create()
     {
-        return view('vendor.create', [
-            'vendor' => new Vendor(),
-        ]);
     }
 
     /**
@@ -41,11 +43,32 @@ class VendorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(VendorRequest $request)
+    public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'father_name' => 'required',
+            'marital_status' => 'required',
+            'cell' => 'required',
+            'cnic' => 'required',
+            'residential_address' => 'required',
+            'office_address' => 'required',
+            'residential_phone' => 'required',
+            'residential_since' => 'required',
+            'office_phone' => 'required',
+            'cnic_front' => 'sometimes|file|image',
+            'cnic_back' => 'sometimes|file|image',
+            'image' => 'sometimes|file|image',
+        ]);
+        if (!$validator->passes()){
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+
         $vendor = Vendor::create($request->all());
         $this->storeImage($vendor);
-        return redirect(route('vendor.index'));
+        if ($vendor){
+            return response()->json(['status' => 1, 'message' => 'Vendor Added Successfully']);
+        }
     }
 
     /**
@@ -65,11 +88,23 @@ class VendorController extends Controller
      * @param  \App\Models\Vendor  $vendor
      * @return \Illuminate\Http\Response
      */
-    public function edit(Vendor $vendor)
+    public function edit($vendor)
     {
-        return view('vendor.edit', [
-            'vendor' => $vendor,
-        ]);
+        $vendor = Vendor::find($vendor);
+        $marital_status = $vendor->getAttributes()['marital_status'];
+        if ($vendor){
+            return response()->json([
+                'status' => 200,
+                'vendor' => $vendor,
+                'marital_status' => $marital_status,
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => 404,
+                'message' => 'Vendor not found'
+            ]);
+        }
     }
 
     /**
@@ -79,11 +114,30 @@ class VendorController extends Controller
      * @param  \App\Models\Vendor  $vendor
      * @return \Illuminate\Http\Response
      */
-    public function update(VendorRequest $request, Vendor $vendor)
+    public function update(Request $request, $vendor)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'father_name' => 'required',
+            'marital_status' => 'required',
+            'cell' => 'required',
+            'cnic' => 'required',
+            'residential_address' => 'required',
+            'office_address' => 'required',
+            'residential_phone' => 'required',
+            'residential_since' => 'required',
+            'office_phone' => 'required',
+            'cnic_front' => 'sometimes|file|image',
+            'cnic_back' => 'sometimes|file|image',
+            'image' => 'sometimes|file|image',
+        ]);
+
+        $vendor = Vendor::find($vendor);
         $vendor->update($request->all());
         $this->storeImage($vendor);
-        return redirect(route('vendor.index'));
+        if ($vendor){
+            return response()->json(['status' => 1, 'message' => 'Vendor Updated Successfully']);
+        }
     }
 
     /**
@@ -92,10 +146,20 @@ class VendorController extends Controller
      * @param  \App\Models\Vendor  $vendor
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Vendor $vendor)
+    public function destroy($vendor)
     {
+        $vendor = Vendor::find($vendor);
+        if (!$vendor){
+            return response()->json([
+                'status' => 0,
+                'message' => 'Vendor not exist'
+            ]);
+        }
         $vendor->delete();
-        return redirect(route('vendor.index'));
+        return response()->json([
+            'status' => 1,
+            'message' => 'Vendor Deleted Successfully'
+        ]);
     }
 
     public function storeImage($vendor)
