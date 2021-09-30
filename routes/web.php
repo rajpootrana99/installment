@@ -78,4 +78,8 @@ Route::resource('goods', 'GoodsController')->middleware(['auth']);
 Route::get('fetchGoods', 'GoodsController@fetchGoods')->middleware(['auth']);
 Route::resource('broker', 'BrokerController')->middleware(['auth']);
 Route::get('fetchBrokers', 'BrokerController@fetchBrokers')->middleware(['auth']);
+
+// Installment
+Route::resource('installmentPlan', 'InstallmentPlanController')->middleware(['auth']);
+Route::get('fetchInstallmentPlans', 'InstallmentPlanController@fetchInstallmentPlans')->middleware(['auth']);
 require __DIR__.'/auth.php';

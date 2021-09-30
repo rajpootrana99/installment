@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tax;
+use App\Models\InstallmentPlan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class TaxController extends Controller
+class InstallmentPlanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,14 @@ class TaxController extends Controller
      */
     public function index()
     {
-        return view('tax.index');
+        return view('installmentPlan.index');
+    }
+
+    public function fetchInstallmentPlans(){
+        $installmentPlans = InstallmentPlan::all();
+        return response()->json([
+            'installmentPlans' => $installmentPlans,
+        ]);
     }
 
     /**
@@ -23,13 +30,6 @@ class TaxController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
-    public function fetchTax(){
-        $taxes = Tax::all();
-        return response()->json([
-            'taxes' => $taxes,
-        ]);
-    }
     public function create()
     {
         //
@@ -44,25 +44,25 @@ class TaxController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'plan' => 'required',
             'percentage' => 'required',
         ]);
         if (!$validator->passes()){
             return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
         }
-        $tax = Tax::create($request->all());
-        if ($tax){
-            return response()->json(['status' => 1, 'message' => 'Tax Added Successfully']);
+        $installmentPlan = InstallmentPlan::create($request->all());
+        if ($installmentPlan){
+            return response()->json(['status' => 1, 'message' => 'Installment Plan Added Successfully']);
         }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Tax  $tax
+     * @param  \App\Models\InstallmentPlan  $installmentPlan
      * @return \Illuminate\Http\Response
      */
-    public function show(Tax $tax)
+    public function show(InstallmentPlan $installmentPlan)
     {
         //
     }
@@ -70,22 +70,22 @@ class TaxController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Tax  $tax
+     * @param  \App\Models\InstallmentPlan  $installmentPlan
      * @return \Illuminate\Http\Response
      */
-    public function edit($tax)
+    public function edit($installmentPlan)
     {
-        $tax = Tax::find($tax);
-        if ($tax){
+        $installmentPlan = InstallmentPlan::find($installmentPlan);
+        if ($installmentPlan){
             return response()->json([
                 'status' => 200,
-                'tax' => $tax,
+                'installmentPlan' => $installmentPlan,
             ]);
         }
         else {
             return response()->json([
                 'status' => 404,
-                'tax' => 'Tax Detail Not Found',
+                'installmentPlan' => 'Installment Plan Not Found',
             ]);
         }
     }
@@ -94,24 +94,24 @@ class TaxController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Tax  $tax
+     * @param  \App\Models\InstallmentPlan  $installmentPlan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $tax)
+    public function update(Request $request, $installmentPlan)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'percentage' => 'required'
+            'plan' => 'required',
+            'percentage' => 'required',
         ]);
         if (!$validator->passes()){
             return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
         }
 
         try {
-            $tax = Tax::find($tax);
-            $tax->update($request->all());
-            if ($tax){
-                return response()->json(['status' => 1, 'message' => 'Tax Detail Updated Successfully']);
+            $installmentPlan = InstallmentPlan::find($installmentPlan);
+            $installmentPlan->update($request->all());
+            if ($installmentPlan){
+                return response()->json(['status' => 1, 'message' => 'Installment Plan Updated Successfully']);
             }
         }catch (Exception $exception){
             return response()->json([
@@ -123,22 +123,22 @@ class TaxController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Tax  $tax
+     * @param  \App\Models\InstallmentPlan  $installmentPlan
      * @return \Illuminate\Http\Response
      */
-    public function destroy($tax)
+    public function destroy($installmentPlan)
     {
-        $tax = Tax::find($tax);
-        if (!$tax){
+        $installmentPlan = InstallmentPlan::find($installmentPlan);
+        if (!$installmentPlan){
             return response()->json([
                 'status' => 0,
-                'message' => 'Tax detail not exist'
+                'message' => 'Installment Plan not exist'
             ]);
         }
-        $tax->delete();
+        $installmentPlan->delete();
         return response()->json([
             'status' => 1,
-            'message' => 'Tax detail deleted successfully',
+            'message' => 'Installment Plan deleted successfully',
         ]);
     }
 }
