@@ -45,6 +45,7 @@ class InstallmentPlanController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'plan' => 'required',
+            'duration' => 'required|numeric',
             'percentage' => 'required',
         ]);
         if (!$validator->passes()){
@@ -101,6 +102,7 @@ class InstallmentPlanController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'plan' => 'required',
+            'duration' => 'required|numeric',
             'percentage' => 'required',
         ]);
         if (!$validator->passes()){

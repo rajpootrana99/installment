@@ -85,9 +85,23 @@ class CustomerController extends Controller
      * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function show(Customer $customer)
+    public function show($customer)
     {
-        //
+        $customer = Customer::find($customer);
+        $type = $customer->getAttributes()['type'];
+        if ($customer){
+            return response()->json([
+                'status' => 200,
+                'customer' => $customer,
+                'type' => $type,
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => 404,
+                'message' => 'Customer not found'
+            ]);
+        }
     }
 
     /**

@@ -479,30 +479,6 @@
                 });
             }
 
-            /*$(document).on('click', '#addCustomerDetailButton', function (e) {
-                e.preventDefault();
-                $('#addCustomerDetail').modal('show');
-                $(document).find('span.error-text').text('');
-                $.ajax({
-                    type: 'get',
-                    url: 'accountDetail/create',
-                    dataType: 'json',
-                    success: function (response) {
-                        if (response.status == 0) {
-                            $('#addCustomerDetail').modal('hide');
-                        }
-                        else {
-                            var head_id = $('#head_id');
-                            $('#head_id').children().remove().end()
-                            $.each(response.heads, function (head) {
-                                head_id.append($("<option />").val(response.heads[head].id).text(response.heads[head].name));
-                            });
-                            $('#serial_number').val(pad(response.serial_number,4));
-                        }
-                    }
-                });
-            });*/
-
             $(document).on('click', '.delete_btn', function (e) {
                 e.preventDefault();
                 var customer_id = $(this).val();

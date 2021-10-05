@@ -34,6 +34,7 @@
                                 <tr>
                                     <th width="5%">#</th>
                                     <th>Plan</th>
+                                    <th>Duration</th>
                                     <th>Percentage(%)</th>
                                     <th width="3%"><i class="fa fa-edit"></i></th>
                                     <th width="3%"><i class="fa fa-trash"></i></th>
@@ -70,7 +71,14 @@
                                     <span class="text-danger error-text plan_error"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-12">
+                            <div class="col-lg-">
+                                <div class="form-group">
+                                    <label for="duration" class="col-form-label text-right">Duration</label>
+                                    <input class="form-control" type="number" name="duration" placeholder="Enter Duration" id="duration">
+                                    <span class="text-danger error-text duration_error"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="percentage" class="col-form-label text-right">Percentage</label>
                                     <input class="form-control" type="text" name="percentage" placeholder="Enter Percentage" id="percentage">
@@ -110,7 +118,14 @@
                                     <span class="text-danger error-text plan_update_error"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-12">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="duration" class="col-form-label text-right">Duration</label>
+                                    <input class="form-control" type="text" name="duration" placeholder="Enter Duration" id="edit_duration">
+                                    <span class="text-danger error-text duration_update_error"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="percentage" class="col-form-label text-right">Percentage</label>
                                     <input class="form-control" type="text" name="percentage" placeholder="Enter Percentage" id="edit_percentage">
@@ -180,6 +195,7 @@
                             $('tbody').append('<tr>\
                             <td>'+installmentPlan.id+'</td>\
                             <td>'+installmentPlan.plan+'</td>\
+                            <td>'+installmentPlan.duration+'</td>\
                             <td>'+installmentPlan.percentage+'%</td>\
                             <td><button value="'+installmentPlan.id+'" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
                             <td><button value="'+installmentPlan.id+'" style="border: none; background-color: #fff" class="delete_btn"><i class="fa fa-trash"></i></button></td>\
@@ -230,6 +246,7 @@
                         else {
                             $('#installment_plan_id').val(response.installmentPlan.id);
                             $('#edit_plan').val(response.installmentPlan.plan);
+                            $('#edit_duration').val(response.installmentPlan.duration);
                             $('#edit_percentage').val(response.installmentPlan.percentage);
                         }
                     }

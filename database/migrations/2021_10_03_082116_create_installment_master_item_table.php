@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInstallmentPlansTable extends Migration
+class CreateInstallmentMasterItemTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateInstallmentPlansTable extends Migration
      */
     public function up()
     {
-        Schema::create('installment_plans', function (Blueprint $table) {
+        Schema::create('installment_master_item', function (Blueprint $table) {
             $table->id();
-            $table->string('plan');
-            $table->string('duration');
-            $table->string('percentage');
             $table->timestamps();
         });
     }
@@ -29,6 +26,6 @@ class CreateInstallmentPlansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('installment_plans');
+        Schema::dropIfExists('installment_master_item');
     }
 }

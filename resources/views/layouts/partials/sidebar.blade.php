@@ -71,7 +71,7 @@
                 <a href="javascript: void(0);"> <i data-feather="shopping-bag" class="align-self-center menu-icon"></i><span>Installment</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                 <ul class="nav-second-level" aria-expanded="false">
                     <li class="nav-item"><a class="nav-link" href="{{ route('installmentPlan.index') }}"><i class="ti-control-record"></i>Installment Plans</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('sale.index') }}"><i class="ti-control-record"></i>Schedule Installment</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('installment.index') }}"><i class="ti-control-record"></i>Installment</a></li>
                 </ul>
             </li>
         </ul>

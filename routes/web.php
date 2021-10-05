@@ -82,4 +82,10 @@ Route::get('fetchBrokers', 'BrokerController@fetchBrokers')->middleware(['auth']
 // Installment
 Route::resource('installmentPlan', 'InstallmentPlanController')->middleware(['auth']);
 Route::get('fetchInstallmentPlans', 'InstallmentPlanController@fetchInstallmentPlans')->middleware(['auth']);
+Route::resource('installment', 'InstallmentController')->middleware(['auth']);
+Route::get('fetchSaleOfficers', 'InstallmentController@fetchSaleOfficers')->middleware(['auth']);
+Route::get('fetchInquiryOfficers', 'InstallmentController@fetchInquiryOfficers')->middleware(['auth']);
+Route::get('fetchMarketingOfficers', 'InstallmentController@fetchMarketingOfficers')->middleware(['auth']);
+Route::get('fetchRecoveryOfficers', 'InstallmentController@fetchRecoveryOfficers')->middleware(['auth']);
+
 require __DIR__.'/auth.php';
