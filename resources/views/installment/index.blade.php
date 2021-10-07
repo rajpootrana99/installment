@@ -201,10 +201,10 @@
                                         <th width="10%">Category</th>
                                         <th width="10%">Barcode</th>
                                         <th width="10%">Reg. Remarks</th>
-                                        <th width="10%">Cost</th>
-                                        <th width="10%">Rate</th>
+                                        <th width="7%">Cost</th>
+                                        <th width="7%">Rate</th>
                                         <th width="10%">Plan</th>
-                                        <th width="5%">Per%</th>
+                                        <th width="7%">Per%</th>
                                         <th width="10%">Sale Val.</th>
                                         <th width="10%">Down Pay.</th>
                                         <th width="5%">Installment</th>
@@ -337,14 +337,14 @@
             function itemsDetailDynamicField(number){
                 html = '<tr>';
                 html += '<td>'+number+'</td>';
-                html += '<td><select class="select2 form-control custom-select" name="item_id[]" id="item_id_'+number+'" style="width: 100%; height:30px;" data-placeholder="Select Item"></select></td>';
+                html += '<td><select class="select2 form-control custom-select" name="item_id[]" id="item_id_'+number+'" onchange="showItem('+number+')" style="width: 100%; height:30px;" data-placeholder="Select Item"></select></td>';
                 html += '<td><input type="text" style="height: 30px" disabled name="description[]" id="description_'+number+'" class="form-control" /></td>';
-                html += '<td><input type="text" style="height: 30px" disabled name="category[]" id="category_'+number+'" class="form-control" /></td>';
+                html += '<td><input type="text" style="height: 30px" disabled name="category[]" id="category_id_'+number+'" class="form-control" /></td>';
                 html += '<td><select class="select2 form-control custom-select" name="barcode_id[]" id="barcode_id_'+number+'" style="width: 100%; height:30px;" data-placeholder="Select Sr. Code"></select></td>';
                 html += '<td><input type="text" style="height: 30px" name="registration_remarks[]" id="registration_remarks_'+number+'" class="form-control" /></td>';
-                html += '<td><div class="row"><input type="text" style="height: 30px" readonly name="cost[]" id="cost_'+number+'" class="form-control col-8 ml-2" />';
-                html += '<td><div class="row"><input type="text" style="height: 30px" name="rate[]" id="rate_'+number+'" class="form-control col-8 ml-2" />';
-                html += '<td><div class="row"><select class="select2 form-control custom-select" name="installment_plan_id[]" id="installment_plan_id_'+number+'" style="width: 100%; height:30px;" data-placeholder="Select Plan"></select>';
+                html += '<td><input type="text" style="height: 30px" readonly name="cost[]" id="cost_'+number+'" class="form-control" />';
+                html += '<td><input type="text" style="height: 30px" name="rate[]" id="rate_'+number+'" class="form-control" />';
+                html += '<td><div class="row"><select class="select2 form-control custom-select" name="installment_plan_id[]" id="installment_plan_id_'+number+'" onchange="showInstallmentPlan('+number+')" style="width: 100%; height:30px;" data-placeholder="Select Plan"></select>';
                 html += '<td><input type="text" style="height: 30px" disabled id="percentage_'+number+'" class="form-control" /></td>';
                 html += '<td><input type="text" style="height: 30px" name="sale_value[]" id="sale_value_'+number+'" class="form-control" /></td>';
                 html += '<td><input type="text" style="height: 30px" name="down_payment[]" id="down_payment_'+number+'" class="form-control" /></td>';
@@ -406,7 +406,6 @@
                     url: "fetchInstallmentPlans",
                     dataType: "json",
                     success: function (response) {
-                        console.log(response)
                         var installment_plan_id = $('#installment_plan_id_'+itemsCount+'');
                         $('#installment_plan_id_'+itemsCount+'').children().remove().end()
                         $.each(response.installmentPlans, function (installmentPlan) {
@@ -588,6 +587,47 @@
                 total(number);
                 subTotal();
             }
+        }
+
+        function showItem(number){
+            var item_id = $('#item_id_'+number+'').val();
+            $.ajax({
+                type: 'get',
+                url: 'item/'+item_id,
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status == 0) {
+                        console.log(response.message);
+                    }
+                    else {
+                        $('#description_'+number+'').val(response.item.description);
+                        $('#category_id_'+number+'').val(response.item.category.name);
+                        $('#cost_'+number+'').val(response.item.cost_price);
+                        var barcode_id = $('#barcode_id_'+number+'');
+                        $('#barcode_id_'+number+'').children().remove().end()
+                        $.each(response.barcodes, function (barcode) {
+                            barcode_id.append($("<option />").val(response.barcodes[barcode].id).text(response.barcodes[barcode].barcode));
+                        });
+                    }
+                }
+            });
+        }
+
+        function showInstallmentPlan(number){
+            var installment_plan_id = $('#installment_plan_id_'+number+'').val();
+            $.ajax({
+                type: 'get',
+                url: 'installmentPlan/'+installment_plan_id,
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status == 0) {
+                        console.log(response.message);
+                    }
+                    else {
+                        $('#percentage_'+number+'').val(response.installmentPlan.percentage);
+                    }
+                }
+            });
         }
 
         function total(number){

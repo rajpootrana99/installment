@@ -87,5 +87,6 @@ Route::get('fetchSaleOfficers', 'InstallmentController@fetchSaleOfficers')->midd
 Route::get('fetchInquiryOfficers', 'InstallmentController@fetchInquiryOfficers')->middleware(['auth']);
 Route::get('fetchMarketingOfficers', 'InstallmentController@fetchMarketingOfficers')->middleware(['auth']);
 Route::get('fetchRecoveryOfficers', 'InstallmentController@fetchRecoveryOfficers')->middleware(['auth']);
+Route::resource('installmentSchedule', 'InstallmentScheduleController')->middleware(['auth']);
 
 require __DIR__.'/auth.php';

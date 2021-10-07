@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ItemRequest;
 use App\Http\Traits\GeneralTrait;
+use App\Models\Barcode;
 use App\Models\Category;
 use App\Models\Item;
 use App\Models\Manufacturer;
@@ -139,9 +140,23 @@ class ItemController extends Controller
      * @param  \App\Models\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function show(Item $item)
+    public function show($item)
     {
-        //
+        $barcodes = Barcode::where('item_id', $item)->get();
+        $item = Item::with('category')->where('id', $item)->first();
+        if ($item){
+            return response()->json([
+                'status' => 200,
+                'barcodes' => $barcodes,
+                'item' => $item,
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => 404,
+                'message' => 'Item not found',
+            ]);
+        }
     }
 
     /**

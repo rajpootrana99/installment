@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\InstallmentPlan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\In;
 
 class InstallmentPlanController extends Controller
 {
@@ -63,9 +64,21 @@ class InstallmentPlanController extends Controller
      * @param  \App\Models\InstallmentPlan  $installmentPlan
      * @return \Illuminate\Http\Response
      */
-    public function show(InstallmentPlan $installmentPlan)
+    public function show($installmentPlan)
     {
-        //
+        $installmentPlan = InstallmentPlan::find($installmentPlan);
+        if ($installmentPlan){
+            return response()->json([
+                'status' => 200,
+                'installmentPlan' => $installmentPlan,
+            ]);
+        }
+        else {
+            return response()->json([
+                'status' => 404,
+                'installmentPlan' => 'Installment Plan Not Found',
+            ]);
+        }
     }
 
     /**

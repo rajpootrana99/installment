@@ -72,6 +72,7 @@
                 <ul class="nav-second-level" aria-expanded="false">
                     <li class="nav-item"><a class="nav-link" href="{{ route('installmentPlan.index') }}"><i class="ti-control-record"></i>Installment Plans</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('installment.index') }}"><i class="ti-control-record"></i>Installment</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('installmentSchedule.index') }}"><i class="ti-control-record"></i>Installment Schedule</a></li>
                 </ul>
             </li>
         </ul>
